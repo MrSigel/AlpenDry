@@ -41,31 +41,28 @@ export function CookieBanner() {
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="fixed inset-x-0 bottom-[3.75rem] z-[55] px-4 pb-4 md:bottom-0 md:px-6 md:pb-6"
         >
-          <div className="mx-auto flex max-w-shell flex-col gap-5 rounded-sm border border-hairline bg-abyss/98 p-6 backdrop-blur-md md:flex-row md:items-center md:justify-between md:gap-8">
-            <div className="max-w-prose">
-              <p className="font-display text-sm font-semibold text-snow">
-                Cookies auf dieser Website
-              </p>
-              <p className="mt-2 font-body text-sm text-frost-dim">
-                Wir nutzen technisch notwendige Cookies für den Betrieb der Seite.
-                Analyse-Cookies setzen wir nur mit Ihrer Einwilligung — Sie können
-                sie jederzeit widerrufen. Mehr in unseren{" "}
-                <Link
-                  href="/cookies"
-                  className="text-frost underline underline-offset-2 transition-colors hover:text-snow"
-                >
-                  Cookie-Hinweisen
-                </Link>{" "}
-                und der{" "}
-                <Link
-                  href="/datenschutz"
-                  className="text-frost underline underline-offset-2 transition-colors hover:text-snow"
-                >
-                  Datenschutzerklärung
-                </Link>
-                .
-              </p>
-            </div>
+          {/* Bewusst flach gehalten: Der Banner sitzt über den Hero-CTAs
+              (Notruf/WhatsApp), die laut Business Case Kap. 6 ohne Scrollen
+              sichtbar sein müssen. Je höher er baut, desto mehr verdeckt er sie
+              — deshalb eine Zeile Text statt Absatz. */}
+          <div className="mx-auto flex max-w-shell flex-col gap-4 rounded-sm border border-hairline bg-abyss/98 px-6 py-4 backdrop-blur-md md:flex-row md:items-center md:justify-between md:gap-8">
+            <p className="font-body text-sm text-frost-dim">
+              Wir nutzen notwendige Cookies. Analyse-Cookies nur mit Ihrer
+              Einwilligung, jederzeit widerrufbar —{" "}
+              <Link
+                href="/cookies"
+                className="text-frost underline underline-offset-2 transition-colors hover:text-snow"
+              >
+                Cookie-Hinweise
+              </Link>{" "}
+              ·{" "}
+              <Link
+                href="/datenschutz"
+                className="text-frost underline underline-offset-2 transition-colors hover:text-snow"
+              >
+                Datenschutz
+              </Link>
+            </p>
 
             {/* Beide Optionen gleich gewichtet — kein Dark Pattern. */}
             <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
