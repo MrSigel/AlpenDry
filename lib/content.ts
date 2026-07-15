@@ -34,8 +34,14 @@ export const site = {
    * Logo-Untertitel lang. Erscheint über dem Hero-Titel und im Footer.
    * „TROCKNUNG" auf Kundenwunsch ergänzt (Business Case nennt auf der
    * Titelseite nur Wasserschadensanierung · Lecksuche · Alpenland).
+   *
+   * „LECKAGEORTUNG" statt „LECKSUCHE": Kundenwunsch, klingt fachlicher.
+   * Achtung SEO — „Lecksuche" ist der Begriff, den Kunden tatsächlich tippen
+   * (Business Case Kap. 10 führt dafür eine eigene Ads-Kampagne). Er bleibt
+   * deshalb in der Meta-Description und in `knowsAbout` (lib/jsonld.ts)
+   * erhalten, nur eben nicht mehr in der sichtbaren Marken-Zeile.
    */
-  subtitleLong: "WASSERSCHADENSANIERUNG · TROCKNUNG · LECKSUCHE · ALPENLAND",
+  subtitleLong: "WASSERSCHADENSANIERUNG · TROCKNUNG · LECKAGEORTUNG · ALPENLAND",
   /** Claim: kursiv, glacier, unterstrichen. */
   claim: "Sauber. Trocken. Sicher.",
   url: "https://www.alpendry.de",
@@ -103,7 +109,7 @@ export const hero = {
    * Versicherung" — reine Privatkundensicht, obwohl Versicherungen der
    * Hauptauftraggeber sind.
    */
-  sub: "Wasserschadensanierung, Trocknung, Lecksuche und Schimmelsanierung zwischen München, Augsburg, Landsberg am Lech und dem Tegernsee. 24/7-Notdienst für Privatkunden und Versicherungen — Sanierung, Dokumentation und Abrechnung aus einer Hand.",
+  sub: "Wasserschadensanierung, Trocknung, Leckageortung und Schimmelsanierung zwischen München, Augsburg, Landsberg am Lech und dem Tegernsee. 24/7-Notdienst für Privatkunden und Versicherungen — Sanierung, Dokumentation und Abrechnung aus einer Hand.",
   claim: site.claim,
   /**
    * Erscheint, wenn die Kamera unter die Wasserlinie taucht.
@@ -168,7 +174,7 @@ export const services = {
   /** Kap. 4, Liste wörtlich. */
   items: [
     {
-      title: "Lecksuche & Leckortung",
+      title: "Leckageortung",
       body: "Auch unsichtbare Leckschäden werden gefunden und beseitigt: zerstörungsarm, mit modernster Messtechnik.",
     },
     {
@@ -413,7 +419,7 @@ export const faq = {
     },
     {
       /** @freigabe — abgeleitet aus Kap. 4 „Lecksuche & Leckortung" (wörtlich belegt). */
-      q: "Muss für die Lecksuche die Wand aufgerissen werden?",
+      q: "Muss für die Leckageortung die Wand aufgerissen werden?",
       a: "In der Regel nicht. Auch unsichtbare Leckschäden orten wir zerstörungsarm mit modernster Messtechnik — und beheben sie anschließend fachgerecht.",
     },
     {
@@ -450,7 +456,7 @@ export const contactSection = {
     damage: {
       label: "Art des Schadens",
       /** Kap. 7 wörtlich: „akuter Wasserschaden · Lecksuche · Schimmel · Sonstiges" */
-      options: ["Akuter Wasserschaden", "Lecksuche", "Schimmel", "Sonstiges"],
+      options: ["Akuter Wasserschaden", "Leckageortung", "Schimmel", "Sonstiges"],
     },
     description: {
       label: "Kurzbeschreibung",
@@ -510,7 +516,7 @@ export const nav = [
 export const footer = {
   /** Kap. 1 wörtlich. */
   tagline:
-    "AlpenDry ist der Spezialist für Wasserschadensanierung und Lecksuche am Alpenrand.",
+    "AlpenDry ist der Spezialist für Wasserschadensanierung und Leckageortung am Alpenrand.",
   legal: [
     { label: "Impressum", href: "/impressum" },
     { label: "Datenschutz", href: "/datenschutz" },

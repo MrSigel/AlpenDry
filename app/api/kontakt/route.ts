@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { contactSection } from "@/lib/content";
 
 /**
  * Kontaktformular-Handler (plan.md, Ordnerstruktur).
@@ -22,12 +23,14 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const MAX_PHOTO_BYTES = 10 * 1024 * 1024;
-const DAMAGE_OPTIONS = [
-  "Akuter Wasserschaden",
-  "Lecksuche",
-  "Schimmel",
-  "Sonstiges",
-];
+
+/**
+ * Erlaubte Werte für „Art des Schadens" — direkt aus content.ts, NICHT als
+ * eigene Liste. Vorher stand sie hier dupliziert: Wer das Dropdown umbenennt,
+ * hätte die Server-Whitelist übersehen und jede Anfrage dieser Kategorie wäre
+ * kommentarlos als ungültig abgelehnt worden.
+ */
+const DAMAGE_OPTIONS: readonly string[] = contactSection.fields.damage.options;
 
 /** Zeilenumbrüche/Steuerzeichen aus Kopfzeilen-Feldern entfernen (Header-Injection). */
 function clean(v: FormDataEntryValue | null, maxLen = 500): string {

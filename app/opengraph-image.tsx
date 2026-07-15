@@ -52,7 +52,7 @@ export default function OgImage() {
               letterSpacing: 1,
             }}
           >
-            Wasserschadensanierung · Lecksuche · Alpenland
+            Wasserschadensanierung · Trocknung · Leckageortung
           </div>
           <div style={{ marginTop: 36, display: "flex", alignItems: "center" }}>
             <div style={{ width: 60, height: 3, background: palette.glacier }} />

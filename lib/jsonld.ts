@@ -23,7 +23,7 @@ export function localBusinessJsonLd() {
     name: site.legalName,
     alternateName: site.name,
     description:
-      "Spezialist für Wasserschadensanierung, Lecksuche und Schimmelsanierung am Alpenrand. 24/7-Notdienst mit eigener Technik und eigenem Fuhrpark.",
+      "Spezialist für Wasserschadensanierung, Trocknung, Leckageortung und Schimmelsanierung am Alpenrand. 24/7-Notdienst für Privatkunden und Versicherungen.",
     url: site.url,
     telephone: contact.phoneRaw,
     email: contact.email,
@@ -76,8 +76,15 @@ export function localBusinessJsonLd() {
         },
       })),
     },
+    /**
+     * Bewusst mit allen drei Leck-Varianten: `knowsAbout` ist strukturierte
+     * Information für Suchmaschinen, kein sichtbarer Text. Sichtbar heißt es
+     * „Leckageortung" (Kundenwunsch), gesucht wird aber überwiegend nach
+     * „Lecksuche" — hier dürfen beide stehen, ohne die Seite zu verwässern.
+     */
     knowsAbout: [
       "Wasserschadensanierung",
+      "Leckageortung",
       "Lecksuche",
       "Leckortung",
       "Schimmelsanierung",

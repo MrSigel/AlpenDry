@@ -13,10 +13,16 @@ import { ExitBanner } from "@/components/layout/ExitBanner";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.alpendry.de"),
+  /**
+   * Title trägt den Fachbegriff (Kundenwunsch), die Description beide:
+   * „Lecksuche" ist der Begriff mit dem Suchvolumen — Business Case Kap. 10
+   * führt dafür eine eigene Ads-Kampagne. Ihn ganz zu streichen würde genau
+   * die Suchanfragen verschenken, auf die die Seite optimiert ist.
+   */
   ...buildMetadata({
-    title: "AlpenDry — Wasserschadensanierung & Lecksuche am Alpenrand",
+    title: "AlpenDry — Wasserschadensanierung & Leckageortung am Alpenrand",
     description:
-      "24/7-Notdienst für Wasserschaden, Lecksuche und Schimmel zwischen München, Augsburg, Landsberg und Tegernsee. Eigene Technik, 25 Jahre Erfahrung — in der Regel zahlt die Versicherung.",
+      "24/7-Notdienst für Wasserschaden, Leckageortung (Lecksuche) und Schimmel zwischen München, Augsburg, Landsberg und Tegernsee. Für Privatkunden und Versicherungen — 25 Jahre Erfahrung, eigene Technik.",
   }),
   applicationName: "AlpenDry",
   authors: [{ name: "AlpenDry GmbH" }],
