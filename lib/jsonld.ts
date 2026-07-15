@@ -110,6 +110,44 @@ export function faqJsonLd() {
   };
 }
 
+/**
+ * Service-Schema für eine Leistungsseite.
+ * `provider` verweist per @id auf das LocalBusiness aus dem Layout — kein
+ * zweiter Eintrag, sonst hält Google zwei Betriebe für möglich.
+ */
+export function serviceJsonLd(page: {
+  slug: string;
+  h1: string;
+  lead: string;
+  metaDescription: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: page.h1,
+    description: page.metaDescription,
+    url: `${site.url}/leistungen/${page.slug}`,
+    provider: { "@id": BUSINESS_ID },
+    areaServed: region.places.map((place) => ({ "@type": "City", name: place })),
+    serviceType: page.h1,
+  };
+}
+
+/** FAQPage für die Fragen einer Leistungsseite (AEO). */
+export function serviceFaqJsonLd(page: {
+  faq: readonly { q: string; a: string }[];
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: page.faq.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
+}
+
 export function breadcrumbJsonLd(
   trail: ReadonlyArray<{ name: string; path: string }>,
 ) {

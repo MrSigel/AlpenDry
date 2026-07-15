@@ -489,13 +489,11 @@ export const exitBanner = {
   body: "Im Akutfall entscheidet die Reaktionszeit über den Folgeschaden. Wir sind rund um die Uhr erreichbar — ein Anruf genügt.",
 } as const;
 
-export const nav = [
-  { label: "Leistungen", href: "#leistungen" },
-  { label: "Einsatzgebiet", href: "#einsatzgebiet" },
-  { label: "Ablauf", href: "#ablauf" },
-  { label: "Fragen", href: "#fragen" },
-  { label: "Kontakt", href: "#kontakt" },
-] as const;
+/**
+ * Die Hauptnavigation steht in lib/nav.ts — sie führt Seitenstruktur und
+ * Leistungsseiten zusammen, was hier einen Import-Zirkel erzeugen würde
+ * (services-pages liest bereits aus content).
+ */
 
 export const footer = {
   /** Kap. 1 wörtlich. */
