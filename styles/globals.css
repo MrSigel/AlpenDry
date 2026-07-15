@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * AlpenDry — globales Fundament
+ * Farben ausschließlich aus dem Logo. Als CSS-Variablen gespiegelt,
+ * damit auch der 3D-Canvas (three.js) exakt dieselben Werte nutzen kann.
+ */
+
+:root {
+  --ink: #05070c;
+  --abyss: #0a0f1a;
+  --deep: #111b2e;
+  --steel: #2e5a8c;
+  --glacier: #1e6fe8;
+  --signal: #2e86ff;
+  --frost: #c9d4e2;
+  --snow: #ffffff;
+
+  --frost-dim: rgba(201, 212, 226, 0.62);
+  --frost-faint: rgba(201, 212, 226, 0.14);
+  --glacier-glow: rgba(30, 111, 232, 0.28);
+  --ink-scrim: rgba(5, 7, 12, 0.78);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--ink);
+    color: var(--frost);
+    font-family: var(--font-body), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Headlines: Display-Face, snow, enge Laufweite. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display), system-ui, sans-serif;
+    color: var(--snow);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  /* Ruhige, gut lesbare Fließtextspalte. */
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Sichtbarer, markenkonformer Tastatur-Fokus (Signalfarbe). */
+  :focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--glacier);
+    color: var(--snow);
+  }
+
+  /* Feine, edle Scrollbar (nur WebKit — dezent, keine Deko). */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--ink);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--deep);
+    border-radius: 999px;
+  }
+}
+
+@layer components {
+  /* Eyebrow-Label im Logo-Untertitel-Stil (WASSERSCHADENSANIERUNG). */
+  .eyebrow {
+    font-family: var(--font-mono), monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    /*
+     * ABWEICHUNG VON DER VORLAGE: hier stand `var(--steel)`.
+     * Gemessen erreicht steel auf ink nur 2.84:1 — unter dem absoluten
+     * WCAG-Minimum von 3:1 und weit unter den 4.5:1, die dieser 11px-Text
+     * braucht. frost-dim erreicht 5.49:1 und stammt aus derselben Palette,
+     * ist also kein Farbverstoß. Seit Juni 2025 (BFSG) ist das nicht nur
+     * eine Stilfrage.
+     * steel bleibt für größere, ruhige Akzente korrekt.
+     */
+    color: var(--frost-dim);
+  }
+
+  /* Hairline-Trennlinie wie auf der Visitenkarte (unter dem Logo). */
+  .hairline {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      var(--glacier),
+      var(--frost-faint) 60%,
+      transparent
+    );
+  }
+
+  /* Lesbarkeits-Scrim von unten über dem 3D-Hero. */
+  .hero-scrim {
+    background: linear-gradient(
+      to top,
+      var(--ink) 4%,
+      var(--ink-scrim) 34%,
+      transparent 72%
+    );
+  }
+}
+
+/* Motion nur, wenn erwünscht. Sonst alles ruhig stellen. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

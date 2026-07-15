@@ -1,0 +1,131 @@
+import { contact, faq, region, services, site } from "./content";
+
+/**
+ * Strukturierte Daten (plan.md §5).
+ * Alle Werte stammen aus `content.ts` — keine doppelte Wahrheit.
+ */
+
+const BUSINESS_ID = `${site.url}/#business`;
+
+/**
+ * LocalBusiness mit 24/7-Öffnungszeiten, Adresse, Geo und Telefon.
+ *
+ * `HomeAndConstructionBusiness` statt des generischen `LocalBusiness`:
+ * spezifischerer Typ, den Google für Handwerks- und Sanierungsbetriebe
+ * auswertet. Kein `priceRange` — der Business Case nennt keine Preise,
+ * und erfundene Preisangaben wären irreführend.
+ */
+export function localBusinessJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HomeAndConstructionBusiness",
+    "@id": BUSINESS_ID,
+    name: site.legalName,
+    alternateName: site.name,
+    description:
+      "Spezialist für Wasserschadensanierung, Lecksuche und Schimmelsanierung am Alpenrand. 24/7-Notdienst mit eigener Technik und eigenem Fuhrpark.",
+    url: site.url,
+    telephone: contact.phoneRaw,
+    email: contact.email,
+    // Von app/opengraph-image.tsx erzeugt; app/icon.svg ist das Favicon.
+    image: `${site.url}/opengraph-image`,
+    logo: `${site.url}/icon.svg`,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: contact.street,
+      postalCode: contact.postalCode,
+      addressLocality: contact.city,
+      addressRegion: contact.region,
+      addressCountry: contact.country,
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: contact.geo.lat,
+      longitude: contact.geo.lng,
+    },
+    // 24/7 — Business Case Kap. 4: „rund um die Uhr"
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        ],
+        opens: "00:00",
+        closes: "23:59",
+      },
+    ],
+    areaServed: region.places.map((place) => ({
+      "@type": "City",
+      name: place,
+    })),
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Leistungen",
+      itemListElement: services.items.map((item) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: item.title,
+          description: item.body,
+        },
+      })),
+    },
+    knowsAbout: [
+      "Wasserschadensanierung",
+      "Lecksuche",
+      "Leckortung",
+      "Schimmelsanierung",
+      "Technische Trocknung",
+      "Hochwasser-Prävention",
+    ],
+  };
+}
+
+/** FAQPage — speist Googles Antwortboxen (AEO, plan.md §5). */
+export function faqJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.items.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.a,
+      },
+    })),
+  };
+}
+
+export function breadcrumbJsonLd(
+  trail: ReadonlyArray<{ name: string; path: string }>,
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: trail.map((crumb, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: crumb.name,
+      item: `${site.url}${crumb.path}`,
+    })),
+  };
+}
+
+export function websiteJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${site.url}/#website`,
+    url: site.url,
+    name: site.legalName,
+    inLanguage: "de-DE",
+    publisher: { "@id": BUSINESS_ID },
+  };
+}

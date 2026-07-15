@@ -1,0 +1,450 @@
+/**
+ * AlpenDry — zentrale Textquelle
+ * ------------------------------------------------------------------
+ * ALLE sichtbaren Texte der Website stehen in dieser Datei.
+ * Keine Strings in Komponenten. Änderungen am Wording passieren hier.
+ *
+ * HERKUNFT: AlpenDry_Business_Case.docx (Juli 2026).
+ * Jede Passage trägt die Kapitel-Referenz, aus der sie stammt.
+ *
+ * BEWUSST NICHT ÜBERNOMMEN (interne Strategie, gehört nicht auf die Kundenseite):
+ *   - Kap. 5  „KI-gestützte Akquise" — Vertriebsinterna gegenüber Versicherungen
+ *   - Kap. 10 Tagesbudget 15–20 € — internes Werbebudget
+ *   - Kap. 11 Anzeigentexte — Google-Ads-Copy, kein Seiteninhalt
+ *              (enthält „Festpreis für die Ortung" — Preisaussage, nirgends übernommen)
+ *   - Kap. 13 Wirtschaftlichkeit / Auftragswerte — interne Zahlen
+ *   - Kap. 14 90-Tage-Umsetzungsplan — internes Projektmanagement
+ *   - Kap. 2  „Spitzenpreise für Top-Service" — interne Preisstrategie
+ *
+ * FREIGABE NÖTIG: Passagen mit `@freigabe` sind aus belegten Fakten des
+ * Business Case abgeleitet, stehen dort aber nicht wörtlich. Bitte prüfen.
+ */
+
+// ─────────────────────────────────────────────────────────────────────
+// Stammdaten
+// ─────────────────────────────────────────────────────────────────────
+
+export const site = {
+  name: "AlpenDry",
+  legalName: "AlpenDry GmbH",
+  /** Logo-Wortmarke: „Alpen" in snow, „Dry" in glacier. */
+  wordmark: { first: "Alpen", second: "Dry" },
+  subtitle: "WASSERSCHADENSANIERUNG",
+  /** Logo-Untertitel lang (Titelseite Business Case). */
+  subtitleLong: "WASSERSCHADENSANIERUNG · LECKSUCHE · ALPENLAND",
+  /** Claim: kursiv, glacier, unterstrichen. */
+  claim: "Sauber. Trocken. Sicher.",
+  url: "https://www.alpendry.de",
+  locale: "de_DE",
+} as const;
+
+export const contact = {
+  phone: "+49 151 53402149",
+  /** E.164 ohne Leerzeichen — für tel: und wa.me */
+  phoneRaw: "+4915153402149",
+  phoneHref: "tel:+4915153402149",
+  whatsappNumber: "4915153402149",
+  /** Kap. 7: „öffnet den Chat direkt beim persönlichen Ansprechpartner — mit vorbereiteter Nachricht." */
+  whatsappMessage:
+    "Hallo AlpenDry, ich habe einen Wasserschaden und brauche Hilfe. Mein Ort: ",
+  email: "info@alpendry.de",
+  emailHref: "mailto:info@alpendry.de",
+  street: "Neu-Egling 33",
+  postalCode: "82418",
+  city: "Murnau a. Staffelsee",
+  region: "Bayern",
+  country: "DE",
+  /**
+   * TODO(freigabe): Koordinaten entsprechen dem Ortszentrum Murnau a. Staffelsee,
+   * nicht exakt Neu-Egling 33. Vor Livegang mit der echten Position der
+   * Betriebsstätte ersetzen (Google Maps → Rechtsklick → Koordinaten kopieren).
+   * Falsche Geo-Daten schaden dem lokalen Ranking.
+   */
+  geo: { lat: 47.6789, lng: 11.2014 },
+  /** Kap. 4: „24/7-Notfall-Service […] rund um die Uhr" */
+  availability: "24/7 erreichbar — auch nachts, am Wochenende und an Feiertagen",
+} as const;
+
+export const whatsappHref = `https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(
+  contact.whatsappMessage,
+)}`;
+
+// ─────────────────────────────────────────────────────────────────────
+// Globale CTAs — Kap. 6: „Konsequent wiederholt — jeder Abschnitt der
+// Seite endet mit derselben klaren Aufforderung."
+// ─────────────────────────────────────────────────────────────────────
+
+export const cta = {
+  primary: { label: "Notruf", sublabel: contact.phone, href: contact.phoneHref },
+  secondary: { label: "WhatsApp", sublabel: "Direkt zum Ansprechpartner", href: whatsappHref },
+  form: { label: "Rückruf anfordern", href: "#kontakt" },
+  /** Wiederholte Aufforderung nach jedem Abschnitt. @freigabe (Micro-Copy) */
+  repeat: "Wasserschaden? Jede Minute zählt.",
+} as const;
+
+// ─────────────────────────────────────────────────────────────────────
+// Hero — Kap. 2 (Kernsatz) + Kap. 3 (Einsatzgebiet für regionale Keywords)
+// ─────────────────────────────────────────────────────────────────────
+
+export const hero = {
+  eyebrow: site.subtitleLong,
+  /** Kap. 2 wörtlich: „Wasserschaden? Wir sind da. Jede Minute zählt." — einziges h1 der Seite. */
+  h1: "Wasserschaden? Wir sind da. Jede Minute zählt.",
+  /** Trägt die regionalen Keywords. Orte aus Kap. 3. @freigabe (Zusammenzug aus Kap. 3 + 4) */
+  sub: "Wasserschadensanierung, Lecksuche und Schimmelsanierung zwischen München, Augsburg, Landsberg am Lech und dem Tegernsee. 24/7-Notdienst mit eigener Technik — in der Regel zahlt die Versicherung.",
+  claim: site.claim,
+  /**
+   * Erscheint, wenn die Kamera unter die Wasserlinie taucht.
+   * Beide Sätze aus Kap. 2 wörtlich (dort im Fließtext zusammenhängend).
+   * Zahlt die Metapher ein: über Wasser die sichtbare Leistung,
+   * unter Wasser das volle Spektrum.
+   */
+  underwater: {
+    line: "Nur die Spitze des Eisbergs.",
+    sub: "Dahinter steht ein komplettes Leistungsspektrum rund um Wasser, Feuchtigkeit und Hochwasser.",
+  },
+} as const;
+
+// ─────────────────────────────────────────────────────────────────────
+// Positionierung — Kap. 2
+// ─────────────────────────────────────────────────────────────────────
+
+export const positioning = {
+  eyebrow: "Positionierung",
+  h2: "Die Spitze des Eisbergs",
+  /** Kap. 2 wörtlich. */
+  lead: "Wasserschadensanierung und Trocknung sind nur die Spitze des Eisbergs. Dahinter steht ein komplettes Leistungsspektrum rund um Wasser, Feuchtigkeit und Hochwasser: von der Ortung unsichtbarer Leckschäden über zertifizierte Schimmelsanierung bis zur Pflege der Außenanlagen, damit Starkregen und Hochwasser gar nicht erst zum Schaden werden.",
+  /** Kap. 2 wörtlich. */
+  insurance:
+    "Und das Entscheidende für den Kunden: In der Regel deckt die Versicherung die Kosten — AlpenDry wickelt alles direkt mit ihr ab.",
+  pillars: [
+    {
+      /**
+       * Kap. 2 „20 Jahre Erfahrung — Expertise, die man nicht studieren kann".
+       *
+       * ABWEICHUNG VOM BUSINESS CASE: Auf Kundenwunsch 25 statt 20 Jahre.
+       * Der Business Case nennt an allen Stellen „20 Jahre" bzw. „Zwei
+       * Jahrzehnte" (Kap. 2 und Kap. 9). Die Jahreszahl steht an mehreren
+       * Stellen (hier, bei `trust.badges` und in der Metadata-Description der
+       * Startseite) — bei einer erneuten Änderung alle drei mitziehen.
+       */
+      title: "25 Jahre Erfahrung",
+      body: "25 Jahre Berufserfahrung, zertifizierter Schimmelexperte, unzählige gelöste Schadensfälle. Diese Kompetenz kommt nicht aus dem Hörsaal, sondern von der Baustelle — Erfahrung statt Theorie. Das Ergebnis: schnelle, treffsichere Entscheidungen und Reaktionszeiten, die im Notfall den Unterschied machen.",
+    },
+    {
+      /** Kap. 2 „Von Mensch zu Mensch" */
+      title: "Von Mensch zu Mensch",
+      body: "Ein Ansprechpartner durch das gesamte Projekt — von A bis Z. Keine Hotline, kein Weiterreichen, keine wechselnden Zuständigkeiten. Der Kunde hat vom ersten Anruf bis zur Übergabe denselben Menschen an seiner Seite.",
+    },
+    {
+      /** Kap. 2 „Der Kerngedanke" */
+      title: "Ruhe im Ausnahmefall",
+      body: "Ein Wasserschaden ist für den Betroffenen eine Ausnahmesituation. AlpenDry ist nicht „noch ein Sanierungsbetrieb“, sondern der ruhige, erfahrene Experte, der in genau diesem Moment Sicherheit gibt.",
+    },
+  ],
+} as const;
+
+// ─────────────────────────────────────────────────────────────────────
+// Leistungen — Kap. 4
+// ─────────────────────────────────────────────────────────────────────
+
+export const services = {
+  eyebrow: "Leistungen",
+  h2: "Alles aus einer Hand",
+  /** Kap. 4 wörtlich. */
+  lead: "AlpenDry deckt die gesamte Kette ab — vom ersten Notruf bis zur fertigen Wiederherstellung. Ein Anruf, ein Ansprechpartner, keine Koordination zwischen Gewerken.",
+  /** Kap. 4, Liste wörtlich. */
+  items: [
+    {
+      title: "Lecksuche & Leckortung",
+      body: "Auch unsichtbare Leckschäden werden gefunden und beseitigt: zerstörungsarm, mit modernster Messtechnik.",
+    },
+    {
+      title: "Technische Trocknung",
+      body: "Mit eigenen, besonders leisen Maschinen — Kunden können während der Trocknung normal wohnen und arbeiten.",
+    },
+    {
+      title: "Schimmelsanierung",
+      body: "Durch den zertifizierten Schimmelexperten, fachgerecht und mit Nachkontrolle.",
+    },
+    {
+      title: "Hochwasser-Prävention",
+      body: "Reinigung und Pflege der Außenanlagen, damit Starkregen und Hochwasser gar nicht erst Schäden anrichten.",
+    },
+    {
+      title: "Dienstleistungen in jeglicher Hinsicht",
+      body: "Alles rund um das Thema Wasser, Feuchtigkeit und Gebäudeschutz.",
+    },
+    {
+      title: "24/7-Notfall-Service",
+      body: "Sofortmaßnahmen zur Schadensbegrenzung, rund um die Uhr.",
+    },
+  ],
+  /** Kap. 4 „Eigene Technik, eigener Fuhrpark" */
+  fleet: {
+    title: "Eigene Technik, eigener Fuhrpark",
+    body: "Kein Warten auf Mietgeräte, keine Abhängigkeit von Subunternehmern: eigenes Werkzeug, eigene Maschinen, eigener Fuhrpark. Das bedeutet schnellste Reaktionszeiten und volle Kontrolle über die Qualität — bei jedem einzelnen Einsatz.",
+  },
+  /** Kap. 4 „Die Versicherung zahlt — AlpenDry kümmert sich" */
+  insurance: {
+    title: "Die Versicherung zahlt — AlpenDry kümmert sich",
+    body: "Der wertvollste Baustein: In der Regel sind die Schäden vollständig über die Versicherung abgedeckt. AlpenDry übernimmt die komplette Kommunikation — Schadensmeldung, Dokumentation, Abstimmung mit dem Sachverständigen, Abrechnung. Der Kunde hat einen festen Ansprechpartner von A bis Z und muss sich um nichts kümmern.",
+    pullquote:
+      "Weniger Stress für den Kunden. Weniger Aufwand für die Versicherung. Genau dazwischen liegt der Wert von AlpenDry.",
+  },
+} as const;
+
+// ─────────────────────────────────────────────────────────────────────
+// Einsatzgebiet — Kap. 3
+// ─────────────────────────────────────────────────────────────────────
+
+export const region = {
+  eyebrow: "Einsatzgebiet",
+  h2: "Am Alpenrand zu Hause",
+  /** Kap. 3 wörtlich. */
+  lead: "Südlich von München bis Augsburg, Landsberg am Lech und zum Tegernsee — der gesamte Alpenrand mit kurzen Anfahrtswegen. Mit eigenem Fuhrpark und eigener Technik ist AlpenDry in diesem Gebiet schneller vor Ort als jeder überregionale Anbieter.",
+  /** Orte aus Kap. 3 + Firmensitz. Reihenfolge = Nennung im Dokument. */
+  places: [
+    "München",
+    "Augsburg",
+    "Landsberg am Lech",
+    "Tegernsee",
+    "Murnau a. Staffelsee",
+    "Alpenvorland",
+  ],
+  /** Kap. 1: „echte regionale Expertise — vom Staffelsee bis ins Alpenvorland." */
+  note: "Echte regionale Expertise — vom Staffelsee bis ins Alpenvorland.",
+} as const;
+
+// ─────────────────────────────────────────────────────────────────────
+// Ablauf — Kap. 12 (6 Schritte, wörtlich)
+// ─────────────────────────────────────────────────────────────────────
+
+export const process = {
+  eyebrow: "Der Ablauf",
+  h2: "Vom Anruf bis zur Übergabe",
+  /** Kap. 12 wörtlich. */
+  lead: "Ein klar definierter Prozess ist das Rückgrat der Qualität. So läuft jeder Auftrag bei AlpenDry.",
+  steps: [
+    {
+      title: "Der Anruf",
+      body: "Erreichbar rund um die Uhr. Aufnahme der Schadensituation, erste Hinweise zur Schadensbegrenzung noch am Telefon, verbindliche Zusage zum Eintreffen.",
+    },
+    {
+      title: "Sofortmaßnahmen vor Ort",
+      body: "Schnellstmögliche Anfahrt. Wasser stoppen, betroffene Bereiche sichern, Folgeschäden begrenzen — noch bevor die eigentliche Sanierung beginnt.",
+    },
+    {
+      title: "Analyse & Feuchtemessung",
+      body: "Systematische Messung aller betroffenen Bauteile, Fotodokumentation, schriftliche Ersteinschätzung. Der Kunde weiß noch am selben Tag, woran er ist.",
+    },
+    {
+      title: "Sanierungsplan & Freigabe",
+      body: "Klarer Maßnahmenplan mit Zeitrahmen und Kosten. Bei Versicherungsfällen: direkte Abstimmung mit der Schadenabteilung, damit der Kunde nicht zwischen den Stühlen sitzt.",
+    },
+    {
+      title: "Trocknung & Sanierung",
+      body: "Aufbau der Trocknungstechnik, laufende Überwachung, dokumentierter Trocknungsverlauf. Bei Bedarf Schimmelsanierung und Wiederherstellung.",
+    },
+    {
+      title: "Abnahme & Übergabe",
+      body: "Abschlussmessung, Abnahmeprotokoll, vollständiger digitaler Bericht an Kunde und Versicherung. Der Schaden ist erledigt — nachweisbar.",
+    },
+  ],
+  /** Kap. 12 wörtlich. */
+  pullquote:
+    "Der Kunde erlebt keinen Handwerkereinsatz. Er erlebt, wie ein Problem verschwindet.",
+} as const;
+
+// ─────────────────────────────────────────────────────────────────────
+// Vertrauen — Kap. 9 + Kap. 2
+// ─────────────────────────────────────────────────────────────────────
+
+export const trust = {
+  eyebrow: "Vertrauen",
+  h2: "Warum Kunden AlpenDry rufen",
+  /** Kap. 9 „Der Presseartikel — der Ritterschlag": Siegel-Wortlaut exakt. */
+  pressSeal: "Bekannt aus der Presse.",
+  /**
+   * TODO(freigabe): Das Pressesiegel darf laut Kap. 9 erst erscheinen, WENN der
+   * Artikel platziert ist („ab diesem Moment darf die Website das Siegel tragen").
+   * Steht daher auf `false`. Nach Erscheinen des Artikels auf `true` setzen und
+   * `pressArticleUrl` mit der Quelle füllen — ein Siegel ohne Beleg ist
+   * wettbewerbsrechtlich angreifbar (§ 5 UWG, Irreführung).
+   */
+  pressSealActive: false,
+  pressArticleUrl: "",
+  /**
+   * TODO(freigabe): Bewertungszahl und Schnitt sind PLATZHALTER.
+   * Kap. 9 beschreibt den Aufbau von Google-Bewertungen, nennt aber keine Zahlen.
+   * Vor Livegang mit den echten Werten aus dem Google-Unternehmensprofil füllen
+   * — oder `reviewsActive: false` setzen, bis Bewertungen vorliegen.
+   * Erfundene Bewertungszahlen sind irreführende Werbung.
+   */
+  reviewsActive: false,
+  reviews: {
+    rating: 0,
+    count: 0,
+    label: "Google-Bewertungen",
+    href: "",
+  },
+  /** Kap. 2 / Kap. 9 — belegte Fakten. */
+  badges: [
+    {
+      /** Jahreszahl auf Kundenwunsch 25 — siehe Hinweis bei `positioning.pillars`. */
+      title: "25 Jahre Erfahrung",
+      body: "25 Jahre Berufserfahrung am Bau — Erfahrung statt Theorie.",
+    },
+    {
+      title: "Zertifizierter Schimmelexperte",
+      body: "Schimmelsanierung fachgerecht, dokumentiert und mit Nachkontrolle.",
+    },
+    {
+      title: "24/7-Notdienst",
+      body: "Erreichbar rund um die Uhr — auch nachts, am Wochenende und an Feiertagen.",
+    },
+    {
+      title: "Eigene Technik & Fuhrpark",
+      body: "Keine Mietgeräte, keine Subunternehmer — volle Kontrolle über die Qualität.",
+    },
+  ],
+} as const;
+
+// ─────────────────────────────────────────────────────────────────────
+// FAQ — Fragen aus Kap. 8 (AEO). Antworten aus belegten Fakten abgeleitet.
+// ─────────────────────────────────────────────────────────────────────
+
+/**
+ * WICHTIG: Kap. 8 nennt die Leitfragen („Was tun bei einem Wasserschaden?",
+ * „Wer zahlt die Trocknung?"), beantwortet sie aber NICHT. Die Antworten unten
+ * sind ausschließlich aus belegten Aussagen anderer Kapitel gebaut — Quelle je
+ * Antwort annotiert. Keine Preise, keine Fristen, keine erfundenen Zusagen.
+ * Bitte fachlich prüfen und freigeben.
+ */
+export const faq = {
+  eyebrow: "Häufige Fragen",
+  h2: "Was Sie jetzt wissen müssen",
+  items: [
+    {
+      /** @freigabe — abgeleitet aus Kap. 12 Schritt 1 + 2. */
+      q: "Was tun bei einem Wasserschaden?",
+      a: "Zuerst die Wasserzufuhr stoppen und, wenn gefahrlos möglich, den Strom in den betroffenen Bereichen abschalten. Dann rufen Sie uns an — wir sind rund um die Uhr erreichbar und geben Ihnen noch am Telefon die ersten Hinweise zur Schadensbegrenzung, dazu eine verbindliche Zusage zum Eintreffen. Vor Ort stoppen wir das Wasser, sichern die betroffenen Bereiche und begrenzen Folgeschäden, noch bevor die eigentliche Sanierung beginnt.",
+    },
+    {
+      /** @freigabe — abgeleitet aus Kap. 2 + Kap. 4 „Die Versicherung zahlt". */
+      q: "Wer zahlt die Trocknung?",
+      a: "In der Regel sind die Schäden vollständig über die Versicherung abgedeckt. Wir übernehmen die komplette Kommunikation: Schadensmeldung, Dokumentation, Abstimmung mit dem Sachverständigen und die Abrechnung. Sie haben einen festen Ansprechpartner von A bis Z und müssen sich um nichts kümmern.",
+    },
+    {
+      /** @freigabe — abgeleitet aus Kap. 4 „Technische Trocknung" (wörtlich belegt). */
+      q: "Kann ich während der Trocknung in der Wohnung bleiben?",
+      a: "Ja. Wir arbeiten mit eigenen, besonders leisen Maschinen — Sie können während der Trocknung normal wohnen und arbeiten.",
+    },
+    {
+      /** @freigabe — abgeleitet aus Kap. 4 „Lecksuche & Leckortung" (wörtlich belegt). */
+      q: "Muss für die Lecksuche die Wand aufgerissen werden?",
+      a: "In der Regel nicht. Auch unsichtbare Leckschäden orten wir zerstörungsarm mit modernster Messtechnik — und beheben sie anschließend fachgerecht.",
+    },
+    {
+      /** @freigabe — abgeleitet aus Kap. 3 (wörtlich belegt). */
+      q: "In welchem Gebiet sind Sie im Einsatz?",
+      a: "Südlich von München bis Augsburg, Landsberg am Lech und zum Tegernsee — der gesamte Alpenrand mit kurzen Anfahrtswegen. Mit eigenem Fuhrpark und eigener Technik sind wir in diesem Gebiet schneller vor Ort als überregionale Anbieter.",
+    },
+    {
+      /** @freigabe — abgeleitet aus Kap. 4 „Schimmelsanierung" (wörtlich belegt). */
+      q: "Warum kommt der Schimmel immer wieder?",
+      a: "Weil die Feuchtequelle bleibt. Überstreichen beseitigt das Symptom, nicht die Ursache. Wir messen, finden die Ursache und sanieren fachgerecht durch den zertifizierten Schimmelexperten — mit Nachkontrolle.",
+    },
+  ],
+} as const;
+
+// ─────────────────────────────────────────────────────────────────────
+// Kontakt — Kap. 7
+// ─────────────────────────────────────────────────────────────────────
+
+export const contactSection = {
+  eyebrow: "Kontakt",
+  h2: "Drei Wege zu uns",
+  /** Kap. 7 wörtlich (leicht gekürzt auf Kundensicht). */
+  lead: "Das Telefon für den Akutfall, WhatsApp für den schnellen Draht, das Formular für die strukturierte Anfrage. Alle direkt, alle ohne Umwege.",
+  /** Kap. 7 wörtlich. */
+  formTitle: "Ausgefüllt in unter einer Minute",
+  formLead:
+    "Im Notfall füllt niemand zehn Felder aus. Wir fragen nur ab, was für eine schnelle Reaktion nötig ist.",
+  /** Kap. 7, Feldbeschriftungen + Begründungen wörtlich. */
+  fields: {
+    name: { label: "Name", help: "" },
+    phone: { label: "Telefonnummer", help: "Für den sofortigen Rückruf" },
+    place: { label: "Ort / Postleitzahl", help: "Für Einsatzplanung und Anfahrtszeit" },
+    damage: {
+      label: "Art des Schadens",
+      /** Kap. 7 wörtlich: „akuter Wasserschaden · Lecksuche · Schimmel · Sonstiges" */
+      options: ["Akuter Wasserschaden", "Lecksuche", "Schimmel", "Sonstiges"],
+    },
+    description: {
+      label: "Kurzbeschreibung",
+      help: "Ein Bild vom Schaden sagt mehr als jede Beschreibung",
+    },
+    photo: { label: "Foto anhängen", help: "Optional · JPG, PNG oder HEIC · max. 10 MB" },
+    consent: {
+      /** DSGVO Art. 6 Abs. 1 lit. a — Einwilligung. @freigabe (Rechtstext) */
+      label:
+        "Ich habe die Datenschutzerklärung gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu.",
+    },
+  },
+  submit: "Anfrage senden",
+  submitting: "Wird gesendet …",
+  /** @freigabe (Micro-Copy) */
+  success: "Danke — Ihre Anfrage ist bei uns. Wir melden uns umgehend zurück.",
+  error:
+    "Das hat leider nicht geklappt. Bitte rufen Sie uns direkt an — wir sind rund um die Uhr erreichbar.",
+  /** Kap. 7 „Der WhatsApp-Button" */
+  whatsapp: {
+    title: "Der direkte Draht",
+    body: "Ein Klick öffnet den Chat direkt beim persönlichen Ansprechpartner — mit vorbereiteter Nachricht. Kein Callcenter, keine Warteschleife, kein Umweg. Fotos und Videos direkt im Chat: Der Techniker sieht den Schaden, bevor er losfährt.",
+  },
+  phoneCard: {
+    title: "Notruf — rund um die Uhr",
+    body: "Im Akutfall zählt jede Minute. Ein Anruf genügt.",
+  },
+} as const;
+
+// ─────────────────────────────────────────────────────────────────────
+// Navigation & Footer
+// ─────────────────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────────────
+// Exit-Banner
+// ─────────────────────────────────────────────────────────────────────
+
+/**
+ * @freigabe — Micro-Copy. Bewusst ohne Anreiz/Rabatt: Der Business Case nennt
+ * keine solche Zusage, und eine erfundene wäre geschäftlich bindend.
+ * Greift stattdessen den belegten Kernsatz aus Kap. 2 auf.
+ */
+export const exitBanner = {
+  eyebrow: "Bevor Sie gehen",
+  title: "Wasserschaden? Jede Minute zählt.",
+  body: "Im Akutfall entscheidet die Reaktionszeit über den Folgeschaden. Wir sind rund um die Uhr erreichbar — ein Anruf genügt.",
+} as const;
+
+export const nav = [
+  { label: "Leistungen", href: "#leistungen" },
+  { label: "Einsatzgebiet", href: "#einsatzgebiet" },
+  { label: "Ablauf", href: "#ablauf" },
+  { label: "Fragen", href: "#fragen" },
+  { label: "Kontakt", href: "#kontakt" },
+] as const;
+
+export const footer = {
+  /** Kap. 1 wörtlich. */
+  tagline:
+    "AlpenDry ist der Spezialist für Wasserschadensanierung und Lecksuche am Alpenrand.",
+  legal: [
+    { label: "Impressum", href: "/impressum" },
+    { label: "Datenschutz", href: "/datenschutz" },
+    { label: "AGB", href: "/agb" },
+    { label: "Cookies", href: "/cookies" },
+  ],
+  copyright: `© ${new Date().getFullYear()} AlpenDry GmbH`,
+} as const;
