@@ -33,11 +33,11 @@ const ROTATION_END = MathUtils.degToRad(120);
  *
  * Endhub: die Wasserlinie liegt dann bei lokal -RISE_TO, die Masse steht frei
  * im Bild, der Fuß bleibt getaucht (kein schwebender Felsen).
- * Mobil deutlich weniger: die Kamera blickt dort stärker nach unten, bei
- * vollem Hub liefe die Spitze oben aus dem Bild.
+ * Im Hochformat weniger: dort ist der sichtbare Ausschnitt schmaler, bei vollem
+ * Hub liefe die Spitze oben aus dem Bild.
  */
 const RISE_FROM = 0;
-const RISE_TO = { high: 3.6, low: 1.9 } as const;
+const RISE_TO = { wide: 3.6, tall: 1.9 } as const;
 
 /** Dämpfungsstärke — höher = strafferes Folgen. */
 const LAMBDA = 3.4;
@@ -69,16 +69,24 @@ export function IcebergRig({
   const group = useRef<Group>(null);
   /** Trägt nur die Drehung des Bergs. */
   const spin = useRef<Group>(null);
-  const { viewport, invalidate } = useThree();
+  const { viewport, size, invalidate } = useThree();
+
+  /**
+   * Quer- oder Hochformat? Das ENTSCHEIDET über die Bildkomposition — nicht
+   * `quality`, das nur noch die Rechenlast beschreibt (Begründung in
+   * IcebergCanvas). Aus `size` statt aus einer Media Query: Maßgeblich ist die
+   * Fläche, die der Canvas tatsächlich bekommt.
+   */
+  const format = size.height > size.width ? "tall" : "wide";
 
   /**
    * Horizontal nach rechts, aus der Textspalte heraus.
    * Aus der Viewport-Breite in Weltmaßen abgeleitet, damit der Versatz auf
    * jedem Seitenverhältnis gleich „sitzt" statt fix in Weltmetern zu kleben.
-   * Auf Mobil steht der Berg mittig — dort läuft der Text unter ihm durch,
-   * nicht neben ihm.
+   * Im Hochformat steht der Berg mittig — dort ist keine Spalte, an der er
+   * vorbei müsste; der Text liegt darunter.
    */
-  const bergX = quality === "low" ? 0 : Math.min(viewport.width * 0.23, 3.6);
+  const bergX = format === "tall" ? 0 : Math.min(viewport.width * 0.23, 3.6);
 
   /**
    * Setzt Drehung und Hub. Gibt zurück, ob die Dämpfung noch nachschwingt —
@@ -91,7 +99,7 @@ export function IcebergRig({
 
     const e = easeInOut(MathUtils.clamp(p, 0, 1));
     const wantRotation = e * ROTATION_END;
-    const wantY = MathUtils.lerp(RISE_FROM, RISE_TO[quality], e);
+    const wantY = MathUtils.lerp(RISE_FROM, RISE_TO[format], e);
 
     if (damp) {
       s.rotation.y = MathUtils.damp(s.rotation.y, wantRotation, LAMBDA, dt);

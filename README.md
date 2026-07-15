@@ -36,10 +36,26 @@ Nicht offensichtliche Punkte, die beim Anfassen leicht kaputtgehen:
 
 - **Tailwind ist auf v3 gepinnt.** `tailwind.config.ts` ist eine verbindliche
   Vorgabe in v3-Syntax; v4 wäre CSS-first ohne Config-Datei.
-- **Der 3D-Hero lädt erst bei Interaktion.** three.js + drei + postprocessing
-  sind ≈1,1 MB und kosten beim Aufbau rund eine Sekunde Hauptthread. Wer nicht
-  scrollt, sieht das Poster (`components/hero/HeroPoster.tsx`) und lädt kein
-  WebGL. Bei `prefers-reduced-motion` wird es nie geladen.
+- **Der 3D-Hero läuft nur auf dem Desktop.** Die Bedingung steht in
+  `lib/breakpoints.ts` (`HERO_3D_QUERY`: ab 1024px, Maus, keine reduzierte
+  Bewegung) und wird von ZWEI Seiten gelesen: Tailwind macht daraus die Variante
+  `hero-3d:` für die Container-Höhe, `HeroScene` liest sie per `matchMedia` für
+  Canvas und Textblende. Das muss zusammenbleiben — die 250vh sind reine
+  Scroll-Strecke für die Kamerafahrt. Ohne Fahrt wischt man auf dem Handy
+  zweieinhalb Bildschirme durch ein Standbild. Sonst: eine Bildschirmhöhe,
+  Poster als Hintergrund, kein WebGL (gemessen 414 KB statt 767 KB).
+- **Der 3D-Hero lädt auch dort erst bei Interaktion.** three.js + drei +
+  postprocessing sind ≈1,1 MB und kosten beim Aufbau rund eine Sekunde
+  Hauptthread. Wer nicht scrollt, sieht das Poster und lädt kein WebGL.
+- **`quality` (high/low) ist reine Leistung** — dpr, Antialiasing, Bloom,
+  Polycount. Die Bildkomposition hängt am Seitenverhältnis (`Atmosphere`,
+  `IcebergRig`). Früher steuerte `quality` beides, weil „low" gleichbedeutend mit
+  „Handy" war; seit der Canvas nur noch auf dem Desktop läuft, bekäme ein
+  4-Kern-Rechner sonst die Hochformat-Komposition.
+- **Die Hero-Poster sind generiert, nicht gemalt:** `npm run poster` (bei
+  laufendem `npm start`) rendert sie aus der echten Szene. Nach jeder Änderung an
+  Palette, Kamera oder Geometrie neu erzeugen — sonst zeigt das Standbild etwas
+  anderes als der Canvas, über den es blendet.
 - **Der Canvas rendert on demand**, nicht mit 60fps. Frames entstehen nur durch
   `invalidate()` — bei Scroll und solange die Dämpfung nachschwingt. Eine
   permanente Eigenbewegung (z. B. Wellen-Drift) würde das aushebeln.

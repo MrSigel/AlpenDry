@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, useTransform, type MotionValue } from "framer-motion";
+import { motion, useTransform, type MotionValue } from "framer-motion";
 import { contact, hero, whatsappHref } from "@/lib/content";
 import { PhoneIcon, WhatsAppIcon } from "@/components/ui/Icons";
 
@@ -38,11 +38,19 @@ function piecewise(v: number, stops: number[], values: number[]): number {
  * Das h1 ist das einzige der Seite. Es wird per opacity ausgeblendet, nie per
  * display:none — es bleibt im Accessibility-Tree und für Crawler sichtbar.
  *
- * Bei `prefers-reduced-motion` entfällt die Blende: Ebene 1 steht dauerhaft,
- * Ebene 2 wird gar nicht erst gerendert.
+ * `scrollDriven` = false (mobil, Touch, reduzierte Bewegung — siehe
+ * lib/breakpoints.ts): Ohne Kamerafahrt gibt es keine zweite Ebene, zu der die
+ * Blende führen könnte. Ebene 1 steht dann dauerhaft, Ebene 2 wird nicht
+ * gerendert. Andernfalls verschwände auf dem Handy die Ansprache samt Notruf,
+ * sobald jemand ein Stück wischt — und übrig bliebe ein Standbild.
  */
-export function HeroOverlay({ progress }: { progress: MotionValue<number> }) {
-  const reduced = useReducedMotion();
+export function HeroOverlay({
+  progress,
+  scrollDriven,
+}: {
+  progress: MotionValue<number>;
+  scrollDriven: boolean;
+}) {
 
   // Ebene 1 verabschiedet sich, bevor die Wasserlinie durchs Bild wandert.
   const aboveOpacity = useTransform(progress, (v) => piecewise(v, [0, 0.26], [1, 0]));
@@ -59,7 +67,7 @@ export function HeroOverlay({ progress }: { progress: MotionValue<number> }) {
       <div className="mx-auto flex h-full w-full max-w-shell flex-col justify-end px-6 pb-24 md:px-10 md:pb-28">
         {/* ── Über Wasser ─────────────────────────────────────────── */}
         <motion.div
-          style={reduced ? undefined : { opacity: aboveOpacity, y: aboveY }}
+          style={scrollDriven ? { opacity: aboveOpacity, y: aboveY } : undefined}
           className="max-w-2xl"
         >
           <p className="eyebrow">{hero.eyebrow}</p>
@@ -102,7 +110,7 @@ export function HeroOverlay({ progress }: { progress: MotionValue<number> }) {
         </motion.div>
 
         {/* ── Unter Wasser ────────────────────────────────────────── */}
-        {!reduced && (
+        {scrollDriven && (
           <motion.div
             style={{ opacity: belowOpacity, y: belowY }}
             className="absolute inset-x-6 bottom-24 max-w-xl md:inset-x-10 md:bottom-28"

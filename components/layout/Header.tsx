@@ -43,18 +43,22 @@ export function Header() {
 
   /**
    * Beim Seitenwechsel alles schließen — sonst bleibt das Menü über der neuen
-   * Seite stehen, auch bei Zurück/Vorwärts im Browser.
+   * Seite stehen, auch bei Zurück/Vorwärts im Browser (ein onClick an jedem Link
+   * würde History-Navigation nicht erfassen).
    *
-   * react-hooks/set-state-in-effect greift hier nicht: Der Router IST das
-   * externe System, auf dessen Änderung wir hören — genau der Fall, für den
-   * Effects laut React-Doku vorgesehen sind. Ein onClick an jedem Link würde
-   * History-Navigation nicht erfassen.
+   * Bewusst KEIN Effect, sondern das React-Muster „State beim Wechsel eines
+   * Werts anpassen": Ein Effect würde die neue Seite erst mit offenem Menü
+   * zeichnen und es danach zuklappen — ein sichtbarer Doppel-Render. Der
+   * Vergleich im Render-Body korrigiert den State, bevor überhaupt etwas ins
+   * Bild kommt. React startet dann sofort neu, ohne Paint dazwischen.
+   * https://react.dev/learn/you-might-not-need-an-effect
    */
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => {
+  const [lastPath, setLastPath] = useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
     setMenuOpen(false);
     setOpenDropdown(null);
-  }, [pathname]);
+  }
 
   // Esc schließt, Klick daneben schließt das Dropdown.
   useEffect(() => {

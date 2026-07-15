@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "poster": "node scripts/render-hero-poster.mjs",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx,css,md}\""
   },

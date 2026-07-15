@@ -73,20 +73,30 @@ export function IcebergCanvas({
         alpha: false,
         powerPreference: "high-performance",
       }}
-      // Mobil steht die Kamera weiter weg und höher: der Berg kann auf einem
-      // schmalen Viewport nicht nach rechts ausweichen, also bekommt er über
-      // den tieferen Blickpunkt den freien Raum ÜBER der Textspalte.
-      camera={
-        quality === "high"
-          ? { fov: 45, near: 0.1, far: 60, position: [0, 2, 10.5] }
-          : { fov: 45, near: 0.1, far: 60, position: [0, 2.6, 12.5] }
-      }
+      /*
+       * Nur Optik — WO die Kamera steht, entscheidet Atmosphere (dort hängt es
+       * am Seitenverhältnis, das erst innerhalb des Canvas bekannt ist).
+       *
+       * Vorher hing die Kamera an `quality`, weil „low" gleichbedeutend mit
+       * „Handy" war. Seit der Canvas nur noch unter HERO_3D_QUERY läuft
+       * (Desktop, Maus), heißt „low" nur noch „schwache CPU" — ein 4-Kern-Desktop
+       * bekam dadurch die Handy-Komposition und damit ein anderes Bild als das
+       * Poster, über das er blendet: ein sichtbarer Sprung.
+       *
+       * `quality` steuert ab hier ausschließlich Leistung: dpr, Antialiasing,
+       * Bloom, Polycount.
+       */
+      camera={{ fov: 45, near: 0.1, far: 60 }}
       frameloop={frameloop}
       onCreated={({ gl }) => gl.setClearColor(palette.deep)}
     >
       <Suspense fallback={null}>
         <ReadySignal onReady={onReady} />
-        <Atmosphere lookAtY={quality === "high" ? 1.4 : -1.5} />
+        {/* Blickpunkt knapp über der Wasserlinie — der Horizont bleibt dadurch
+            im Bild. Der frühere Sonderwert für „low" (-1.5) kippte die Kamera so
+            weit nach unten, dass der Horizont herausfiel und der Berg an einer
+            harten Kante endete; im Mobil-Poster war genau das zu sehen. */}
+        <Atmosphere />
         <IcebergLighting quality={quality} />
         <IcebergRig
           quality={quality}

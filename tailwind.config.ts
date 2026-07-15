@@ -1,5 +1,7 @@
 import type { Config } from "tailwindcss";
 
+import { HERO_3D_QUERY } from "./lib/breakpoints";
+
 /**
  * AlpenDry — Design Tokens
  * ------------------------------------------------------------------
@@ -95,6 +97,18 @@ const config: Config = {
     },
 
     extend: {
+      screens: {
+        /*
+         * Nur hier läuft der scroll-getriebene 3D-Hero — Herleitung und
+         * Begründung der Bedingung stehen in lib/breakpoints.ts.
+         *
+         * Bewusst als Variante und nicht als fester Breakpoint: Die HÖHE des
+         * Hero-Containers muss ab dem ersten Byte stimmen (sonst springt das
+         * Layout nach der Hydration), das JS entscheidet nur noch über die
+         * Bewegung darin. Beide lesen dieselbe Query.
+         */
+        "hero-3d": { raw: HERO_3D_QUERY },
+      },
       letterSpacing: {
         eyebrow: "0.16em", // logo-untertitel-anmutung (WASSERSCHADENSANIERUNG)
       },

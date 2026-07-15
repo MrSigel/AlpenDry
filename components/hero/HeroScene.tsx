@@ -4,16 +4,33 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 import { useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
 
+import { HERO_3D_QUERY } from "@/lib/breakpoints";
+
 import { HeroOverlay } from "./HeroOverlay";
 import { HeroPoster } from "./HeroPoster";
 
 /**
  * Der 3D-Hero (plan.md §3, Phase B).
  *
- * Aufbau:
- *   Ein 250vh hoher Container gibt die Scroll-Strecke vor; Canvas und Overlay
- *   kleben `sticky` im Viewport. Die Bewegung entsteht aus nativem Scrollen —
- *   kein Scroll-Hijacking und kein eigener Scroll-Container.
+ * ZWEI AUSPRÄGUNGEN — Kundenwunsch, und aus demselben Grund auch technisch
+ * richtig:
+ *
+ *   Desktop (HERO_3D_QUERY, siehe lib/breakpoints.ts)
+ *     Ein 250vh hoher Container gibt die Scroll-Strecke vor; Canvas und Overlay
+ *     kleben `sticky` im Viewport. Die Bewegung entsteht aus nativem Scrollen —
+ *     kein Scroll-Hijacking und kein eigener Scroll-Container.
+ *
+ *   Mobil / Touch / reduzierte Bewegung
+ *     Genau eine Bildschirmhöhe, Standbild als Hintergrund, kein WebGL.
+ *
+ * Warum die 250vh mobil NICHT stehen bleiben dürfen: Sie sind reine
+ * Scroll-Strecke für die Kamerafahrt. Ohne die Fahrt wischt man zweieinhalb
+ * Bildschirme durch ein unbewegtes Bild, während der Text bei 26 % ausblendet —
+ * gemessen ein toter Bildschirm mit einem verlorenen Berg darin. Die Höhe hängt
+ * deshalb an derselben Bedingung wie die Animation.
+ *
+ * Die Höhe kommt aus CSS (`hero-3d:h-[250vh]`), nicht aus JS: Sie steht damit ab
+ * dem ersten Byte fest und kann nach der Hydration nicht springen.
  *
  * LADESTRATEGIE — der Grund für die drei Zustände:
  *   three.js + drei + postprocessing sind zusammen ≈1,1 MB. Würde der Canvas
@@ -77,12 +94,46 @@ function useQuality(): "high" | "low" | null {
   );
 }
 
+/**
+ * Läuft hier der scroll-getriebene Hero? Muss dieselbe Query lesen, aus der die
+ * Tailwind-Variante `hero-3d:` entsteht — sonst driften Höhe und Bewegung.
+ *
+ * Server-Snapshot `false`: Das Gerät ist beim Rendern unbekannt, und die
+ * ruhige Variante ist die sichere Annahme. Ein Desktop-Client korrigiert das
+ * bei der Hydration OHNE sichtbaren Sprung — bei progress = 0 zeigt die
+ * Scroll-Variante exakt dasselbe Bild wie die statische (Ebene 1 opacity 1,
+ * Ebene 2 opacity 0). Die Container-Höhe kommt ohnehin aus CSS.
+ */
+function subscribeToHero3d(onChange: () => void) {
+  const mq = window.matchMedia(HERO_3D_QUERY);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+}
+
+function getHero3dSnapshot(): boolean {
+  return window.matchMedia(HERO_3D_QUERY).matches;
+}
+
+function getHero3dServerSnapshot(): boolean {
+  return false;
+}
+
+function useHero3d(): boolean {
+  return useSyncExternalStore(
+    subscribeToHero3d,
+    getHero3dSnapshot,
+    getHero3dServerSnapshot,
+  );
+}
+
 export function HeroScene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
   const reducedMotion = useReducedMotion();
   const quality = useQuality();
+  /** Scroll-getriebener 3D-Hero — oder ruhiges Standbild? */
+  const hero3d = useHero3d();
 
   /** Darf der schwere WebGL-Stack geladen werden? (erst wenn der Browser Luft hat) */
   const [mayLoad, setMayLoad] = useState(false);
@@ -123,11 +174,12 @@ export function HeroScene() {
    * aufzwingen, die nur die Nummer suchen. Wer scrollt, bekommt ihn — und das
    * Poster überbrückt die Ladezeit nahtlos.
    *
-   * Bei `prefers-reduced-motion` wird gar nicht geladen (plan.md §3 fordert
-   * dort ohnehin nur ein Standbild).
+   * Außerhalb von HERO_3D_QUERY (mobil, Touch, reduzierte Bewegung) wird gar
+   * nicht erst zugehört: Dort gibt es keine Kamerafahrt, also auch keinen Grund,
+   * 1,1 MB WebGL auf eine Mobilfunkverbindung zu legen.
    */
   useEffect(() => {
-    if (reducedMotion) return;
+    if (!hero3d) return;
 
     const load = () => setMayLoad(true);
     const opts = { passive: true, once: true } as const;
@@ -145,7 +197,7 @@ export function HeroScene() {
       window.removeEventListener("pointerdown", load);
       window.removeEventListener("keydown", load);
     };
-  }, [reducedMotion]);
+  }, [hero3d]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -162,20 +214,45 @@ export function HeroScene() {
     if (inView) invalidateRef.current?.();
   });
 
-  /** Darf sich überhaupt etwas bewegen? (Nutzerpräferenz) */
+  /**
+   * Darf sich überhaupt etwas bewegen? HERO_3D_QUERY enthält
+   * `prefers-reduced-motion` bereits — das hier bleibt nur, weil der Canvas die
+   * Angabe als eigene prop führt.
+   */
   const animated = !reducedMotion;
 
-  const showCanvas = mayLoad && animated && quality !== null;
+  const showCanvas = hero3d && mayLoad && animated && quality !== null;
 
   return (
-    <div ref={containerRef} className="relative h-[250vh]">
-      {/* h-svh statt h-screen: 100vh ragt bei eingeblendeter mobiler URL-Leiste
-          unter den sichtbaren Bereich — Claim/CTAs wären abgeschnitten. */}
+    /*
+     * Die Scroll-Strecke NUR dort, wo sie auch etwas bewegt (Begründung im
+     * Kopf dieser Datei). Sonst genau eine Bildschirmhöhe.
+     *
+     * h-svh statt h-screen: 100vh ragt bei eingeblendeter mobiler URL-Leiste
+     * unter den sichtbaren Bereich — Claim/CTAs wären abgeschnitten.
+     */
+    <div ref={containerRef} className="relative h-svh hero-3d:h-[250vh]">
       <div
         ref={stageRef}
         className="sticky top-0 h-svh w-full overflow-hidden bg-ink"
       >
         <HeroPoster />
+
+        {/*
+         * Ohne Kamerafahrt ist das Standbild reiner Hintergrund — dann darf es
+         * nicht mit der Headline konkurrieren. Gemessen stand der Berg mobil
+         * mitten hinter „Wasserschaden? Wir sind da."; genau die Wirkung, die
+         * auf dem Desktop bewusst vermieden wurde, indem er nach rechts rückt.
+         * Mobil fehlt der Platz dafür, also tritt er per Abdunklung zurück.
+         *
+         * Per CSS, nicht per JS: an `!hero3d` gebunden würde die Abdunklung auf
+         * dem Desktop im ersten Frame liegen und nach der Hydration sichtbar
+         * wegblitzen.
+         */}
+        <div
+          className="absolute inset-0 bg-ink/55 hero-3d:hidden"
+          aria-hidden="true"
+        />
 
         {showCanvas && (
           <div
@@ -207,7 +284,7 @@ export function HeroScene() {
           aria-hidden="true"
         />
 
-        <HeroOverlay progress={scrollYProgress} />
+        <HeroOverlay progress={scrollYProgress} scrollDriven={hero3d} />
       </div>
     </div>
   );
