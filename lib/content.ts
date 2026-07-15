@@ -30,8 +30,12 @@ export const site = {
   /** Logo-Wortmarke: „Alpen" in snow, „Dry" in glacier. */
   wordmark: { first: "Alpen", second: "Dry" },
   subtitle: "WASSERSCHADENSANIERUNG",
-  /** Logo-Untertitel lang (Titelseite Business Case). */
-  subtitleLong: "WASSERSCHADENSANIERUNG · LECKSUCHE · ALPENLAND",
+  /**
+   * Logo-Untertitel lang. Erscheint über dem Hero-Titel und im Footer.
+   * „TROCKNUNG" auf Kundenwunsch ergänzt (Business Case nennt auf der
+   * Titelseite nur Wasserschadensanierung · Lecksuche · Alpenland).
+   */
+  subtitleLong: "WASSERSCHADENSANIERUNG · TROCKNUNG · LECKSUCHE · ALPENLAND",
   /** Claim: kursiv, glacier, unterstrichen. */
   claim: "Sauber. Trocken. Sicher.",
   url: "https://www.alpendry.de",
@@ -90,8 +94,16 @@ export const hero = {
   eyebrow: site.subtitleLong,
   /** Kap. 2 wörtlich: „Wasserschaden? Wir sind da. Jede Minute zählt." — einziges h1 der Seite. */
   h1: "Wasserschaden? Wir sind da. Jede Minute zählt.",
-  /** Trägt die regionalen Keywords. Orte aus Kap. 3. @freigabe (Zusammenzug aus Kap. 3 + 4) */
-  sub: "Wasserschadensanierung, Lecksuche und Schimmelsanierung zwischen München, Augsburg, Landsberg am Lech und dem Tegernsee. 24/7-Notdienst mit eigener Technik — in der Regel zahlt die Versicherung.",
+  /**
+   * Trägt die regionalen Keywords. Orte aus Kap. 3.
+   * @freigabe (Zusammenzug aus Kap. 3 + 4)
+   *
+   * Spricht bewusst BEIDE Zielgruppen an: „für Privatkunden und
+   * Versicherungen". Vorher endete der Satz auf „in der Regel zahlt die
+   * Versicherung" — reine Privatkundensicht, obwohl Versicherungen der
+   * Hauptauftraggeber sind.
+   */
+  sub: "Wasserschadensanierung, Trocknung, Lecksuche und Schimmelsanierung zwischen München, Augsburg, Landsberg am Lech und dem Tegernsee. 24/7-Notdienst für Privatkunden und Versicherungen — Sanierung, Dokumentation und Abrechnung aus einer Hand.",
   claim: site.claim,
   /**
    * Erscheint, wenn die Kamera unter die Wasserlinie taucht.
@@ -180,15 +192,57 @@ export const services = {
       body: "Sofortmaßnahmen zur Schadensbegrenzung, rund um die Uhr.",
     },
   ],
-  /** Kap. 4 „Eigene Technik, eigener Fuhrpark" */
+  /**
+   * Kap. 4 „Eigene Technik, eigener Fuhrpark".
+   *
+   * FAKTENKORREKTUR (Kundin): Der Business Case behauptet „keine Abhängigkeit
+   * von Subunternehmern". Tatsächlich arbeitet AlpenDry mit Partnerbetrieben —
+   * die Organisation läuft über AlpenDry, die Ausführung bei Bedarf extern.
+   * Die Marketing-Aussage war also zu absolut; die eigenen AGB (§ 3 Abs. 4)
+   * sehen den Einsatz von Fachunternehmen ausdrücklich vor. Neu formuliert,
+   * ohne das Versprechen „ein Ansprechpartner" aufzugeben — das bleibt wahr,
+   * weil die Koordination bei AlpenDry liegt.
+   */
   fleet: {
-    title: "Eigene Technik, eigener Fuhrpark",
-    body: "Kein Warten auf Mietgeräte, keine Abhängigkeit von Subunternehmern: eigenes Werkzeug, eigene Maschinen, eigener Fuhrpark. Das bedeutet schnellste Reaktionszeiten und volle Kontrolle über die Qualität — bei jedem einzelnen Einsatz.",
+    title: "Eigene Technik, eine Regie",
+    body: "Für Sofortmaßnahmen, Trocknung und Messtechnik kommen eigene Maschinen und der eigene Fuhrpark zum Einsatz — kein Warten auf Mietgeräte. Wo Spezialgewerke nötig sind, arbeiten wir mit eingespielten Partnerbetrieben. Die Organisation, die Terminplanung und die Verantwortung bleiben dabei bei uns: Sie haben einen Ansprechpartner, nicht fünf.",
   },
-  /** Kap. 4 „Die Versicherung zahlt — AlpenDry kümmert sich" */
+  /**
+   * Kap. 4 „Die Versicherung zahlt — AlpenDry kümmert sich".
+   *
+   * Zwei Adressaten, ein Abschnitt: Versicherungen sind der Hauptauftraggeber
+   * (Kundin), Privatkunden im Akutfall die zweite Zielgruppe. Der Business Case
+   * trennt beide in Kap. 3 sauber — die Website tat das bisher nicht und sprach
+   * nur Privatkunden an. `forInsurers` schließt die Lücke; alle Punkte dort
+   * sind aus Kap. 3 „Zielgruppe 1 — Versicherungen und deren Netzwerke"
+   * wörtlich belegt.
+   */
   insurance: {
     title: "Die Versicherung zahlt — AlpenDry kümmert sich",
-    body: "Der wertvollste Baustein: In der Regel sind die Schäden vollständig über die Versicherung abgedeckt. AlpenDry übernimmt die komplette Kommunikation — Schadensmeldung, Dokumentation, Abstimmung mit dem Sachverständigen, Abrechnung. Der Kunde hat einen festen Ansprechpartner von A bis Z und muss sich um nichts kümmern.",
+    body: "In der Regel sind die Schäden vollständig über die Versicherung abgedeckt. AlpenDry übernimmt die komplette Kommunikation — Schadensmeldung, Dokumentation, Abstimmung mit dem Sachverständigen, Abrechnung. Sie haben einen festen Ansprechpartner von A bis Z und müssen sich um nichts kümmern.",
+    forInsurers: {
+      eyebrow: "Für Versicherungen & Schadensteuerer",
+      title: "Ein Partner, auf den die Akte sich verlässt",
+      body: "Ein großer Teil unserer Aufträge kommt direkt von Versicherungen, Maklern und Schadensteuerern. Was Sie von uns bekommen:",
+      points: [
+        {
+          title: "Verlässlichkeit",
+          body: "Definierte Reaktionszeiten, eingehaltene Termine, ein fester Ansprechpartner.",
+        },
+        {
+          title: "Dokumentation",
+          body: "Lückenlose Messprotokolle, Fotodokumentation, digitale Berichte für die Schadenakte.",
+        },
+        {
+          title: "Transparente Kalkulation",
+          body: "Nachvollziehbare Kostenvoranschläge ohne böse Überraschungen.",
+        },
+        {
+          title: "Zufriedene Versicherungsnehmer",
+          body: "Jeder gut betreute Kunde stärkt die Bindung an die Versicherung.",
+        },
+      ],
+    },
     pullquote:
       "Weniger Stress für den Kunden. Weniger Aufwand für die Versicherung. Genau dazwischen liegt der Wert von AlpenDry.",
   },
@@ -203,17 +257,28 @@ export const region = {
   h2: "Am Alpenrand zu Hause",
   /** Kap. 3 wörtlich. */
   lead: "Südlich von München bis Augsburg, Landsberg am Lech und zum Tegernsee — der gesamte Alpenrand mit kurzen Anfahrtswegen. Mit eigenem Fuhrpark und eigener Technik ist AlpenDry in diesem Gebiet schneller vor Ort als jeder überregionale Anbieter.",
-  /** Orte aus Kap. 3 + Firmensitz. Reihenfolge = Nennung im Dokument. */
+  /**
+   * Orte aus Kap. 3 + Firmensitz. Garmisch-Partenkirchen und Füssen auf
+   * Kundenwunsch ergänzt — sie speisen auch `areaServed` im LocalBusiness-
+   * JSON-LD und damit das lokale Ranking.
+   */
   places: [
     "München",
     "Augsburg",
     "Landsberg am Lech",
     "Tegernsee",
+    "Garmisch-Partenkirchen",
+    "Füssen",
     "Murnau a. Staffelsee",
     "Alpenvorland",
   ],
   /** Kap. 1: „echte regionale Expertise — vom Staffelsee bis ins Alpenvorland." */
-  note: "Echte regionale Expertise — vom Staffelsee bis ins Alpenvorland.",
+  /**
+   * Kap. 1: „echte regionale Expertise — vom Staffelsee bis ins Alpenvorland."
+   * Garmisch-Partenkirchen und Füssen auf Kundenwunsch ergänzt — der Business
+   * Case nennt sie nicht, sie gehören aber zum Einsatzgebiet.
+   */
+  note: "Echte regionale Expertise — vom Staffelsee über Garmisch-Partenkirchen und Füssen bis ins Alpenvorland.",
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────
@@ -304,8 +369,9 @@ export const trust = {
       body: "Erreichbar rund um die Uhr — auch nachts, am Wochenende und an Feiertagen.",
     },
     {
-      title: "Eigene Technik & Fuhrpark",
-      body: "Keine Mietgeräte, keine Subunternehmer — volle Kontrolle über die Qualität.",
+      /** Siehe Faktenkorrektur bei `services.fleet` — keine Subunternehmer-Absage mehr. */
+      title: "Eigene Technik, eine Regie",
+      body: "Eigene Maschinen für Trocknung und Messtechnik. Spezialgewerke über feste Partner — organisiert und verantwortet von uns.",
     },
   ],
 } as const;
@@ -331,9 +397,14 @@ export const faq = {
       a: "Zuerst die Wasserzufuhr stoppen und, wenn gefahrlos möglich, den Strom in den betroffenen Bereichen abschalten. Dann rufen Sie uns an — wir sind rund um die Uhr erreichbar und geben Ihnen noch am Telefon die ersten Hinweise zur Schadensbegrenzung, dazu eine verbindliche Zusage zum Eintreffen. Vor Ort stoppen wir das Wasser, sichern die betroffenen Bereiche und begrenzen Folgeschäden, noch bevor die eigentliche Sanierung beginnt.",
     },
     {
-      /** @freigabe — abgeleitet aus Kap. 2 + Kap. 4 „Die Versicherung zahlt". */
+      /**
+       * @freigabe — abgeleitet aus Kap. 2 + Kap. 4 „Die Versicherung zahlt"
+       * und Kap. 3 „Zielgruppe 1".
+       * Beantwortet beide Fälle: Privatkunde mit Versicherungsschaden und
+       * Auftrag direkt vom Versicherer/Schadensteuerer. Vorher nur der erste.
+       */
       q: "Wer zahlt die Trocknung?",
-      a: "In der Regel sind die Schäden vollständig über die Versicherung abgedeckt. Wir übernehmen die komplette Kommunikation: Schadensmeldung, Dokumentation, Abstimmung mit dem Sachverständigen und die Abrechnung. Sie haben einen festen Ansprechpartner von A bis Z und müssen sich um nichts kümmern.",
+      a: "Bei einem versicherten Leitungswasserschaden übernimmt in der Regel die Gebäude- oder Hausratversicherung die Kosten — wir rechnen direkt mit ihr ab und übernehmen Schadensmeldung, Dokumentation und die Abstimmung mit dem Sachverständigen. Sie haben einen festen Ansprechpartner und müssen sich um nichts kümmern. Kommt der Auftrag direkt von einer Versicherung oder einem Schadensteuerer, rechnen wir nach deren Vorgaben ab und liefern die Dokumentation für die Schadenakte gleich mit. Ist ein Schaden nicht gedeckt, sagen wir das offen und erstellen vorab einen nachvollziehbaren Kostenvoranschlag.",
     },
     {
       /** @freigabe — abgeleitet aus Kap. 4 „Technische Trocknung" (wörtlich belegt). */

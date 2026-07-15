@@ -54,13 +54,21 @@ export function Logo({
   showSubtitle?: boolean;
 }) {
   return (
-    <span className={`inline-flex flex-col items-start ${className}`}>
-      <span className="flex items-end gap-2">
+    /**
+     * Aufbau: Bergsymbol · AlpenDry · Bergsymbol, darunter der Untertitel.
+     * Das rechte Symbol ist gespiegelt (`-scale-x-100`) — beide Gipfelgruppen
+     * neigen sich dadurch zur Wortmarke hin, statt in dieselbe Richtung zu
+     * kippen. Eine unbearbeitete Kopie sähe wie ein Duplikat aus, keine
+     * Rahmung.
+     */
+    <span className={`inline-flex flex-col items-center ${className}`}>
+      <span className="flex items-end gap-2.5">
         <AlpenDryMark className="h-6 w-auto shrink-0" />
         <span className="font-display text-xl font-semibold leading-none tracking-tight">
           <span className="text-snow">{site.wordmark.first}</span>
           <span className="text-glacier">{site.wordmark.second}</span>
         </span>
+        <AlpenDryMark className="h-6 w-auto shrink-0 -scale-x-100" />
       </span>
       {showSubtitle && (
         <span className="mt-1.5 font-mono text-[0.5rem] uppercase leading-none tracking-eyebrow text-frost-dim">
