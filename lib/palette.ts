@@ -8,9 +8,10 @@
  * Wer hier etwas ändert, ändert es auch in globals.css und tailwind.config.ts.
  */
 export const palette = {
-  ink: "#05070C",
-  abyss: "#0A0F1A",
-  deep: "#111B2E",
+  // Aufgehellt auf Kundenwunsch — Herleitung in tailwind.config.ts.
+  ink: "#0E1626",
+  abyss: "#152036",
+  deep: "#20304C",
   steel: "#2E5A8C",
   glacier: "#1E6FE8",
   signal: "#2E86FF",

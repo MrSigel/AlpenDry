@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "@/styles/globals.css";
 
 import { fontVariables } from "@/lib/fonts";
+import { palette } from "@/lib/palette";
 import { buildMetadata } from "@/lib/seo";
 import { localBusinessJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
@@ -31,7 +32,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#05070C",
+  // Muss der Grundfläche entsprechen (palette.ink) — sonst zeigt die mobile
+  // Browserleiste eine andere Farbe als die Seite darunter.
+  themeColor: palette.ink,
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,

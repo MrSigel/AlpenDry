@@ -37,9 +37,23 @@ const config: Config = {
       transparent: "transparent",
       current: "currentColor",
 
-      ink: "#05070C",
-      abyss: "#0A0F1A",
-      deep: "#111B2E",
+      /*
+       * AUFGEHELLT auf Kundenwunsch (die Grundflächen wirkten zu dunkel).
+       * Vorher: ink #05070C, abyss #0A0F1A, deep #111B2E — das war nahezu
+       * neutrales Schwarz. Die neuen Werte sind dasselbe Farbklima, nur
+       * heller und klarer blau („schwarzblau" statt schwarz).
+       *
+       * Kontraste nachgerechnet, alle WCAG-konform gegen ink:
+       *   snow 18.1 · frost 12.1 · frost-dim 7.2 · signal 5.1 · glacier 3.9
+       * (glacier trägt nur Text ab 24px — dort gilt die 3:1-Schwelle.)
+       *
+       * WICHTIG: Diese Werte stehen an DREI Stellen und müssen synchron
+       * bleiben — hier, in styles/globals.css und in lib/palette.ts (three.js
+       * kann keine CSS-Variablen lesen).
+       */
+      ink: "#0E1626",
+      abyss: "#152036",
+      deep: "#20304C",
       steel: "#2E5A8C",
       glacier: "#1E6FE8",
       signal: "#2E86FF",
@@ -48,10 +62,10 @@ const config: Config = {
 
       // Feine Abstufungen NUR aus obigen Tönen abgeleitet (Transparenz),
       // keine neuen Farbwerte:
-      "frost-dim": "rgba(201, 212, 226, 0.62)", // sekundärtext gedämpft
+      "frost-dim": "rgba(201, 212, 226, 0.75)", // fließtext — von 0.62 angehoben
       "frost-faint": "rgba(201, 212, 226, 0.14)", // hairline-linien
       "glacier-glow": "rgba(30, 111, 232, 0.28)", // dezenter akzent-schimmer
-      "ink-scrim": "rgba(5, 7, 12, 0.78)", // lesbarkeits-overlay über 3D
+      "ink-scrim": "rgba(14, 22, 38, 0.78)", // lesbarkeits-overlay über 3D
     },
 
     // Typo-Rollen (konkrete Fonts via next/font in layout.tsx zuweisen):

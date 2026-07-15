@@ -8,20 +8,25 @@
  * damit auch der 3D-Canvas (three.js) exakt dieselben Werte nutzen kann.
  */
 
+/*
+ * AUFGEHELLT auf Kundenwunsch — siehe tailwind.config.ts für die Herleitung
+ * und die nachgerechneten Kontraste. Diese Werte MÜSSEN mit
+ * tailwind.config.ts und lib/palette.ts übereinstimmen.
+ */
 :root {
-  --ink: #05070c;
-  --abyss: #0a0f1a;
-  --deep: #111b2e;
+  --ink: #0e1626;
+  --abyss: #152036;
+  --deep: #20304c;
   --steel: #2e5a8c;
   --glacier: #1e6fe8;
   --signal: #2e86ff;
   --frost: #c9d4e2;
   --snow: #ffffff;
 
-  --frost-dim: rgba(201, 212, 226, 0.62);
+  --frost-dim: rgba(201, 212, 226, 0.75);
   --frost-faint: rgba(201, 212, 226, 0.14);
   --glacier-glow: rgba(30, 111, 232, 0.28);
-  --ink-scrim: rgba(5, 7, 12, 0.78);
+  --ink-scrim: rgba(14, 22, 38, 0.78);
 }
 
 @layer base {
