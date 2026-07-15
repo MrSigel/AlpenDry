@@ -60,33 +60,6 @@ export function Services() {
         </Reveal>
       </div>
 
-      {/* Eigener Block für die zweite Zielgruppe. Versicherungen sind der
-          Hauptauftraggeber — bis hierher sprach die Seite aber nur Privatkunden
-          an. Inhalte aus Business Case Kap. 3 „Zielgruppe 1". */}
-      <Reveal className="mt-6 rounded-sm border border-hairline bg-ink p-8 md:p-10">
-        <SectionLabel>{services.insurance.forInsurers.eyebrow}</SectionLabel>
-        <h3 className="mt-6 font-display text-xl font-semibold text-snow">
-          {services.insurance.forInsurers.title}
-        </h3>
-        <p className="mt-4 max-w-prose font-body text-sm text-frost-dim">
-          {services.insurance.forInsurers.body}
-        </p>
-
-        <RevealGroup
-          as="ul"
-          className="mt-8 grid gap-px overflow-hidden rounded-sm border border-hairline bg-frost-faint sm:grid-cols-2"
-        >
-          {services.insurance.forInsurers.points.map((p) => (
-            <RevealItem key={p.title} as="li" className="bg-abyss p-6">
-              <h4 className="font-display text-base font-semibold text-snow">
-                {p.title}
-              </h4>
-              <p className="mt-2 font-body text-sm text-frost-dim">{p.body}</p>
-            </RevealItem>
-          ))}
-        </RevealGroup>
-      </Reveal>
-
       <div className="mt-16 md:mt-20">
         <CTABanner />
       </div>

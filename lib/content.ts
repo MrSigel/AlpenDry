@@ -216,39 +216,14 @@ export const services = {
   /**
    * Kap. 4 „Die Versicherung zahlt — AlpenDry kümmert sich".
    *
-   * Zwei Adressaten, ein Abschnitt: Versicherungen sind der Hauptauftraggeber
-   * (Kundin), Privatkunden im Akutfall die zweite Zielgruppe. Der Business Case
-   * trennt beide in Kap. 3 sauber — die Website tat das bisher nicht und sprach
-   * nur Privatkunden an. `forInsurers` schließt die Lücke; alle Punkte dort
-   * sind aus Kap. 3 „Zielgruppe 1 — Versicherungen und deren Netzwerke"
-   * wörtlich belegt.
+   * Adressiert die Privatkundensicht (Schaden ist gedeckt, wir wickeln ab).
+   * Die zweite Zielgruppe — Versicherungen als Hauptauftraggeber — trägt der
+   * Hero-Untertitel („für Privatkunden und Versicherungen") und die FAQ
+   * „Wer zahlt die Trocknung?", die beide Fälle beantwortet.
    */
   insurance: {
     title: "Die Versicherung zahlt — AlpenDry kümmert sich",
     body: "In der Regel sind die Schäden vollständig über die Versicherung abgedeckt. AlpenDry übernimmt die komplette Kommunikation — Schadensmeldung, Dokumentation, Abstimmung mit dem Sachverständigen, Abrechnung. Sie haben einen festen Ansprechpartner von A bis Z und müssen sich um nichts kümmern.",
-    forInsurers: {
-      eyebrow: "Für Versicherungen & Schadensteuerer",
-      title: "Ein Partner, auf den die Akte sich verlässt",
-      body: "Ein großer Teil unserer Aufträge kommt direkt von Versicherungen, Maklern und Schadensteuerern. Was Sie von uns bekommen:",
-      points: [
-        {
-          title: "Verlässlichkeit",
-          body: "Definierte Reaktionszeiten, eingehaltene Termine, ein fester Ansprechpartner.",
-        },
-        {
-          title: "Dokumentation",
-          body: "Lückenlose Messprotokolle, Fotodokumentation, digitale Berichte für die Schadenakte.",
-        },
-        {
-          title: "Transparente Kalkulation",
-          body: "Nachvollziehbare Kostenvoranschläge ohne böse Überraschungen.",
-        },
-        {
-          title: "Zufriedene Versicherungsnehmer",
-          body: "Jeder gut betreute Kunde stärkt die Bindung an die Versicherung.",
-        },
-      ],
-    },
     pullquote:
       "Weniger Stress für den Kunden. Weniger Aufwand für die Versicherung. Genau dazwischen liegt der Wert von AlpenDry.",
   },
