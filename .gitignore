@@ -52,3 +52,7 @@ AlpenDry_Business_Case.docx
 
 # Build-Artefakt
 tsconfig.tsbuildinfo
+
+# Logo-Quelldatei (Markenasset). Die abgeleitete, freigestellte Fassung
+# liegt in public/brand/mark.png und wird ausgeliefert.
+Logo.png

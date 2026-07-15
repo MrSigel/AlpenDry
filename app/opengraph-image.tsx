@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { site } from "@/lib/content";
 import { palette } from "@/lib/palette";
@@ -16,7 +18,15 @@ export const alt = `${site.legalName} — ${site.subtitle}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OgImage() {
+export default async function OgImage() {
+  /**
+   * Dieselbe Bergkette wie im Header (aus dem echten Logo freigestellt).
+   * Als data-URI eingebettet, weil next/og keine relativen Pfade auflöst —
+   * und weil eine zweite Quelle für die Marke sofort auseinanderliefe.
+   */
+  const mark = await readFile(join(process.cwd(), "public/brand/mark.png"));
+  const markSrc = `data:image/png;base64,${mark.toString("base64")}`;
+
   return new ImageResponse(
     (
       <div
@@ -30,14 +40,8 @@ export default function OgImage() {
           padding: 80,
         }}
       >
-        {/* Bergmarke — dieselbe Geometrie wie components/brand/Logo.tsx */}
-        <svg viewBox="0 0 200 116" width="150" height="87">
-          <path d="M4 112 L58 26 L112 112 Z" fill={palette.steel} />
-          <path d="M92 112 L140 44 L196 112 Z" fill={palette.steel} opacity="0.72" />
-          <path d="M58 26 L79 59 L69 66 L58 54 L47 64 L37 59 Z" fill={palette.snow} />
-          <path d="M140 44 L157 70 L148 75 L140 66 L131 74 L123 70 Z" fill={palette.snow} />
-          <path d="M150 60 L128 94 L142 94 L124 116 L152 86 L138 86 Z" fill={palette.frost} />
-        </svg>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={markSrc} alt="" width={264} height={100} />
 
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ display: "flex", fontSize: 76, fontWeight: 700, letterSpacing: -2 }}>
