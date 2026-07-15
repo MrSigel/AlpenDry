@@ -222,8 +222,17 @@ export const services = {
    * „Wer zahlt die Trocknung?", die beide Fälle beantwortet.
    */
   insurance: {
-    title: "Die Versicherung zahlt — AlpenDry kümmert sich",
-    body: "In der Regel sind die Schäden vollständig über die Versicherung abgedeckt. AlpenDry übernimmt die komplette Kommunikation — Schadensmeldung, Dokumentation, Abstimmung mit dem Sachverständigen, Abrechnung. Sie haben einen festen Ansprechpartner von A bis Z und müssen sich um nichts kümmern.",
+    /**
+     * Business Case: „Die Versicherung zahlt — AlpenDry kümmert sich".
+     * Abgeschwächt auf Kundenwunsch: Der Originaltitel verspricht absolut, was
+     * der eigene Fließtext schon relativiert („in der Regel") — und was nicht
+     * immer stimmt (Verschleiß, grobe Fahrlässigkeit, ungedeckte Fälle). Ein
+     * absolutes Zahlungsversprechen wäre als Werbeaussage angreifbar.
+     * „AlpenDry kümmert sich" entfällt im Titel, weil der Absatz es ohnehin
+     * ausführt — und der Titel sonst über drei Zeilen liefe.
+     */
+    title: "In der Regel zahlt die Versicherung",
+    body: "Bei versicherten Schäden sind die Kosten in der Regel vollständig gedeckt. AlpenDry übernimmt die komplette Kommunikation — Schadensmeldung, Dokumentation, Abstimmung mit dem Sachverständigen, Abrechnung. Sie haben einen festen Ansprechpartner von A bis Z und müssen sich um nichts kümmern. Ist ein Schaden einmal nicht gedeckt, sagen wir das offen und legen vorab einen nachvollziehbaren Kostenvoranschlag vor.",
     pullquote:
       "Weniger Stress für den Kunden. Weniger Aufwand für die Versicherung. Genau dazwischen liegt der Wert von AlpenDry.",
   },
