@@ -438,9 +438,18 @@ export const faq = {
       a: "Ja. Wir arbeiten mit eigenen, besonders leisen Maschinen — Sie können während der Trocknung normal wohnen und arbeiten.",
     },
     {
-      /** @freigabe — abgeleitet aus Kap. 4 „Lecksuche & Leckortung" (wörtlich belegt). */
+      /**
+       * @freigabe — abgeleitet aus Kap. 4 („zerstörungsarm, mit modernster
+       * Messtechnik", wörtlich belegt) und AGB § 8 (Öffnungen können nötig
+       * werden, nur im erforderlichen Umfang).
+       *
+       * Neu formuliert: Die alte Antwort begann mit „In der Regel nicht. Auch
+       * unsichtbare Leckschäden orten wir zerstörungsarm …" — die Verneinung
+       * kam als Einschub, „Auch" schloss an nichts an, und „zerstörungsarm" ist
+       * Fachsprache. Wer im Notfall liest, will zuerst ein klares Nein.
+       */
       q: "Muss für die Leckageortung die Wand aufgerissen werden?",
-      a: "In der Regel nicht. Auch unsichtbare Leckschäden orten wir zerstörungsarm mit modernster Messtechnik — und beheben sie anschließend fachgerecht.",
+      a: "Nein, in aller Regel nicht. Wir messen zuerst und finden das Leck, ohne die Wand zu öffnen — auch dann, wenn nichts zu sehen ist. Erst wenn wir wissen, wo genau es sitzt, öffnen wir gezielt diese eine Stelle. Aufstemmen auf Verdacht gibt es bei uns nicht.",
     },
     {
       /** @freigabe — abgeleitet aus Kap. 3 (wörtlich belegt). */

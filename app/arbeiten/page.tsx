@@ -99,34 +99,46 @@ export default function ArbeitenPage() {
             <RevealItem as="li" key={category.title} className="bg-ink">
               <article className="flex h-full flex-col">
                 <figure className="relative aspect-[4/3] overflow-hidden border-b border-hairline">
-                  {/* eslint-disable-next-line @next/next/no-img-element -- Die
-                      Dateien liegen bereits als WebP in genau den beiden
-                      Breiten vor, die vorkommen; next/image würde sie zur
-                      Laufzeit ein zweites Mal konvertieren. Gleiche
-                      Entscheidung wie in components/ui/Photo.tsx. */}
-                  <img
-                    src={`/arbeiten/${category.image}-400.webp`}
-                    srcSet={`/arbeiten/${category.image}-400.webp 400w, /arbeiten/${category.image}-800.webp 800w`}
-                    sizes="(min-width: 1024px) 380px, (min-width: 768px) 50vw, calc(100vw - 3rem)"
-                    width={800}
-                    height={600}
-                    alt={category.alt}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full object-cover"
-                  />
+                  {category.image ? (
+                    <>
+                      {/* eslint-disable-next-line @next/next/no-img-element -- Die
+                          Dateien liegen bereits als WebP in genau den beiden
+                          Breiten vor, die vorkommen; next/image würde sie zur
+                          Laufzeit ein zweites Mal konvertieren. Gleiche
+                          Entscheidung wie in components/ui/Photo.tsx. */}
+                      <img
+                        src={`/arbeiten/${category.image}-400.webp`}
+                        srcSet={`/arbeiten/${category.image}-400.webp 400w, /arbeiten/${category.image}-800.webp 800w`}
+                        sizes="(min-width: 1024px) 380px, (min-width: 768px) 50vw, calc(100vw - 3rem)"
+                        width={800}
+                        height={600}
+                        alt={category.alt}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover"
+                      />
 
-                  {/* Bindet das Bild an die Seitenfläche und trägt die
-                      Unterschrift — dieselbe Mechanik wie in Photo.tsx. Nötig
-                      hier besonders: Die meisten dieser Aufnahmen sind hell,
-                      ungefasst stünden sie als weiße Blöcke im dunklen Raster. */}
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-ink via-ink/70 to-transparent"
-                  />
+                      {/* Bindet das Bild an die Seitenfläche und trägt die
+                          Unterschrift — dieselbe Mechanik wie in Photo.tsx.
+                          Nötig hier besonders: Die meisten dieser Aufnahmen
+                          sind hell, ungefasst stünden sie als weiße Blöcke im
+                          dunklen Raster. */}
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-ink via-ink/70 to-transparent"
+                      />
+                    </>
+                  ) : (
+                    /* Noch kein Bild — Begründung in lib/works.ts. Eine ruhige
+                       Fläche im Markenraster statt eines grauen Kastens mit
+                       Bild-Symbol: Der liest sich wie ein Ladefehler. */
+                    <div className="h-full w-full bg-abyss" aria-hidden="true" />
+                  )}
 
                   <figcaption className="absolute inset-x-0 bottom-0 flex flex-wrap items-center gap-x-2 gap-y-1 px-5 py-4 font-mono text-2xs uppercase tracking-eyebrow">
-                    <span className="text-frost">{category.caption}</span>
+                    <span className={category.image ? "text-frost" : "text-frost-dim"}>
+                      {category.caption}
+                    </span>
                     {/*
                      * „Symbolbild" — Kennzeichnung für Stockmaterial.
                      * Herleitung in lib/works.ts: Ohne sie behauptete das Bild

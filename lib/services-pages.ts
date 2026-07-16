@@ -174,16 +174,32 @@ export const servicePages: readonly ServicePage[] = [
         ],
       },
     ],
-    /** Kap. 11, Anzeige 2 — die Symptomkette wörtlich. „Festpreis für die
-        Ortung" aus derselben Anzeige bewusst NICHT übernommen: Preisaussagen
-        sind ausgeschlossen, und ob er noch gilt, weiß nur die Kundin. */
+    /**
+     * Kap. 11, Anzeige 2 — die Symptomkette wörtlich. „Festpreis für die
+     * Ortung" aus derselben Anzeige bewusst NICHT übernommen: Preisaussagen
+     * sind ausgeschlossen, und ob er noch gilt, weiß nur die Kundin.
+     *
+     * Der Schlusssatz war „rufen Sie an, wir klären am Telefon vor, was zu
+     * messen ist" — Behördendeutsch: „klären vor" ist unüblich, und was „zu
+     * messen ist", interessiert den Kunden nicht. Ihn interessiert, dass seine
+     * Wand heil bleibt und dass er sofort jemanden erreicht. Genau das steht
+     * jetzt da, in gewöhnlichen Worten.
+     */
     ctaLine:
-      "Feuchte Flecken, steigende Wasserrechnung, muffiger Geruch? Wir orten die Ursache zerstörungsarm — rufen Sie an, wir klären am Telefon vor, was zu messen ist.",
+      "Feuchte Flecken, steigende Wasserrechnung, muffiger Geruch? Wir finden die Ursache, ohne Ihre Wand aufzureißen. Rufen Sie an — Sie erreichen uns sofort, und wir sagen Ihnen, was jetzt zu tun ist.",
     faq: [
       {
-        /** @freigabe — abgeleitet aus Kap. 4 „zerstörungsarm" (wörtlich belegt). */
+        /**
+         * @freigabe — abgeleitet aus Kap. 4 („zerstörungsarm", wörtlich belegt)
+         * und AGB § 8.
+         *
+         * Beginnt mit demselben klaren Nein wie die Fassung in content.ts —
+         * dieselbe Frage darf nicht zweimal unterschiedlich anfangen. Diese
+         * hier bleibt ausführlicher: Auf der Leistungsseite ist Platz für die
+         * Einschränkung aus den AGB, in der FAQ der Startseite nicht.
+         */
         q: "Muss für die Leckageortung die Wand aufgerissen werden?",
-        a: "In der Regel nicht. Wir orten zerstörungsarm mit moderner Messtechnik und grenzen die Stelle ein, bevor überhaupt geöffnet wird. Ist eine Freilegung nötig, erfolgt sie gezielt und nur im erforderlichen Umfang.",
+        a: "Nein, in aller Regel nicht. Wir messen zuerst und grenzen die undichte Stelle ein, bevor überhaupt etwas geöffnet wird. Ist eine Öffnung nötig, machen wir sie gezielt an der einen Stelle — und nur so groß wie nötig.",
       },
       {
         /** @freigabe — abgeleitet aus AGB § 8 (2). */

@@ -103,10 +103,32 @@ export const works = {
     {
       title: "Dokumentation",
       body: "Messprotokolle, Fotodokumentation und digitale Berichte für die Schadenakte.",
-      image: "dokumentation",
-      symbol: true,
-      alt: "Illustration: Menschen bearbeiten eine Checkliste auf einem Klemmbrett.",
-      caption: "Lückenlose Schadenakte",
+      /**
+       * OHNE BILD — bewusst.
+       *
+       * Hier lag eine Cartoon-Vektorgrafik (Comic-Figuren mit Klemmbrett, in
+       * Orange und Hellblau). Sie war das einzige Bild der Seite, das die
+       * Kundenvorgabe „muss realistisch sein" klar verfehlt hat, und mit ihren
+       * Fremdfarben das einzige Element, das nicht nach dieser Marke aussah.
+       *
+       * Kein Ersatz gefunden, der sauber wäre: Auf Wikimedia Commons existiert
+       * zu Bautrockner, Feuchtemessgerät, Wasserschaden, Leckortung und
+       * Schimmel KEIN einziges Bild unter Public Domain oder CC0 (gesucht,
+       * null Treffer). Was es gibt, ist CC BY-SA — das verlangt dauerhafte
+       * Namensnennung auf der Seite. Die vorhandenen PD-Fotos sind
+       * US-Katastrophendokumentation mit erkennbaren Personen; deren Nutzung
+       * für Werbung bräuchte deren Einwilligung (§ 22 KUG), die dort niemand
+       * mitliefert.
+       *
+       * Die ehrlichste Lösung steht ohnehin bereit: Laut Kap. 12 wird JEDER
+       * Auftrag fotografisch dokumentiert — ein echtes Messprotokoll aus der
+       * eigenen Arbeit gehört hierher und schlägt jedes Stockbild. Bis dahin
+       * eine ruhige Fläche statt eines Comics.
+       */
+      image: null,
+      symbol: false,
+      alt: "",
+      caption: "Foto folgt",
     },
   ],
 
