@@ -1,24 +1,30 @@
 /**
  * „Bisherige Arbeiten" — Seiteninhalt.
  *
- * ⚠️ NUR EIN BILD ZEIGT EINE ECHTE ARBEIT.
+ * ALLE SECHS BILDER SIND KI-GENERIERT (von der Kundin geliefert, 1408×768).
  *
- * Von den sechs gelieferten Bildern ist genau eines eine Aufnahme aus einem
- * ausgeführten Auftrag (`wasserschaden`: Vorher/Nachher eines sanierten
- * Raums). Die anderen fünf sind Stockmaterial — Studioaufnahmen, ein
- * Produktfoto und eine Vektorgrafik. Die Kundin hat bestätigt, dass sie
- * lizenziert sind; die Urheberrechtsfrage ist damit geklärt.
+ * ⚠️ OFFEN — ZWEI PUNKTE, BEIDE IM README:
  *
- * DESHALB `symbol: true` UND DIE KENNZEICHNUNG „SYMBOLBILD".
- * Ohne sie behaupteten die fünf auf einer Seite mit der Überschrift „Bisherige
- * Arbeiten", Einsätze dieses Betriebs zu zeigen — das wäre irreführende Werbung
- * (§ 5 UWG). „Symbolbild" ist die etablierte Kennzeichnung dafür und kostet
- * nichts: Die Bilder bleiben, die falsche Behauptung entfällt. Gerade gegenüber
- * Versicherungen — laut Kap. 3 die strategische Hauptzielgruppe — wäre eine
- * aufgeflogene Fake-Referenz ruinös.
+ * 1. KEINE KENNZEICHNUNG AM BILD. Auf Kundenwunsch entfernt. Der Hinweis steht
+ *    nur noch im Bildnachweis des Impressums. Zu bedenken: Art. 50 Abs. 4
+ *    KI-VO (EU 2024/1689) gilt ab 02.08.2026 und verlangt die Kennzeichnung
+ *    fotorealistischer KI-Bilder beim ersten Ansehen — ein Impressumshinweis
+ *    genügt dafür nicht. Dazu § 5 UWG: Auf einer Seite mit der Überschrift
+ *    „Bisherige Arbeiten" lesen sich unbeschriftete Bilder als eigene
+ *    Einsätze. Entscheidung der Kundin; die Kennzeichnung ist eine Zeile
+ *    (`works.symbolLabel` + das `symbol`-Feld) und jederzeit reaktivierbar.
  *
- * Das echte Bild trägt bewusst KEIN „Symbolbild", sondern benennt, was es ist.
- * Genau dieser Unterschied macht es wertvoll.
+ * 2. MARKENNAMEN. Die KI hat echte Herstellernamen auf die Geräte gerendert:
+ *    „CORROVENTA CTR 1000XT" und „TROTEC" (trocknung — in der Kachel klar
+ *    lesbar), „SEWERIN AQUAPHON" (leckageortung), „LGR 7000 XLI"
+ *    (wasserschaden). Fremde Marken in der eigenen Werbung können eine
+ *    Partnerschaft suggerieren, die es nicht gibt — und die Geräte gehören dem
+ *    Betrieb nicht.
+ *
+ * Die echte Vorher/Nachher-Aufnahme eines abgeschlossenen Auftrags liegt weiter
+ * im Projektordner (Wasserschaden.jpg), wird aber nicht mehr verwendet: Die
+ * Kachel trägt jetzt das KI-Bild. Sie war das einzige Bild, das etwas belegte —
+ * sobald echte Einsatzfotos gewünscht sind, gehört sie zurück.
  *
  * Kein Text behauptet ein konkretes Projekt, eine Anzahl, eine Dauer oder einen
  * Ort. Alles Folgende ist im Business Case belegt:
@@ -35,7 +41,7 @@
  *      abfragen.
  *   2. Anonymität. Keine Hausnummern, Klingelschilder, Kennzeichen, Personen
  *      oder Einrichtungsdetails, die eine Wohnung identifizierbar machen.
- *   Je echtes Foto ein `symbol: false` mehr — und die Seite wird stärker.
+ *   Je echtes Foto ein KI-Bild weniger — und die Seite wird stärker.
  */
 
 export const works = {
@@ -48,8 +54,13 @@ export const works = {
   metaDescription:
     "Einblicke in abgeschlossene Einsätze von AlpenDry: Wasserschadensanierung, Leckageortung, Trocknung und Schimmelsanierung am Alpenrand.",
 
-  /** Kennzeichnung für Stockmaterial. Herleitung im Dateikopf. */
-  symbolLabel: "Symbolbild",
+  /**
+   * Kennzeichnung für KI-Bilder. Wird derzeit NICHT angezeigt (Kundenwunsch,
+   * siehe Dateikopf Punkt 1) — steht hier, weil sie mit einer Zeile in
+   * app/arbeiten/page.tsx zurückkommt, sobald sie gewünscht oder ab 02.08.2026
+   * nötig ist.
+   */
+  symbolLabel: "Symbolbild · KI-generiert",
 
   /**
    * Die Kategorien entsprechen den Leistungen (Kap. 4) — so findet jedes Foto
@@ -63,72 +74,49 @@ export const works = {
       title: "Wasserschadensanierung",
       body: "Sofortmaßnahmen, Rückbau, Wiederherstellung — vom Notruf bis zur Übergabe.",
       image: "wasserschaden",
-      /** Das EINZIGE echte Einsatzfoto. Deshalb kein Symbolbild-Hinweis. */
-      symbol: false,
-      alt: "Zwei Aufnahmen desselben Raums nebeneinander: links die feuchte, aufgestemmte Wand während der Sanierung, rechts der fertig wiederhergestellte Raum mit neuem Parkett.",
-      caption: "Abgeschlossener Einsatz — vorher und nachher",
+      symbol: true,
+      alt: "Kellerraum nach einem Wasserschaden: Bautrockner und Turbolüfter stehen auf dem aufgerissenen Boden, der Wandsockel ist geöffnet.",
+      caption: "Sofortmaßnahmen im Kellerraum",
     },
     {
       title: "Leckageortung",
       body: "Zerstörungsarme Ortung mit Messtechnik: die Stelle finden, bevor geöffnet wird.",
       image: "leckageortung",
       symbol: true,
-      alt: "Aus einem kleinen Riss in einer Kupferleitung tritt Wasser unter Druck aus.",
-      caption: "Undichte Leitung",
+      alt: "Kellerraum mit Kupferleitungen und Heizungsverteiler; aus einer Leitung tropft Wasser. Davor steht ein akustisches Ortungsgerät mit Kopfhörer auf einem Transportkoffer.",
+      caption: "Akustische Ortung an der Leitung",
     },
     {
       title: "Technische Trocknung",
       body: "Aufbau der Trocknungstechnik, laufende Überwachung, dokumentierter Verlauf.",
       image: "trocknung",
       symbol: true,
-      alt: "Ein Bautrockner steht in einem leeren Raum vor einer Wand mit Feuchtigkeitsrändern.",
-      caption: "Trocknungsgerät im Einsatz",
+      alt: "Adsorptionstrockner mit gelbem Luftschlauch in einer ausgeräumten Halle, dazu mehrere Turbolüfter auf dem feuchten Betonboden.",
+      caption: "Trocknungstechnik im Aufbau",
     },
     {
       title: "Schimmelsanierung",
       body: "Ursache messen, fachgerecht sanieren, Nachkontrolle.",
       image: "schimmel",
       symbol: true,
-      alt: "Eine Fachkraft in Schutzanzug und Atemmaske behandelt eine von Schimmel befallene Wand.",
-      caption: "Sanierung mit Schutzausrüstung",
+      alt: "Von Schimmel befallene Wandecke, abgesperrt mit rotem Flatterband. Der Boden ist mit Folie ausgelegt, davor Spachtel, Bürste und ein Luftreiniger.",
+      caption: "Abgeschottet, bevor saniert wird",
     },
     {
       title: "Hochwasser-Prävention",
       body: "Außenanlagen, die Starkregen ableiten, statt ihn ins Gebäude zu lassen.",
       image: "hochwasser",
       symbol: true,
-      alt: "Gestapelte Sandsäcke halten anstehendes Wasser zurück.",
-      caption: "Schutz vor anstehendem Wasser",
+      alt: "Eine lange Sandsackbarriere mit Folienabdeckung schützt eine Ortschaft mit Fachwerkhäusern vor einem über die Ufer getretenen Fluss.",
+      caption: "Barriere gegen das Hochwasser",
     },
     {
       title: "Dokumentation",
       body: "Messprotokolle, Fotodokumentation und digitale Berichte für die Schadenakte.",
-      /**
-       * OHNE BILD — bewusst.
-       *
-       * Hier lag eine Cartoon-Vektorgrafik (Comic-Figuren mit Klemmbrett, in
-       * Orange und Hellblau). Sie war das einzige Bild der Seite, das die
-       * Kundenvorgabe „muss realistisch sein" klar verfehlt hat, und mit ihren
-       * Fremdfarben das einzige Element, das nicht nach dieser Marke aussah.
-       *
-       * Kein Ersatz gefunden, der sauber wäre: Auf Wikimedia Commons existiert
-       * zu Bautrockner, Feuchtemessgerät, Wasserschaden, Leckortung und
-       * Schimmel KEIN einziges Bild unter Public Domain oder CC0 (gesucht,
-       * null Treffer). Was es gibt, ist CC BY-SA — das verlangt dauerhafte
-       * Namensnennung auf der Seite. Die vorhandenen PD-Fotos sind
-       * US-Katastrophendokumentation mit erkennbaren Personen; deren Nutzung
-       * für Werbung bräuchte deren Einwilligung (§ 22 KUG), die dort niemand
-       * mitliefert.
-       *
-       * Die ehrlichste Lösung steht ohnehin bereit: Laut Kap. 12 wird JEDER
-       * Auftrag fotografisch dokumentiert — ein echtes Messprotokoll aus der
-       * eigenen Arbeit gehört hierher und schlägt jedes Stockbild. Bis dahin
-       * eine ruhige Fläche statt eines Comics.
-       */
-      image: null,
-      symbol: false,
-      alt: "",
-      caption: "Foto folgt",
+      image: "dokumentation",
+      symbol: true,
+      alt: "Arbeitstisch mit sortierten Unterlagen, Ordnern und Ablagekästen, dahinter ein Regal mit beschrifteten Archivkartons.",
+      caption: "Alles abgelegt und auffindbar",
     },
   ],
 
@@ -137,12 +125,14 @@ export const works = {
    * entschuldigen. Der Grund ist ein gutes Argument: Aufnahmen aus fremden
    * Wohnungen brauchen die Zustimmung der Kunden.
    *
-   * Dieser Absatz ist zugleich die textliche Absicherung zur Symbolbild-
-   * Kennzeichnung: Er sagt offen, was echt ist und was illustriert.
+   * Der letzte Satz verwies auf die Symbolbild-Kennzeichnung an den Bildern.
+   * Die ist auf Kundenwunsch entfallen — der Satz musste mit, sonst behauptete
+   * die Seite eine Kennzeichnung, die es nicht gibt. Die Aussage bleibt: Die
+   * Bilder zeigen die Art der Arbeit, keinen konkreten Auftrag.
    * @freigabe (Micro-Copy, aus Kap. 5 + Kap. 12 abgeleitet)
    */
   consent: {
     title: "Was Sie hier sehen — und was nicht",
-    body: "Wir dokumentieren jeden Einsatz: Messprotokolle, Fotos, Abschlussbericht. Bevor eine dieser Aufnahmen öffentlich wird, holen wir die Zustimmung der Kundin oder des Kunden ein und entfernen alles, was die Wohnung erkennbar macht. Deshalb wächst diese Seite langsam. Als Symbolbild gekennzeichnete Aufnahmen zeigen die Art der Arbeit, nicht einen konkreten Auftrag von uns.",
+    body: "Wir dokumentieren jeden Einsatz: Messprotokolle, Fotos, Abschlussbericht. Bevor eine dieser Aufnahmen öffentlich wird, holen wir die Zustimmung der Kundin oder des Kunden ein und entfernen alles, was die Wohnung erkennbar macht. Deshalb wächst diese Seite langsam. Die Abbildungen auf dieser Seite zeigen die Art unserer Arbeit, nicht einen konkreten Auftrag.",
   },
 } as const;

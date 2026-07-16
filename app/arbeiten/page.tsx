@@ -135,21 +135,10 @@ export default function ArbeitenPage() {
                     <div className="h-full w-full bg-abyss" aria-hidden="true" />
                   )}
 
-                  <figcaption className="absolute inset-x-0 bottom-0 flex flex-wrap items-center gap-x-2 gap-y-1 px-5 py-4 font-mono text-2xs uppercase tracking-eyebrow">
+                  <figcaption className="absolute inset-x-0 bottom-0 px-5 py-4 font-mono text-2xs uppercase tracking-eyebrow">
                     <span className={category.image ? "text-frost" : "text-frost-dim"}>
                       {category.caption}
                     </span>
-                    {/*
-                     * „Symbolbild" — Kennzeichnung für Stockmaterial.
-                     * Herleitung in lib/works.ts: Ohne sie behauptete das Bild
-                     * auf einer Seite namens „Bisherige Arbeiten", einen
-                     * eigenen Einsatz zu zeigen (§ 5 UWG). Das echte Foto trägt
-                     * die Kennzeichnung bewusst NICHT — der Unterschied ist der
-                     * Punkt.
-                     */}
-                    {category.symbol && (
-                      <span className="text-steel">· {works.symbolLabel}</span>
-                    )}
                   </figcaption>
                 </figure>
 

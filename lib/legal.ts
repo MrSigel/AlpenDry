@@ -21,7 +21,13 @@ import { contact, site } from "./content";
  *    und beide nach Einwilligung nachgerüstet werden sollen. Solange keine
  *    Mess-ID hinterlegt ist, findet keine Verarbeitung statt.
  *
- * 3. Rechtstexte sind kein Rechtsrat. Vor Livegang von fachkundiger Stelle
+ * 3. BILDNACHWEIS (Impressum): neu ergänzt, stand nicht in der Zulieferung.
+ *    Nötig geworden, weil auf „Bisherige Arbeiten" KI-Bilder stehen — ab
+ *    02.08.2026 greift dafür Art. 50 Abs. 4 KI-VO (EU 2024/1689). Die
+ *    Kennzeichnung sitzt zusätzlich an jedem Bild selbst; die Verordnung
+ *    verlangt sie beim ersten Ansehen, nicht versteckt im Impressum.
+ *
+ * 4. Rechtstexte sind kein Rechtsrat. Vor Livegang von fachkundiger Stelle
  *    prüfen lassen — insbesondere die AGB-Klauseln zu Haftung und
  *    Gerichtsstand gegenüber Verbrauchern.
  */
@@ -95,6 +101,47 @@ export const impressum = {
         {
           t: "p",
           text: "Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.",
+        },
+      ],
+    },
+    /**
+     * BILDNACHWEIS — neu.
+     *
+     * Drei Pflichten fallen hier zusammen, deshalb steht das hier und nicht
+     * verstreut:
+     *
+     * 1. Art. 50 Abs. 4 KI-VO (EU 2024/1689), anwendbar ab 02.08.2026:
+     *    Fotorealistische KI-Bilder sind als solche zu kennzeichnen. Das
+     *    geschieht bereits an jedem Bild („Symbolbild · KI-generiert",
+     *    lib/works.ts) — die Verordnung verlangt die Kennzeichnung beim ersten
+     *    Ansehen, ein Impressumshinweis allein reicht nicht. Dieser Abschnitt
+     *    ist die Ergänzung dazu, nicht der Ersatz.
+     *
+     * 2. § 5 UWG: Die Seite „Bisherige Arbeiten" darf keine fremden oder
+     *    erfundenen Referenzen als eigene ausgeben. Der Absatz sagt offen,
+     *    welches Bild echt ist und welche nicht.
+     *
+     * 3. § 13 UrhG (Urhebernennung): Das Eisberg-Rendering und die
+     *    Landschaftsfotos stammen aus dem Projekt bzw. von der Kundin — die
+     *    Herkunft gehört benannt, damit kein fremdes Werk vermutet wird.
+     *
+     * ⚠️ Zu prüfen, sobald die Markennamen auf den KI-Bildern entschieden sind
+     * (siehe lib/works.ts): Bleiben sie, gehört ein Satz zu Fremdmarken dazu.
+     */
+    {
+      h: "Bildnachweis",
+      body: [
+        {
+          t: "p",
+          text: "Die Fotos aus dem Einsatzgebiet (Alpenpanorama, See, Wasserlauf) stammen von der AlpenDry GmbH.",
+        },
+        {
+          t: "p",
+          text: 'Die Abbildungen auf der Seite „Bisherige Arbeiten" wurden mit Künstlicher Intelligenz erzeugt. Sie zeigen typische Situationen unserer Arbeit — keinen konkreten Auftrag und keine tatsächlich vorhandenen Geräte oder Räume.',
+        },
+        {
+          t: "p",
+          text: "Die dreidimensionale Bergdarstellung auf der Startseite wurde eigens für diese Website berechnet.",
         },
       ],
     },
