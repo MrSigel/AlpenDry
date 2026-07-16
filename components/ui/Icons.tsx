@@ -42,6 +42,27 @@ export function MailIcon({ className = "h-4 w-4" }: IconProps) {
 }
 
 /**
+ * Instagram — offizielles Glyph (Kamera-Umriss).
+ *
+ * Monochrom über `currentColor`, NICHT im Instagram-Verlauf (Lila→Pink→Orange).
+ * Zwei Gründe, die zusammenfallen:
+ *   1. tailwind.config.ts lässt keine Fremdfarben zu — der Verlauf brächte
+ *      gleich fünf davon mit.
+ *   2. Metas eigene Markenrichtlinien erlauben die einfarbige Wiedergabe des
+ *      Glyphs ausdrücklich, wenn der Verlauf nicht zum Umfeld passt.
+ * Gleiche Entscheidung wie beim WhatsApp-Icon darunter.
+ */
+export function InstagramIcon({ className = "h-4 w-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <rect {...stroke} x="3" y="3" width="18" height="18" rx="5" />
+      <circle {...stroke} cx="12" cy="12" r="4" />
+      <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" />
+    </svg>
+  );
+}
+
+/**
  * WhatsApp — offizielles Glyph (Sprechblase mit Hörer).
  *
  * Bewusst der originale Pfad statt einer Eigenzeichnung: eine nachgebaute

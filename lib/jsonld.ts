@@ -1,4 +1,4 @@
-import { contact, faq, region, services, site } from "./content";
+import { contact, faq, region, services, site, social } from "./content";
 
 /**
  * Strukturierte Daten (plan.md §5).
@@ -27,6 +27,13 @@ export function localBusinessJsonLd() {
     url: site.url,
     telephone: contact.phoneRaw,
     email: contact.email,
+    /**
+     * Bestätigte Profile. Google nutzt sie, um das Unternehmen als real
+     * einzuordnen und Website, Unternehmensprofil und Social Media zu
+     * derselben Einheit zu verknüpfen — ein Signal für das lokale Ranking
+     * (Business Case Kap. 8).
+     */
+    sameAs: social.map((s) => s.href),
     // Von app/opengraph-image.tsx erzeugt; app/icon.svg ist das Favicon.
     image: `${site.url}/opengraph-image`,
     logo: `${site.url}/icon.svg`,

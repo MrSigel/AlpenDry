@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { contact, footer, site } from "@/lib/content";
+import { contact, footer, site, social } from "@/lib/content";
 import { servicePages } from "@/lib/services-pages";
 import { Logo } from "@/components/brand/Logo";
-import { MailIcon, PhoneIcon } from "@/components/ui/Icons";
+import { InstagramIcon, MailIcon, PhoneIcon } from "@/components/ui/Icons";
 
 /**
  * Spaltenüberschrift. Dreimal identisch gebraucht — als Konstante, damit die
@@ -61,16 +61,25 @@ function ContactLine({
   icon: Icon,
   children,
   ariaLabel,
+  external = false,
 }: {
   href: string;
   icon: typeof PhoneIcon;
   children: React.ReactNode;
   ariaLabel?: string;
+  /**
+   * Öffnet in neuem Tab. `noopener` ist dabei Pflicht: Ohne das bekommt die
+   * Zielseite über `window.opener` Zugriff auf unseren Tab und kann ihn
+   * umleiten. Dass der Link den Tab wechselt, steht im aria-label — sonst ist
+   * es für Screenreader eine Überraschung.
+   */
+  external?: boolean;
 }) {
   return (
     <a
       href={href}
       aria-label={ariaLabel}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className="group inline-flex items-center gap-3 font-mono text-sm text-frost-dim transition-colors duration-300 ease-glide hover:text-snow"
     >
       <Icon className="h-4 w-4 shrink-0 text-glacier transition-colors duration-300 ease-glide group-hover:text-signal" />
@@ -118,11 +127,6 @@ export function Footer() {
                   <span className="text-frost">Alle Leistungen</span>
                 </ColumnLink>
               </li>
-              {/* „Bisherige Arbeiten" steht bewusst NUR hier und nicht in der
-                  Hauptnavigation: Solange die Seite Platzhalter statt Fotos
-                  zeigt, gehört sie erreichbar, aber nicht beworben. Sobald echte
-                  Aufnahmen da sind, wandert sie in die Navigation und ihr
-                  noIndex fällt (app/arbeiten/page.tsx). */}
               <li>
                 <ColumnLink href="/arbeiten">
                   <span className="text-frost">Bisherige Arbeiten</span>
@@ -152,6 +156,25 @@ export function Footer() {
                 </ContactLine>
               </div>
             </address>
+
+            {/* Social — dieselbe ContactLine wie Telefon und Mail: Es ist ein
+                weiterer Weg zum Unternehmen und soll sich auch so lesen.
+                Aus `social` (content.ts), nicht fest verdrahtet — ein zweiter
+                Kanal erscheint dadurch von selbst. */}
+            <ul className="mt-3 space-y-3">
+              {social.map((channel) => (
+                <li key={channel.href}>
+                  <ContactLine
+                    href={channel.href}
+                    icon={InstagramIcon}
+                    external
+                    ariaLabel={`${channel.label} — ${channel.handle} (öffnet in neuem Tab)`}
+                  >
+                    {channel.handle}
+                  </ContactLine>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Rechtliches */}

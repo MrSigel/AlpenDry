@@ -75,6 +75,26 @@ export const contact = {
   availability: "24/7 erreichbar — auch nachts, am Wochenende und an Feiertagen",
 } as const;
 
+/**
+ * Social Media.
+ *
+ * Als eigene Liste, nicht als Einzelfeld: Kommt ein zweiter Kanal dazu
+ * (Facebook, LinkedIn), wird er hier eingetragen und erscheint automatisch —
+ * ohne dass der Footer angefasst werden muss.
+ *
+ * Der Link speist zusätzlich `sameAs` im LocalBusiness-JSON-LD: Google nutzt
+ * bestätigte Profile, um das Unternehmen als real zu erkennen — das zahlt
+ * direkt auf das lokale Ranking ein (Business Case Kap. 8).
+ */
+export const social = [
+  {
+    label: "Instagram",
+    /** Kundenangabe. */
+    href: "https://www.instagram.com/alpendry_gmbh/",
+    handle: "@alpendry_gmbh",
+  },
+] as const;
+
 export const whatsappHref = `https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(
   contact.whatsappMessage,
 )}`;

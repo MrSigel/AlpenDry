@@ -61,3 +61,14 @@ Logo.png
 # WebP-Fassungen liegen in public/fotos/ und werden ausgeliefert — die
 # Originale gehören nicht ins öffentliche Repo.
 WhatsApp Image*.jpeg
+
+# Bildquellen für /arbeiten. Ausgeliefert werden die 4:3-WebP in
+# public/arbeiten/ (erzeugt mit sharp). Fünf davon sind lizenziertes
+# Stockmaterial — Lizenzbelege liegen bei der Kundin, die Originale gehören
+# nicht ins öffentliche Repo.
+/Wasserschaden.jpg
+/Leckageortung.webp
+/Trocknung.webp
+/Schimmel.webp
+/Hochwasser.jpg
+/Dokumentation.jpg

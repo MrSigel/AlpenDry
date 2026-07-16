@@ -17,25 +17,19 @@ import { PhoneIcon, WhatsAppIcon } from "@/components/ui/Icons";
 /**
  * Bisherige Arbeiten (/arbeiten).
  *
- * GERÜST OHNE ECHTE REFERENZEN — die Begründung steht in lib/works.ts.
+ * Zeigt jetzt Bilder statt Platzhalter — davon EINES aus einem echten Einsatz,
+ * fünf lizenziertes Stockmaterial. Letztere sind als „Symbolbild"
+ * gekennzeichnet; Herleitung in lib/works.ts.
  *
- * `noIndex: true`: Solange die Seite nur Platzhalter zeigt, gehört sie nicht in
- * den Index. Google bewertet dünne Seiten nicht neutral, sondern negativ — und
- * der Business Case (Kap. 8) stellt das Ranking der ganzen Domain in den
- * Mittelpunkt. Eine indexierte Seite, auf der „Hier erscheinen Fotos" steht,
- * arbeitet also gegen das eigene Ziel. Sobald echte Aufnahmen da sind: Zeile
- * entfernen — die Metadaten stehen schon bereit.
- *
- * Aus demselben Grund fehlt sie in der Hauptnavigation und steht stattdessen im
- * Footer: verlinkt und erreichbar, aber nicht beworben. Beides ist bewusst und
- * gehört zusammen zurückgedreht.
+ * Das frühere `noIndex` ist damit weg: Es galt der dünnen Platzhalter-Fassung,
+ * die dem Ranking der ganzen Domain geschadet hätte (Business Case Kap. 8).
+ * Die Seite trägt jetzt Inhalt und darf in den Index.
  */
 
 export const metadata: Metadata = buildMetadata({
   title: works.metaTitle,
   description: works.metaDescription,
   path: "/arbeiten",
-  noIndex: true,
 });
 
 export default function ArbeitenPage() {
@@ -104,24 +98,48 @@ export default function ArbeitenPage() {
           {works.categories.map((category) => (
             <RevealItem as="li" key={category.title} className="bg-ink">
               <article className="flex h-full flex-col">
-                {/*
-                 * Der Platzhalter. Bewusst KEIN graues Kästchen mit
-                 * Bild-Symbol: Das liest sich wie ein Ladefehler. Stattdessen
-                 * eine ruhige Fläche im Markenraster, die ehrlich sagt, was
-                 * hier hinkommt — und die später exakt das Seitenverhältnis
-                 * hat, das die Fotos bekommen (4:3, wie auf den
-                 * Leistungsseiten).
-                 */}
-                <div className="flex aspect-[4/3] items-center justify-center border-b border-hairline bg-abyss">
-                  <div className="px-6 text-center">
-                    <p className="font-mono text-2xs uppercase tracking-eyebrow text-frost-dim">
-                      {works.placeholder.label}
-                    </p>
-                    <p className="mt-2 font-mono text-2xs uppercase tracking-eyebrow text-steel">
-                      {works.placeholder.note}
-                    </p>
-                  </div>
-                </div>
+                <figure className="relative aspect-[4/3] overflow-hidden border-b border-hairline">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- Die
+                      Dateien liegen bereits als WebP in genau den beiden
+                      Breiten vor, die vorkommen; next/image würde sie zur
+                      Laufzeit ein zweites Mal konvertieren. Gleiche
+                      Entscheidung wie in components/ui/Photo.tsx. */}
+                  <img
+                    src={`/arbeiten/${category.image}-400.webp`}
+                    srcSet={`/arbeiten/${category.image}-400.webp 400w, /arbeiten/${category.image}-800.webp 800w`}
+                    sizes="(min-width: 1024px) 380px, (min-width: 768px) 50vw, calc(100vw - 3rem)"
+                    width={800}
+                    height={600}
+                    alt={category.alt}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover"
+                  />
+
+                  {/* Bindet das Bild an die Seitenfläche und trägt die
+                      Unterschrift — dieselbe Mechanik wie in Photo.tsx. Nötig
+                      hier besonders: Die meisten dieser Aufnahmen sind hell,
+                      ungefasst stünden sie als weiße Blöcke im dunklen Raster. */}
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-ink via-ink/70 to-transparent"
+                  />
+
+                  <figcaption className="absolute inset-x-0 bottom-0 flex flex-wrap items-center gap-x-2 gap-y-1 px-5 py-4 font-mono text-2xs uppercase tracking-eyebrow">
+                    <span className="text-frost">{category.caption}</span>
+                    {/*
+                     * „Symbolbild" — Kennzeichnung für Stockmaterial.
+                     * Herleitung in lib/works.ts: Ohne sie behauptete das Bild
+                     * auf einer Seite namens „Bisherige Arbeiten", einen
+                     * eigenen Einsatz zu zeigen (§ 5 UWG). Das echte Foto trägt
+                     * die Kennzeichnung bewusst NICHT — der Unterschied ist der
+                     * Punkt.
+                     */}
+                    {category.symbol && (
+                      <span className="text-steel">· {works.symbolLabel}</span>
+                    )}
+                  </figcaption>
+                </figure>
 
                 <div className="flex flex-1 flex-col p-7">
                   <h3 className="font-display text-lg font-semibold text-snow">

@@ -28,6 +28,7 @@ export const nav: readonly NavItem[] = [
       href: `/leistungen/${p.slug}`,
     })),
   },
+  { label: "Arbeiten", href: "/arbeiten" },
   { label: "Einsatzgebiet", href: "/#einsatzgebiet" },
   { label: "Ablauf", href: "/#ablauf" },
   { label: "Fragen", href: "/#fragen" },
