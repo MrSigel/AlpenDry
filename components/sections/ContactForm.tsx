@@ -19,7 +19,7 @@ const MAX_PHOTO_BYTES = 10 * 1024 * 1024; // 10 MB, siehe Foto-Hilfetext
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-export function ContactForm() {
+export function ContactForm({ headingAs: H = "h3" }: { headingAs?: "h2" | "h3" }) {
   const [status, setStatus] = useState<Status>("idle");
   const [photoError, setPhotoError] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -78,9 +78,9 @@ export function ContactForm() {
       // an den Server und der Nutzer bekam nur die generische Fehlermeldung.
       className="h-full rounded-sm border border-hairline bg-abyss p-7 md:p-8"
     >
-      <h3 className="font-display text-xl font-semibold text-snow">
+      <H className="font-display text-xl font-semibold text-snow">
         {contactSection.formTitle}
-      </h3>
+      </H>
       <p className="mt-3 font-body text-sm text-frost-dim">{contactSection.formLead}</p>
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2">

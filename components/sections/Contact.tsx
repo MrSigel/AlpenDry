@@ -1,5 +1,5 @@
 import { contact, contactSection, whatsappHref } from "@/lib/content";
-import { Section, SectionHead } from "@/components/ui/Section";
+import { Section, SectionHead, type SectionHeading } from "@/components/ui/Section";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal";
 import { ContactForm } from "./ContactForm";
@@ -9,13 +9,25 @@ import { PhoneIcon, WhatsAppIcon } from "@/components/ui/Icons";
  * Kontakt — „Drei Wege zu uns" (Business Case Kap. 7).
  * Telefon (Akutfall) · WhatsApp (schneller Draht) · Formular (strukturiert).
  */
-export function Contact() {
+export function Contact({ headingAs: H = "h2" }: SectionHeading) {
+  /**
+   * Die Karten-Überschriften wandern mit: Steht die Sektion auf ihrer eigenen
+   * Seite (H = h1), sind die Karten eine Ebene darunter (h2); auf der
+   * Startseite (H = h2) bleiben sie h3.
+   *
+   * Ohne das übersprang /kontakt die Ebene h2 — h1 direkt gefolgt von h3.
+   * Screenreader navigieren über genau diese Reihenfolge; eine Lücke lässt sie
+   * eine fehlende Überschrift vermuten. Lighthouse hat es als heading-order
+   * gemeldet (A11y 98 statt 100).
+   */
+  const Card = H === "h1" ? "h2" : "h3";
+
   return (
     <Section id="kontakt" tone="ink">
       <SectionHead>
         <Reveal>
           <SectionLabel>{contactSection.eyebrow}</SectionLabel>
-          <h2 className="mt-6 text-2xl md:text-3xl">{contactSection.h2}</h2>
+          <H className="mt-6 text-2xl md:text-3xl">{contactSection.h2}</H>
         </Reveal>
         <Reveal delay={0.05}>
           <p className="mt-6 font-body text-base text-frost md:text-lg">
@@ -36,12 +48,12 @@ export function Contact() {
                 stand hier die kleine Mono-Eyebrow — direkt neben „Ausgefüllt in
                 unter einer Minute" in der Display-Schrift. Zwei Karten
                 nebeneinander, zwei Schriften.
-                Als <h3> statt <span>: Es IST die Überschrift dieser Karte, und
-                unter dem h2 „Drei Wege zu uns" schließt sie die Gliederung
-                sauber — wie das h3 im Formular. */}
-            <h3 className="font-display text-xl font-semibold text-snow">
+                Als Überschrift statt <span>: Es IST die Überschrift dieser
+                Karte. Die Ebene liefert `Card` — sie hängt daran, ob die
+                Sektion auf der Startseite oder auf /kontakt steht. */}
+            <Card className="font-display text-xl font-semibold text-snow">
               {contactSection.phoneCard.title}
-            </h3>
+            </Card>
             {/*
              * Der Notruf als gefüllter signal-Button — exakt das Muster, das
              * Hero, Header und die Leistungsseiten schon verwenden.
@@ -85,9 +97,9 @@ export function Contact() {
                 stehen untereinander — jeder Unterschied liest sich als Fehler.
                 Nur die Button-FARBE trennt sie, und zwar mit Absicht: gefülltes
                 signal für den Notruf, Outline für den zweiten Weg. */}
-            <h3 className="font-display text-xl font-semibold text-snow">
+            <Card className="font-display text-xl font-semibold text-snow">
               {contactSection.whatsapp.title}
-            </h3>
+            </Card>
             <a
               href={whatsappHref}
               target="_blank"
@@ -106,7 +118,7 @@ export function Contact() {
 
         {/* Formular */}
         <Reveal delay={0.05} className="h-full">
-          <ContactForm />
+          <ContactForm headingAs={Card} />
         </Reveal>
       </div>
     </Section>

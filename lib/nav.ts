@@ -29,8 +29,20 @@ export const nav: readonly NavItem[] = [
     })),
   },
   { label: "Arbeiten", href: "/arbeiten" },
-  { label: "Einsatzgebiet", href: "/#einsatzgebiet" },
-  { label: "Ablauf", href: "/#ablauf" },
-  { label: "Fragen", href: "/#fragen" },
-  { label: "Kontakt", href: "/#kontakt" },
+  /*
+   * Eigene Seiten statt Anker auf die Startseite (Kundenwunsch).
+   *
+   * Vorher standen hier "/#einsatzgebiet", "/#ablauf", "/#fragen",
+   * "/#kontakt" — die Navigation sprang also innerhalb der Startseite. Jetzt
+   * trägt jeder Abschnitt eine eigene Seite; die Abschnitte selbst sind
+   * unverändert und stehen weiterhin auch auf der Startseite (Begründung in
+   * components/layout/StandalonePage.tsx).
+   *
+   * Die Anker in den Sektionen bleiben trotzdem bestehen: Alte Links auf
+   * "/#kontakt" — aus E-Mails, Anzeigen, Lesezeichen — funktionieren weiter.
+   */
+  { label: "Einsatzgebiet", href: "/einsatzgebiet" },
+  { label: "Ablauf", href: "/ablauf" },
+  { label: "Fragen", href: "/fragen" },
+  { label: "Kontakt", href: "/kontakt" },
 ];

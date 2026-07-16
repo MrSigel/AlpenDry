@@ -1,5 +1,5 @@
 import { process } from "@/lib/content";
-import { Section, SectionHead } from "@/components/ui/Section";
+import { Section, SectionHead, type SectionHeading } from "@/components/ui/Section";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { CTABanner } from "@/components/ui/CTABanner";
@@ -21,7 +21,7 @@ import { ProcessSerpentine } from "./ProcessSerpentine";
  * gäbe es sie zweimal im DOM und der Sprung aus der Navigation landete auf
  * der jeweils ausgeblendeten Variante.
  */
-export function Process() {
+export function Process({ headingAs: H = "h2" }: SectionHeading) {
   return (
     <div id="ablauf" className="scroll-mt-24 bg-abyss">
       {/* ── Desktop: Serpentine ───────────────────────────────────── */}
@@ -47,7 +47,7 @@ export function Process() {
         <SectionHead>
           <Reveal>
             <SectionLabel>{process.eyebrow}</SectionLabel>
-            <h2 className="mt-6 text-2xl md:text-3xl">{process.h2}</h2>
+            <H className="mt-6 text-2xl md:text-3xl">{process.h2}</H>
           </Reveal>
           <Reveal delay={0.05}>
             <p className="mt-6 font-body text-base text-frost md:text-lg">

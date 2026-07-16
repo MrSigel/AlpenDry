@@ -1,5 +1,5 @@
 import { faq } from "@/lib/content";
-import { Section, SectionHead } from "@/components/ui/Section";
+import { Section, SectionHead, type SectionHeading } from "@/components/ui/Section";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { ChevronIcon } from "@/components/ui/Icons";
@@ -12,13 +12,13 @@ import { CTABanner } from "@/components/ui/CTABanner";
  * Öffnen/Schließen funktionieren ohne JavaScript — robust und zugänglich.
  * Die Fragen speisen zusätzlich das FAQPage-JSON-LD (lib/jsonld.ts).
  */
-export function Faq() {
+export function Faq({ headingAs: H = "h2" }: SectionHeading) {
   return (
     <Section id="fragen" tone="abyss">
       <SectionHead>
         <Reveal>
           <SectionLabel>{faq.eyebrow}</SectionLabel>
-          <h2 className="mt-6 text-2xl md:text-3xl">{faq.h2}</h2>
+          <H className="mt-6 text-2xl md:text-3xl">{faq.h2}</H>
         </Reveal>
       </SectionHead>
 

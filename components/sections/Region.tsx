@@ -1,6 +1,6 @@
 import { region } from "@/lib/content";
 import { photos } from "@/lib/photos";
-import { Section, SectionHead } from "@/components/ui/Section";
+import { Section, SectionHead, type SectionHeading } from "@/components/ui/Section";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Photo } from "@/components/ui/Photo";
@@ -18,7 +18,7 @@ import { Photo } from "@/components/ui/Photo";
  * unter einem Foto echter Berge wäre dieselbe Aussage zweimal — die schwächere
  * geht.
  */
-export function Region() {
+export function Region({ headingAs: H = "h2" }: SectionHeading) {
   return (
     <Section id="einsatzgebiet" tone="ink">
       <div className="grid gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
@@ -26,7 +26,7 @@ export function Region() {
           <SectionHead>
             <Reveal>
               <SectionLabel>{region.eyebrow}</SectionLabel>
-              <h2 className="mt-6 text-2xl md:text-3xl">{region.h2}</h2>
+              <H className="mt-6 text-2xl md:text-3xl">{region.h2}</H>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mt-6 font-body text-base text-frost md:text-lg">
@@ -34,7 +34,21 @@ export function Region() {
               </p>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mt-5 font-display text-base italic text-glacier">
+              {/*
+               * text-xl = 24px = 18pt. glacier auf ink erreicht gemessen
+               * 3.9:1 — ab 18pt genügen WCAG 3:1, darunter wären 4.5:1
+               * nötig. Vorher stand hier text-base (16px) und verfehlte die
+               * Schwelle; auf der Startseite fiel es nie auf, weil der Satz
+               * unter der Falte liegt und beim Test noch auf opacity 0 steht
+               * (die Prüfung überspringt unsichtbare Elemente). Auf
+               * /einsatzgebiet steht er oben — und wurde prompt gemeldet.
+               *
+               * Dieselbe Fassung wie der Claim in Hero und Footer, die diese
+               * Rechnung schon länger tragen. Die Markenvorgabe schreibt
+               * glacier fest, also skaliert der Text, statt die Farbe zu
+               * brechen.
+               */}
+              <p className="mt-5 font-display text-xl italic text-glacier">
                 {region.note}
               </p>
             </Reveal>

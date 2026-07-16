@@ -1,6 +1,19 @@
 import type { ReactNode } from "react";
 
 /**
+ * Überschriftenebene einer Sektion.
+ *
+ * Dieselbe Sektion erscheint an zwei Orten: als ein Abschnitt unter vielen auf
+ * der Startseite (dort ist ihre Überschrift ein `h2` unter dem Hero-`h1`) und
+ * als eigene Seite (dort IST sie die Hauptüberschrift, also `h1`).
+ *
+ * Ohne diesen Schalter hätte die eigene Seite entweder gar kein h1 — schlecht
+ * für Google und für Screenreader, die daran die Seite benennen — oder ein
+ * zusätzliches h1 über einem h2 mit demselben Wortlaut.
+ */
+export type SectionHeading = { headingAs?: "h1" | "h2" };
+
+/**
  * Sektions-Rahmen — hält den vertikalen Rhythmus (spacing.section / section-sm)
  * und die Shell-Breite (maxWidth.shell) an einer einzigen Stelle.
  *
