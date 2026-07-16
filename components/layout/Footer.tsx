@@ -118,6 +118,16 @@ export function Footer() {
                   <span className="text-frost">Alle Leistungen</span>
                 </ColumnLink>
               </li>
+              {/* „Bisherige Arbeiten" steht bewusst NUR hier und nicht in der
+                  Hauptnavigation: Solange die Seite Platzhalter statt Fotos
+                  zeigt, gehört sie erreichbar, aber nicht beworben. Sobald echte
+                  Aufnahmen da sind, wandert sie in die Navigation und ihr
+                  noIndex fällt (app/arbeiten/page.tsx). */}
+              <li>
+                <ColumnLink href="/arbeiten">
+                  <span className="text-frost">Bisherige Arbeiten</span>
+                </ColumnLink>
+              </li>
             </ul>
           </div>
 
