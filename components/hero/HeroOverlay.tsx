@@ -56,7 +56,20 @@ export function HeroOverlay({
   const aboveOpacity = useTransform(progress, (v) => piecewise(v, [0, 0.26], [1, 0]));
   const aboveY = useTransform(progress, (v) => piecewise(v, [0, 0.26], [0, -28]));
 
-  // Ebene 2 kommt erst, wenn die Kamera wirklich unten ist.
+  /*
+   * Ebene 2 — auf Höhe der Wasserlinie.
+   *
+   * Schließt die Lücke, in der vorher nur der Berg stand: Ebene 1 ist bei 26 %
+   * weg, Ebene 3 kommt erst ab 52 %. Sie übernimmt bei 27 %, hält und ist bei
+   * 53 % wieder draußen — die Überlappung mit Ebene 3 bleibt so klein, dass nie
+   * zwei Aussagen gleichzeitig lesbar sind.
+   */
+  const midOpacity = useTransform(progress, (v) =>
+    piecewise(v, [0.27, 0.37, 0.45, 0.53], [0, 1, 1, 0]),
+  );
+  const midY = useTransform(progress, (v) => piecewise(v, [0.27, 0.37], [20, 0]));
+
+  // Ebene 3 kommt erst, wenn die Kamera wirklich unten ist.
   const belowOpacity = useTransform(progress, (v) =>
     piecewise(v, [0.52, 0.72, 0.96, 1], [0, 1, 1, 0.9]),
   );
@@ -108,6 +121,22 @@ export function HeroOverlay({
             </a>
           </div>
         </motion.div>
+
+        {/* ── An der Wasserlinie ──────────────────────────────────── */}
+        {scrollDriven && (
+          <motion.div
+            style={{ opacity: midOpacity, y: midY }}
+            className="absolute inset-x-6 bottom-24 max-w-xl md:inset-x-10 md:bottom-28"
+            aria-hidden="true"
+          >
+            <p className="font-display text-2xl text-snow md:text-3xl">
+              {hero.waterline.line}
+            </p>
+            <p className="mt-4 max-w-prose font-body text-base text-frost">
+              {hero.waterline.sub}
+            </p>
+          </motion.div>
+        )}
 
         {/* ── Unter Wasser ────────────────────────────────────────── */}
         {scrollDriven && (

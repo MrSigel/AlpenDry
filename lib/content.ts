@@ -112,6 +112,22 @@ export const hero = {
   sub: "Wasserschadensanierung, Trocknung, Leckageortung und Schimmelsanierung zwischen München, Augsburg, Landsberg am Lech und dem Tegernsee. 24/7-Notdienst für Privatkunden und Versicherungen — Sanierung, Dokumentation und Abrechnung aus einer Hand.",
   claim: site.claim,
   /**
+   * Auf Höhe der Wasserlinie — zwischen Ebene 1 und der Unterwasser-Ebene.
+   *
+   * Füllt die Strecke, auf der vorher NUR der Berg stand: Ebene 1 war bei 26 %
+   * ausgeblendet, die Unterwasser-Ebene kam erst ab 52 %. Dazwischen lag ein
+   * halber Bildschirm ohne Aussage.
+   *
+   * Kap. 4 wörtlich („Alles aus einer Hand" / „AlpenDry deckt die gesamte Kette
+   * ab — vom ersten Notruf bis zur fertigen Wiederherstellung. Ein Anruf, ein
+   * Ansprechpartner"). Passt auf die Kamerafahrt: oben der akute Schaden, an
+   * der Wasserlinie die ganze Kette, darunter das volle Spektrum.
+   */
+  waterline: {
+    line: "Alles aus einer Hand.",
+    sub: "Vom ersten Notruf bis zur fertigen Wiederherstellung. Ein Anruf, ein Ansprechpartner.",
+  },
+  /**
    * Erscheint, wenn die Kamera unter die Wasserlinie taucht.
    * Beide Sätze aus Kap. 2 wörtlich (dort im Fließtext zusammenhängend).
    * Zahlt die Metapher ein: über Wasser die sichtbare Leistung,
