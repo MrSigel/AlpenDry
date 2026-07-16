@@ -24,8 +24,14 @@ export const metadata: Metadata = buildMetadata({
 
 export default function ProcessPage() {
   return (
-    <StandalonePage title={process.h2} path="/ablauf">
-      <Process headingAs="h1" />
+    <StandalonePage
+      eyebrow={process.eyebrow}
+      title={process.h2}
+      lead={process.lead}
+      crumb="Ablauf"
+      path="/ablauf"
+    >
+      <Process standalone />
     </StandalonePage>
   );
 }

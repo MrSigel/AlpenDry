@@ -1,5 +1,5 @@
 import { process } from "@/lib/content";
-import { Section, SectionHead, type SectionHeading } from "@/components/ui/Section";
+import { Section, SectionHead, type SectionVariant } from "@/components/ui/Section";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { CTABanner } from "@/components/ui/CTABanner";
@@ -21,12 +21,12 @@ import { ProcessSerpentine } from "./ProcessSerpentine";
  * gäbe es sie zweimal im DOM und der Sprung aus der Navigation landete auf
  * der jeweils ausgeblendeten Variante.
  */
-export function Process({ headingAs: H = "h2" }: SectionHeading) {
+export function Process({ standalone = false }: SectionVariant) {
   return (
     <div id="ablauf" className="scroll-mt-24 bg-abyss">
       {/* ── Desktop: Serpentine ───────────────────────────────────── */}
       <div className="hidden lg:block">
-        <ProcessSerpentine />
+        <ProcessSerpentine standalone={standalone} />
 
         {/* Steht nach der Scroll-Strecke, also erst wenn die Schlange
             durchlaufen ist. */}
@@ -36,27 +36,34 @@ export function Process({ headingAs: H = "h2" }: SectionHeading) {
               {process.pullquote}
             </p>
           </Reveal>
-          <div className="mt-16 md:mt-20">
-            <CTABanner />
-          </div>
+          {/* Auf der eigenen Seite liefert das Seitengerüst den Abschluss-Banner
+              — hier stünde er sonst ein zweites Mal. */}
+          {!standalone && (
+            <div className="mt-16 md:mt-20">
+              <CTABanner />
+            </div>
+          )}
         </div>
       </div>
 
       {/* ── Mobil: vertikaler Stepper ─────────────────────────────── */}
       <Section tone="abyss" className="lg:hidden">
-        <SectionHead>
-          <Reveal>
-            <SectionLabel>{process.eyebrow}</SectionLabel>
-            <H className="mt-6 text-2xl md:text-3xl">{process.h2}</H>
-          </Reveal>
-          <Reveal delay={0.05}>
-            <p className="mt-6 font-body text-base text-frost md:text-lg">
-              {process.lead}
-            </p>
-          </Reveal>
-        </SectionHead>
+        {/* Auf der eigenen Seite trägt der Hero diesen Kopf — siehe SectionVariant. */}
+        {!standalone && (
+          <SectionHead>
+            <Reveal>
+              <SectionLabel>{process.eyebrow}</SectionLabel>
+              <h2 className="mt-6 text-2xl md:text-3xl">{process.h2}</h2>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <p className="mt-6 font-body text-base text-frost md:text-lg">
+                {process.lead}
+              </p>
+            </Reveal>
+          </SectionHead>
+        )}
 
-        <RevealGroup className="mt-16 md:mt-20">
+        <RevealGroup className={standalone ? "" : "mt-16 md:mt-20"}>
           <ol className="relative space-y-10 md:space-y-12">
             {/* durchgehende Zeitachse */}
             <span

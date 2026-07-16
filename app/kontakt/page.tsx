@@ -24,8 +24,14 @@ export const metadata: Metadata = buildMetadata({
 
 export default function ContactPage() {
   return (
-    <StandalonePage title={contactSection.h2} path="/kontakt">
-      <Contact headingAs="h1" />
+    <StandalonePage
+      eyebrow={contactSection.eyebrow}
+      title={contactSection.h2}
+      lead={contactSection.lead}
+      crumb="Kontakt"
+      path="/kontakt"
+    >
+      <Contact standalone />
     </StandalonePage>
   );
 }

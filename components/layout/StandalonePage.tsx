@@ -1,10 +1,13 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 
+import { contact, whatsappHref } from "@/lib/content";
 import { Section } from "@/components/ui/Section";
+import { SectionLabel } from "@/components/ui/SectionLabel";
 import { CTABanner } from "@/components/ui/CTABanner";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { StickyCTASpacer } from "@/components/layout/StickyCTA";
+import { PhoneIcon, WhatsAppIcon } from "@/components/ui/Icons";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
 
 /**
@@ -28,19 +31,36 @@ import { breadcrumbJsonLd } from "@/lib/jsonld";
  * Übersichtsseite hat, keine Kopie.
  */
 export function StandalonePage({
+  eyebrow,
   title,
+  lead,
+  crumb,
   path,
   children,
 }: {
-  /** Sichtbarer Name in der Brotkrume + in der BreadcrumbList. */
+  /** Kleines Label über der Überschrift — die Eyebrow der Sektion. */
+  eyebrow: string;
+  /** Das h1 der Seite — die Überschrift, die sonst die Sektion selbst trägt. */
   title: string;
+  /** Ein Satz darunter. Der Lead der Sektion; Faq hat keinen. */
+  lead?: string;
+  /** Kurzform für die Brotkrume — das h1 ist dafür oft zu lang. */
+  crumb: string;
   path: string;
   children: ReactNode;
 }) {
   return (
     <>
-      <div className="border-b border-hairline bg-abyss">
-        <div className="mx-auto w-full max-w-shell px-6 pb-8 pt-32 md:px-10 md:pt-40">
+      {/* ── Hero ─────────────────────────────────────────────────────
+          Gleicher Aufbau wie auf den Leistungsseiten und /arbeiten:
+          Brotkrume, Eyebrow, h1, Lead, Notruf + WhatsApp. Ohne ihn fielen
+          diese vier Seiten aus dem Muster — sie begannen direkt mit dem
+          Abschnitt und hatten als einzige keinen Einstieg und keinen CTA
+          im ersten Sichtfeld (Business Case Kap. 6: „Im ersten Sichtfeld —
+          Notrufnummer und WhatsApp-Button ohne Scrollen sichtbar, auf jeder
+          Unterseite"). */}
+      <header className="border-b border-hairline bg-abyss">
+        <div className="mx-auto w-full max-w-shell px-6 pb-16 pt-36 md:px-10 md:pb-20 md:pt-44">
           {/* Einzeilig — Begründung wie in leistungen/[slug]: Die Mono-Schrift
               lädt nachrangig; ein Umbruch, der beim Font-Swap zurückspringt,
               schöbe die ganze Seite. */}
@@ -52,11 +72,43 @@ export function StandalonePage({
                 </Link>
               </li>
               <li aria-hidden="true">·</li>
-              <li className="text-frost">{title}</li>
+              <li className="text-frost">{crumb}</li>
             </ol>
           </nav>
+
+          <div className="mt-8">
+            <SectionLabel>{eyebrow}</SectionLabel>
+          </div>
+          <h1 className="mt-6 max-w-3xl text-3xl md:text-4xl lg:text-5xl">
+            {title}
+          </h1>
+          {lead && (
+            <p className="mt-6 max-w-prose font-body text-base text-frost md:text-lg">
+              {lead}
+            </p>
+          )}
+
+          <div className="mt-9 flex flex-wrap items-center gap-3">
+            <a
+              href={contact.phoneHref}
+              className="inline-flex items-center gap-2.5 rounded-sm bg-signal px-6 py-4 font-display text-sm font-semibold text-ink transition-colors duration-300 ease-glide hover:bg-glacier"
+              aria-label={`Notruf ${contact.phone} — rund um die Uhr erreichbar`}
+            >
+              <PhoneIcon className="h-4 w-4" />
+              <span className="font-mono">{contact.phone}</span>
+            </a>
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2.5 rounded-sm border border-hairline px-6 py-4 font-display text-sm font-semibold text-snow transition-all duration-300 ease-glide hover:border-glacier hover:bg-glacier-glow"
+            >
+              <WhatsAppIcon className="h-4 w-4 text-glacier" />
+              WhatsApp schreiben
+            </a>
+          </div>
         </div>
-      </div>
+      </header>
 
       {children}
 
@@ -70,7 +122,7 @@ export function StandalonePage({
         data={[
           breadcrumbJsonLd([
             { name: "Start", path: "/" },
-            { name: title, path },
+            { name: crumb, path },
           ]),
         ]}
       />

@@ -26,8 +26,13 @@ export const metadata: Metadata = buildMetadata({
 
 export default function FaqPage() {
   return (
-    <StandalonePage title={faq.h2} path="/fragen">
-      <Faq headingAs="h1" />
+    <StandalonePage
+      eyebrow={faq.eyebrow}
+      title={faq.h2}
+      crumb="Fragen"
+      path="/fragen"
+    >
+      <Faq standalone />
       {/* Die FAQ-Rich-Snippets gehoeren auf DIESE Seite: Sie ist die Antwort
           auf die Fragen, nicht die Startseite, auf der sie nur ein Abschnitt
           unter vielen sind. */}

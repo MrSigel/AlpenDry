@@ -1,17 +1,22 @@
 import type { ReactNode } from "react";
 
 /**
- * Überschriftenebene einer Sektion.
+ * Steht diese Sektion auf ihrer eigenen Seite?
  *
- * Dieselbe Sektion erscheint an zwei Orten: als ein Abschnitt unter vielen auf
- * der Startseite (dort ist ihre Überschrift ein `h2` unter dem Hero-`h1`) und
- * als eigene Seite (dort IST sie die Hauptüberschrift, also `h1`).
+ * Dieselbe Sektion erscheint an zwei Orten:
+ *   Startseite — ein Abschnitt unter vielen. Er bringt seinen eigenen Kopf mit
+ *     (Eyebrow + h2 + Lead), weil ihn sonst nichts einleitet.
+ *   Eigene Seite (/ablauf, /kontakt, …) — dort trägt der Seiten-Hero diesen
+ *     Kopf: als h1, mit Brotkrume und Notruf-Buttons, genau wie auf den
+ *     Leistungsseiten. Die Sektion liefert dann NUR noch ihren Inhalt.
  *
- * Ohne diesen Schalter hätte die eigene Seite entweder gar kein h1 — schlecht
- * für Google und für Screenreader, die daran die Seite benennen — oder ein
- * zusätzliches h1 über einem h2 mit demselben Wortlaut.
+ * Ohne diesen Schalter stünde derselbe Text zweimal untereinander — einmal im
+ * Hero, einmal im Abschnittskopf.
+ *
+ * `standalone` schaltet zusätzlich die Ebene der Unterüberschriften eine Stufe
+ * höher: Unter dem Hero-h1 wären die Karten sonst h3 und übersprängen h2.
  */
-export type SectionHeading = { headingAs?: "h1" | "h2" };
+export type SectionVariant = { standalone?: boolean };
 
 /**
  * Sektions-Rahmen — hält den vertikalen Rhythmus (spacing.section / section-sm)

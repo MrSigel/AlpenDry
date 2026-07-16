@@ -1,5 +1,5 @@
 import { faq } from "@/lib/content";
-import { Section, SectionHead, type SectionHeading } from "@/components/ui/Section";
+import { Section, SectionHead, type SectionVariant } from "@/components/ui/Section";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { ChevronIcon } from "@/components/ui/Icons";
@@ -12,17 +12,22 @@ import { CTABanner } from "@/components/ui/CTABanner";
  * Öffnen/Schließen funktionieren ohne JavaScript — robust und zugänglich.
  * Die Fragen speisen zusätzlich das FAQPage-JSON-LD (lib/jsonld.ts).
  */
-export function Faq({ headingAs: H = "h2" }: SectionHeading) {
+export function Faq({ standalone = false }: SectionVariant) {
   return (
     <Section id="fragen" tone="abyss">
-      <SectionHead>
-        <Reveal>
-          <SectionLabel>{faq.eyebrow}</SectionLabel>
-          <H className="mt-6 text-2xl md:text-3xl">{faq.h2}</H>
-        </Reveal>
-      </SectionHead>
+      {/* Auf der eigenen Seite traegt der Hero diesen Kopf — siehe SectionVariant. */}
+      {!standalone && (
+        <SectionHead>
+          <Reveal>
+            <SectionLabel>{faq.eyebrow}</SectionLabel>
+            <h2 className="mt-6 text-2xl md:text-3xl">{faq.h2}</h2>
+          </Reveal>
+        </SectionHead>
+      )}
 
-      <RevealGroup className="mx-auto mt-14 max-w-3xl md:mt-16">
+      <RevealGroup
+        className={`mx-auto max-w-3xl ${standalone ? "" : "mt-14 md:mt-16"}`}
+      >
         <div className="divide-y divide-hairline border-y border-hairline">
           {faq.items.map((item) => (
             <RevealItem key={item.q}>
@@ -42,9 +47,13 @@ export function Faq({ headingAs: H = "h2" }: SectionHeading) {
         </div>
       </RevealGroup>
 
-      <div className="mx-auto mt-16 max-w-3xl md:mt-20">
-        <CTABanner />
-      </div>
+      {/* Auf der eigenen Seite liefert das Seitengerüst den Abschluss-Banner —
+          hier stünde er sonst ein zweites Mal. */}
+      {!standalone && (
+        <div className="mx-auto mt-16 max-w-3xl md:mt-20">
+          <CTABanner />
+        </div>
+      )}
     </Section>
   );
 }

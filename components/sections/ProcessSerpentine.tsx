@@ -9,6 +9,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { process } from "@/lib/content";
+import type { SectionVariant } from "@/components/ui/Section";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 
 /**
@@ -55,7 +56,7 @@ const STRAIGHT = 720;
 /** Die Linie ist etwas vor Scroll-Ende fertig, damit der letzte Text lesbar bleibt. */
 const DRAW_UNTIL = 0.88;
 
-export function ProcessSerpentine() {
+export function ProcessSerpentine({ standalone = false }: SectionVariant) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
   const reduced = useReducedMotion();
@@ -126,10 +127,14 @@ export function ProcessSerpentine() {
         }
       >
         <div className="mx-auto w-full max-w-shell px-6 md:px-10">
-          <header className="max-w-prose">
-            <SectionLabel>{process.eyebrow}</SectionLabel>
-            <h2 className="mt-6 text-2xl md:text-3xl">{process.h2}</h2>
-          </header>
+          {/* Auf der eigenen Seite trägt der Hero diesen Kopf — siehe
+              SectionVariant. */}
+          {!standalone && (
+            <header className="max-w-prose">
+              <SectionLabel>{process.eyebrow}</SectionLabel>
+              <h2 className="mt-6 text-2xl md:text-3xl">{process.h2}</h2>
+            </header>
+          )}
 
           {/* Die Schlange zeigt immer nur die aktive Beschreibung — als
               Vorlesetext wäre das lückenhaft. Sie ist deshalb rein visuell;

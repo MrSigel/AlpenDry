@@ -24,8 +24,14 @@ export const metadata: Metadata = buildMetadata({
 
 export default function RegionPage() {
   return (
-    <StandalonePage title={region.h2} path="/einsatzgebiet">
-      <Region headingAs="h1" />
+    <StandalonePage
+      eyebrow={region.eyebrow}
+      title={region.h2}
+      lead={region.lead}
+      crumb="Einsatzgebiet"
+      path="/einsatzgebiet"
+    >
+      <Region standalone />
     </StandalonePage>
   );
 }

@@ -1,5 +1,5 @@
 import { contact, contactSection, whatsappHref } from "@/lib/content";
-import { Section, SectionHead, type SectionHeading } from "@/components/ui/Section";
+import { Section, SectionHead, type SectionVariant } from "@/components/ui/Section";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal";
 import { ContactForm } from "./ContactForm";
@@ -9,37 +9,44 @@ import { PhoneIcon, WhatsAppIcon } from "@/components/ui/Icons";
  * Kontakt — „Drei Wege zu uns" (Business Case Kap. 7).
  * Telefon (Akutfall) · WhatsApp (schneller Draht) · Formular (strukturiert).
  */
-export function Contact({ headingAs: H = "h2" }: SectionHeading) {
+export function Contact({ standalone = false }: SectionVariant) {
   /**
-   * Die Karten-Überschriften wandern mit: Steht die Sektion auf ihrer eigenen
-   * Seite (H = h1), sind die Karten eine Ebene darunter (h2); auf der
-   * Startseite (H = h2) bleiben sie h3.
+   * Die Karten-Überschriften wandern mit: Auf der eigenen Seite steht darüber
+   * das Hero-h1, die Karten sind dann h2. Auf der Startseite steht darüber das
+   * h2 der Sektion, die Karten bleiben h3.
    *
    * Ohne das übersprang /kontakt die Ebene h2 — h1 direkt gefolgt von h3.
    * Screenreader navigieren über genau diese Reihenfolge; eine Lücke lässt sie
    * eine fehlende Überschrift vermuten. Lighthouse hat es als heading-order
    * gemeldet (A11y 98 statt 100).
    */
-  const Card = H === "h1" ? "h2" : "h3";
+  const Card = standalone ? "h2" : "h3";
 
   return (
     <Section id="kontakt" tone="ink">
-      <SectionHead>
-        <Reveal>
-          <SectionLabel>{contactSection.eyebrow}</SectionLabel>
-          <H className="mt-6 text-2xl md:text-3xl">{contactSection.h2}</H>
-        </Reveal>
-        <Reveal delay={0.05}>
-          <p className="mt-6 font-body text-base text-frost md:text-lg">
-            {contactSection.lead}
-          </p>
-        </Reveal>
-      </SectionHead>
+      {/* Auf der eigenen Seite trägt der Hero diesen Kopf — siehe SectionVariant. */}
+      {!standalone && (
+        <SectionHead>
+          <Reveal>
+            <SectionLabel>{contactSection.eyebrow}</SectionLabel>
+            <h2 className="mt-6 text-2xl md:text-3xl">{contactSection.h2}</h2>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <p className="mt-6 font-body text-base text-frost md:text-lg">
+              {contactSection.lead}
+            </p>
+          </Reveal>
+        </SectionHead>
+      )}
 
       {/* Zwei gleich breite Spalten. `items-stretch` (Grid-Default) gibt beiden
           dieselbe Höhe; links teilen sich die Karten über `flex-1` die Höhe des
           Formulars, sodass die Spalten oben UND unten bündig abschließen. */}
-      <div className="mt-14 grid items-stretch gap-6 lg:grid-cols-2 lg:gap-6">
+      <div
+        className={`grid items-stretch gap-6 lg:grid-cols-2 lg:gap-6 ${
+          standalone ? "" : "mt-14"
+        }`}
+      >
         {/* Direktkontakt: Telefon + WhatsApp */}
         <div className="flex flex-col gap-6">
           <Reveal className="flex flex-1 flex-col justify-center rounded-sm border border-hairline bg-abyss p-7">

@@ -1,6 +1,6 @@
 import { region } from "@/lib/content";
 import { photos } from "@/lib/photos";
-import { Section, SectionHead, type SectionHeading } from "@/components/ui/Section";
+import { Section, SectionHead, type SectionVariant } from "@/components/ui/Section";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Photo } from "@/components/ui/Photo";
@@ -18,15 +18,24 @@ import { Photo } from "@/components/ui/Photo";
  * unter einem Foto echter Berge wäre dieselbe Aussage zweimal — die schwächere
  * geht.
  */
-export function Region({ headingAs: H = "h2" }: SectionHeading) {
+export function Region({ standalone = false }: SectionVariant) {
   return (
     <Section id="einsatzgebiet" tone="ink">
-      <div className="grid gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
+      {/* Ohne Kopf gibt es keine zweite Spalte — die Orte bekommen dann die
+          volle Breite, statt auf halber Fläche neben einer Leerstelle zu
+          stehen. */}
+      <div
+        className={
+          standalone ? "" : "grid gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20"
+        }
+      >
+        {/* Auf der eigenen Seite trägt der Hero diesen Kopf — siehe SectionVariant. */}
+        {!standalone && (
         <div>
           <SectionHead>
             <Reveal>
               <SectionLabel>{region.eyebrow}</SectionLabel>
-              <H className="mt-6 text-2xl md:text-3xl">{region.h2}</H>
+              <h2 className="mt-6 text-2xl md:text-3xl">{region.h2}</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mt-6 font-body text-base text-frost md:text-lg">
@@ -54,6 +63,7 @@ export function Region({ headingAs: H = "h2" }: SectionHeading) {
             </Reveal>
           </SectionHead>
         </div>
+        )}
 
         {/* Die Orte des Gebiets */}
         <div className="flex flex-col justify-center">
