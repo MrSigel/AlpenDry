@@ -1,14 +1,22 @@
 import { region } from "@/lib/content";
+import { photos } from "@/lib/photos";
 import { Section, SectionHead } from "@/components/ui/Section";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
+import { Photo } from "@/components/ui/Photo";
 
 /**
  * Einsatzgebiet (Business Case Kap. 3).
  *
- * Stilisiert-typografisch statt Stockfoto-Karte (plan.md §0: keine Stockfoto-
- * Vibes). Die Orte sind als ruhige Liste gesetzt, eine stilisierte Höhenlinie
- * zitiert das Bergsymbol der Marke — Deko mit Funktion (Alpenrand).
+ * Hier steht das Panorama der Kundin — ihre eigene Aufnahme genau des Gebiets,
+ * über das der Abschnitt spricht. Das ist kein Widerspruch zu plan.md §0 („keine
+ * Stockfoto-Vibes"), sondern dessen Erfüllung: Das Verbot zielt auf
+ * austauschbare Kaufbilder, und der Business Case (Kap. 6) verlangt „echte
+ * Bilder … statt austauschbarer Stockfotos".
+ *
+ * Es ersetzt die frühere stilisierte Höhenlinie: Eine gezeichnete Bergkontur
+ * unter einem Foto echter Berge wäre dieselbe Aussage zweimal — die schwächere
+ * geht.
  */
 export function Region() {
   return (
@@ -33,7 +41,7 @@ export function Region() {
           </SectionHead>
         </div>
 
-        {/* Orte + stilisierte Höhenlinie */}
+        {/* Die Orte des Gebiets */}
         <div className="flex flex-col justify-center">
           <RevealGroup className="grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-hairline bg-frost-faint">
             {region.places.map((place) => (
@@ -49,31 +57,20 @@ export function Region() {
               </RevealItem>
             ))}
           </RevealGroup>
-
-          {/* Stilisierte Bergkontur — zitiert das Logo, rein dekorativ */}
-          <Reveal delay={0.1} className="mt-8">
-            <svg
-              viewBox="0 0 600 80"
-              className="h-16 w-full"
-              fill="none"
-              aria-hidden="true"
-              preserveAspectRatio="none"
-            >
-              <path
-                d="M0 78 L90 40 L150 58 L240 18 L320 54 L400 28 L470 60 L540 34 L600 66"
-                stroke="var(--steel)"
-                strokeWidth="1.5"
-              />
-              <path
-                d="M0 78 L90 40 L150 58 L240 18 L320 54 L400 28 L470 60 L540 34 L600 66"
-                stroke="var(--glacier)"
-                strokeWidth="1.5"
-                strokeDasharray="2 8"
-              />
-            </svg>
-          </Reveal>
         </div>
       </div>
+
+      {/* Das Gebiet, über das der Text spricht — in voller Breite, damit es
+          trägt statt zu illustrieren.
+          sizes rechnet die Polsterung der Section heraus (px-6 = 3rem, ab md
+          px-10 = 5rem); ab 1216px deckelt der Shell-Rahmen bei 1136px. */}
+      <Reveal delay={0.15} className="mt-14 md:mt-20">
+        <Photo
+          {...photos.alpenpanorama}
+          sizes="(min-width: 1216px) 1136px, (min-width: 768px) calc(100vw - 5rem), calc(100vw - 3rem)"
+          className="aspect-[16/9] w-full md:aspect-[21/9]"
+        />
+      </Reveal>
     </Section>
   );
 }

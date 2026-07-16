@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { contact, whatsappHref } from "@/lib/content";
-import { getServicePage, servicePages, servicePageCta } from "@/lib/services-pages";
+import { photos } from "@/lib/photos";
+import {
+  getServicePage,
+  servicePages,
+  servicePageCta,
+  serviceFacts,
+} from "@/lib/services-pages";
 import { buildMetadata } from "@/lib/seo";
 import { breadcrumbJsonLd, serviceJsonLd, serviceFaqJsonLd } from "@/lib/jsonld";
 
@@ -11,6 +18,8 @@ import { Section, SectionHead } from "@/components/ui/Section";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { CTABanner } from "@/components/ui/CTABanner";
+import { InlineCTA } from "@/components/ui/InlineCTA";
+import { Photo } from "@/components/ui/Photo";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { StickyCTASpacer } from "@/components/layout/StickyCTA";
 import { PhoneIcon, WhatsAppIcon, ArrowRightIcon } from "@/components/ui/Icons";
@@ -66,9 +75,32 @@ export default async function ServicePageRoute({
       {/* ── Kopf ─────────────────────────────────────────────────── */}
       <header className="border-b border-hairline bg-abyss">
         <div className="mx-auto w-full max-w-shell px-6 pb-16 pt-36 md:px-10 md:pb-20 md:pt-44">
-          {/* Brotkrumen — sichtbar, nicht nur als JSON-LD */}
+          {/*
+            Brotkrumen — sichtbar, nicht nur als JSON-LD.
+
+            ZWEI FASSUNGEN, beide bewusst EINZEILIG:
+            Die Mono-Schrift lädt nachrangig und steht hier ganz oben im Fluss.
+            Bräche die Zeile im Fallback um und spränge beim Font-Swap zurück auf
+            eine, schöbe das die gesamte Seite nach oben — gemessen CLS 0,144 auf
+            allen Unterseiten. Was nicht umbrechen kann, kann auch nicht springen.
+
+            Mobil trotzdem nicht der volle Pfad: „Start · Leistungen ·
+            Wasserschadensanierung" braucht 358 px und war damit auf JEDEM
+            gängigen Handy (320–390 px) abgeschnitten. Statt den Pfad
+            wegzuscrollen steht dort der Rücksprung zur Elternseite — der einzige
+            Weg, den man von hier aus wirklich geht. Den vollständigen Pfad
+            liefert die BreadcrumbList (JSON-LD) ohnehin an Google.
+          */}
           <nav aria-label="Brotkrümelnavigation">
-            <ol className="flex flex-wrap items-center gap-2 font-mono text-2xs uppercase tracking-eyebrow text-frost-dim">
+            <Link
+              href="/leistungen"
+              className="inline-flex items-center gap-2 font-mono text-2xs uppercase tracking-eyebrow text-frost-dim transition-colors hover:text-snow md:hidden"
+            >
+              <ArrowRightIcon className="h-3 w-3 rotate-180" aria-hidden="true" />
+              Alle Leistungen
+            </Link>
+
+            <ol className="hidden items-center gap-2 whitespace-nowrap font-mono text-2xs uppercase tracking-eyebrow text-frost-dim md:flex">
               <li>
                 <Link href="/" className="transition-colors hover:text-snow">
                   Start
@@ -116,41 +148,93 @@ export default async function ServicePageRoute({
             </a>
           </div>
         </div>
+
+        {/* Vier belegte Angaben, bevor der Fließtext beginnt. Wer nur überfliegt,
+            hat damit das Wesentliche — Herleitung in lib/services-pages.ts.
+            Eigener Rahmen statt randlosem Band: Die Zellen liegen im
+            Shell-Raster, die Kopffläche läuft aber bis zum Bildschirmrand. Ohne
+            sichtbare Kante verschmilzt die letzte Zelle mit dem Rand und wirkt
+            breiter als die drei anderen. bg-ink hebt sie zusätzlich vom
+            abyss-Kopf ab. */}
+        <div className="mx-auto w-full max-w-shell px-6 pb-14 md:px-10 md:pb-16">
+          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-hairline bg-frost-faint md:grid-cols-4">
+            {serviceFacts.map((fact) => (
+              <div key={fact.value} className="bg-ink px-6 py-7">
+                <dt className="font-display text-base font-semibold text-snow">
+                  {fact.value}
+                </dt>
+                <dd className="mt-2 font-body text-sm text-frost-dim">
+                  {fact.label}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </header>
 
       {/* ── Inhalt ───────────────────────────────────────────────── */}
       <Section>
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
           <div className="space-y-14">
-            {page.blocks.map((block) => (
-              <Reveal key={block.h} as="section">
-                <h2 className="hyphens-auto break-words font-display text-xl font-semibold text-snow md:text-2xl">
-                  {block.h}
-                </h2>
-                <div className="mt-5 space-y-4">
-                  {block.body.map((p) => (
-                    <p key={p} className="max-w-prose font-body text-base text-frost-dim">
-                      {p}
-                    </p>
-                  ))}
-                </div>
-                {block.list && (
-                  <ul className="mt-6 space-y-3">
-                    {block.list.map((item) => (
-                      <li
-                        key={item}
-                        className="flex gap-3 font-body text-base text-frost-dim"
-                      >
-                        <span
-                          className="mt-[0.7em] h-1 w-1 shrink-0 rounded-full bg-glacier"
-                          aria-hidden="true"
-                        />
-                        <span>{item}</span>
-                      </li>
+            {page.blocks.map((block, i) => (
+              <Fragment key={block.h}>
+                <Reveal as="section">
+                  <h2 className="hyphens-auto break-words font-display text-xl font-semibold text-snow md:text-2xl">
+                    {block.h}
+                  </h2>
+                  <div className="mt-5 space-y-4">
+                    {block.body.map((p) => (
+                      <p key={p} className="max-w-prose font-body text-base text-frost-dim">
+                        {p}
+                      </p>
                     ))}
-                  </ul>
+                  </div>
+                  {block.list && (
+                    <ul className="mt-6 space-y-3">
+                      {block.list.map((item) => (
+                        <li
+                          key={item}
+                          className="flex gap-3 font-body text-base text-frost-dim"
+                        >
+                          <span
+                            className="mt-[0.7em] h-1 w-1 shrink-0 rounded-full bg-glacier"
+                            aria-hidden="true"
+                          />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </Reveal>
+
+                {/* Nach dem ersten Abschnitt: das Foto — dort ist das Problem
+                    beschrieben, aber die Seite noch eine Textwüste. */}
+                {i === 0 && page.photo && (
+                  <Reveal>
+                    {/* sizes rechnet die Innenabstände heraus: `100vw` wäre um
+                        die Polsterung zu groß und ließe den Browser auf dem
+                        Handy die doppelt so schwere Fassung ziehen (gemessen).
+                        px-6 = 3rem gesamt, ab md px-10 = 5rem; ab lg trägt das
+                        Bild die 1.4fr-Spalte ≈ 640px. */}
+                    <Photo
+                      {...photos[page.photo]}
+                      sizes="(min-width: 1024px) 640px, (min-width: 768px) calc(100vw - 5rem), calc(100vw - 3rem)"
+                      className="aspect-[4/3] w-full"
+                    />
+                  </Reveal>
                 )}
-              </Reveal>
+
+                {/* Der Handlungsaufruf im Lesefluss (Business Case Kap. 6:
+                    „konsequent wiederholt"). Nach dem zweiten Abschnitt, nicht
+                    davor: Erst überzeugen, dann fragen. Auf sehr kurzen Seiten
+                    (< 3 Abschnitte) entfällt er — dann stünde er neben dem
+                    Banner am Seitenende und wäre bloß Wiederholung. */}
+                {i === 1 && page.blocks.length > 2 && (
+                  <Reveal>
+                    <InlineCTA text={page.ctaLine} />
+                  </Reveal>
+                )}
+              </Fragment>
             ))}
           </div>
 

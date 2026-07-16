@@ -56,3 +56,8 @@ tsconfig.tsbuildinfo
 # Logo-Quelldatei (Markenasset). Die abgeleitete, freigestellte Fassung
 # liegt in public/brand/mark.png und wird ausgeliefert.
 Logo.png
+
+# Original-Fotos der Kundin (WhatsApp, unkomprimiert). Die optimierten
+# WebP-Fassungen liegen in public/fotos/ und werden ausgeliefert — die
+# Originale gehören nicht ins öffentliche Repo.
+WhatsApp Image*.jpeg

@@ -1,4 +1,5 @@
 import { contact, region } from "./content";
+import { photos } from "./photos";
 
 /**
  * Inhalte der Leistungs-Unterseiten.
@@ -36,9 +37,28 @@ export type ServicePage = {
   readonly metaTitle: string;
   readonly metaDescription: string;
   readonly blocks: readonly ServiceBlock[];
+  /**
+   * Ein Satz für den Handlungsaufruf mitten im Text.
+   *
+   * Pflichtfeld, damit keine Seite mit derselben Floskel abgespeist wird — die
+   * Zeile soll das Problem DIESER Seite aufgreifen. Quelle ist überwiegend
+   * Kap. 11 (die fertigen Anzeigentexte): von der Kundin freigegebene
+   * Formulierungen, näher am Notfall als alles, was ich schreiben würde.
+   */
+  readonly ctaLine: string;
   readonly faq: readonly { readonly q: string; readonly a: string }[];
   /** Slugs verwandter Leistungen — als Querverweise am Seitenende. */
   readonly related: readonly string[];
+  /**
+   * Foto der Kundin — NUR wo das Bild zur Leistung wirklich etwas sagt.
+   *
+   * Absichtlich nicht auf jeder Seite: Es gibt bislang ausschließlich
+   * Landschaftsaufnahmen, keine von Team, Technik oder Baustelle (siehe
+   * lib/photos.ts). Ein Bergpanorama neben „Schimmelsanierung" wäre exakt die
+   * beliebige Bebilderung, die plan.md §0 verbietet — dann lieber keins.
+   * Sobald es Einsatzfotos gibt, bekommen die übrigen Seiten ihres.
+   */
+  readonly photo?: keyof typeof photos;
 };
 
 const ORTE = region.places.slice(0, 4).join(", ");
@@ -92,6 +112,10 @@ export const servicePages: readonly ServicePage[] = [
         ],
       },
     ],
+    /** Kap. 11, Anzeige 1 („Wasserschaden ruiniert mehr als den Boden — jede
+        Stunde zählt."), auf den Seitenkontext gebracht. */
+    ctaLine:
+      "Ein Wasserschaden ruiniert mehr als den Boden — jede Stunde zählt. Rufen Sie an, wir sagen Ihnen noch am Telefon, was jetzt zu tun ist.",
     faq: [
       {
         /** @freigabe — abgeleitet aus Kap. 12 Schritt 1/2. */
@@ -150,6 +174,11 @@ export const servicePages: readonly ServicePage[] = [
         ],
       },
     ],
+    /** Kap. 11, Anzeige 2 — die Symptomkette wörtlich. „Festpreis für die
+        Ortung" aus derselben Anzeige bewusst NICHT übernommen: Preisaussagen
+        sind ausgeschlossen, und ob er noch gilt, weiß nur die Kundin. */
+    ctaLine:
+      "Feuchte Flecken, steigende Wasserrechnung, muffiger Geruch? Wir orten die Ursache zerstörungsarm — rufen Sie an, wir klären am Telefon vor, was zu messen ist.",
     faq: [
       {
         /** @freigabe — abgeleitet aus Kap. 4 „zerstörungsarm" (wörtlich belegt). */
@@ -163,6 +192,9 @@ export const servicePages: readonly ServicePage[] = [
       },
     ],
     related: ["wasserschadensanierung", "trocknung", "schimmelsanierung"],
+    /** Wasser, das sich seinen Weg durch Fels sucht — genau das Prinzip, das
+        eine Leitung im Mauerwerk unsichtbar macht. Trägt zur Aussage bei. */
+    photo: "wasserlauf",
   },
 
   // ───────────────────────────────────────────────────────────────────
@@ -215,6 +247,10 @@ export const servicePages: readonly ServicePage[] = [
         ],
       },
     ],
+    /** Kap. 4 („eigene, besonders leise Maschinen … normal wohnen und
+        arbeiten") — der Einwand, der bei Trocknung als Erstes kommt. */
+    ctaLine:
+      "Trocknung heißt nicht ausziehen: Unsere Maschinen sind besonders leise, Sie wohnen und arbeiten normal weiter. Rufen Sie an — wir sagen Ihnen, was auf Sie zukommt.",
     faq: [
       {
         /** Kap. 4 wörtlich belegt. */
@@ -269,6 +305,10 @@ export const servicePages: readonly ServicePage[] = [
         ],
       },
     ],
+    /** Kap. 11, Anzeige 3 („Schimmel? Ursache finden statt überstreichen" /
+        „Schimmel kommt wieder, solange die Feuchtequelle bleibt") — wörtlich. */
+    ctaLine:
+      "Schimmel kommt wieder, solange die Feuchtequelle bleibt: Ursache finden statt überstreichen. Rufen Sie an — wir messen, bevor wir sanieren.",
     faq: [
       {
         /** Kap. 4 wörtlich belegt. */
@@ -324,6 +364,11 @@ export const servicePages: readonly ServicePage[] = [
         ],
       },
     ],
+    /** Kap. 4 („damit Starkregen und Hochwasser gar nicht erst Schäden
+        anrichten") + Kap. 2 (Prävention als Teil des Spektrums). Als einzige
+        Seite ohne Notfall — hier ist der Anruf Vorsorge, nicht Rettung. */
+    ctaLine:
+      "Der günstigste Wasserschaden ist der, der nie entsteht. Rufen Sie an — wir schauen uns Ihre Außenanlagen an, bevor der nächste Starkregen kommt.",
     faq: [
       {
         /** @freigabe — fachlich üblich. */
@@ -337,12 +382,51 @@ export const servicePages: readonly ServicePage[] = [
       },
     ],
     related: ["wasserschadensanierung", "trocknung"],
+    /** Wasser in der Landschaft — das Thema dieser Seite ist genau das, was
+        passiert, bevor es am Gebäude ankommt. */
+    photo: "voralpensee",
   },
 ];
 
 export function getServicePage(slug: string): ServicePage | undefined {
   return servicePages.find((p) => p.slug === slug);
 }
+
+/**
+ * Vier harte Angaben, die auf jeder Leistungsseite unter dem Kopf stehen.
+ *
+ * Jede ist im Business Case belegt — bewusst KEINE Reaktionszeit-Zusage:
+ * Kap. 5 nennt „unter 24 Stunden", aber als Messlatte für
+ * Versicherungspartnerschaften, nicht als Zusage an jeden Besucher. Ein
+ * Zeitversprechen auf der Website wäre eine Zusicherung, die die AGB nicht
+ * decken — und im Streitfall genau das Eigentor, das dieses Projekt vermeidet.
+ *
+ * Ebenso ohne „Festpreis für die Ortung" (Kap. 11, Anzeige 2): Preisaussagen
+ * sind ausdrücklich ausgeschlossen, und ob der Festpreis heute noch gilt, weiß
+ * nur die Kundin.
+ */
+export const serviceFacts = [
+  {
+    /** Kap. 4 „24/7-Notfall-Service" (wörtlich). */
+    value: "24/7",
+    label: "Notdienst, rund um die Uhr erreichbar",
+  },
+  {
+    /** Kundenangabe (Business Case Kap. 2 nennt 20 — die Kundin hat 25 bestätigt). */
+    value: "25 Jahre",
+    label: "Berufserfahrung von der Baustelle, nicht aus dem Hörsaal",
+  },
+  {
+    /** Kap. 4 „Eigene Technik, eigener Fuhrpark" (wörtlich). */
+    value: "Eigene Technik",
+    label: "Eigene Maschinen und Fuhrpark — kein Warten auf Mietgeräte",
+  },
+  {
+    /** Kap. 3 Zielgruppe 1 + Kap. 5 („Dokumentation — vollständig digital"). */
+    value: "Digitale Akte",
+    label: "Messprotokolle, Fotos und Berichte für die Versicherung",
+  },
+] as const;
 
 /** Gemeinsamer Abschluss aller Leistungsseiten. @freigabe (Micro-Copy) */
 export const servicePageCta = {

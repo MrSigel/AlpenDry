@@ -35,8 +35,12 @@ export default function LeistungenPage() {
     <>
       <header className="border-b border-hairline bg-abyss">
         <div className="mx-auto w-full max-w-shell px-6 pb-16 pt-36 md:px-10 md:pb-20 md:pt-44">
+          {/* Einzeilig (whitespace-nowrap) — Begründung wie in [slug]/page.tsx:
+              Die Mono-Schrift lädt nachrangig; ein Umbruch im Fallback, der beim
+              Swap zurückspringt, schiebt die ganze Seite. „Start · Leistungen"
+              passt auf jeder Breite, hier ist es reine Vorsorge. */}
           <nav aria-label="Brotkrümelnavigation">
-            <ol className="flex flex-wrap items-center gap-2 font-mono text-2xs uppercase tracking-eyebrow text-frost-dim">
+            <ol className="flex items-center gap-2 whitespace-nowrap font-mono text-2xs uppercase tracking-eyebrow text-frost-dim">
               <li>
                 <Link href="/" className="transition-colors hover:text-snow">
                   Start

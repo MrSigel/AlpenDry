@@ -21,7 +21,9 @@ Diese Stellen sind bewusst markiert und brauchen eine Entscheidung:
 | **Google-Bewertungen** | `lib/content.ts` → `trust.reviewsActive` | Steht auf `false`. Erst mit echten Zahlen aus dem Unternehmensprofil aktivieren — erfundene Bewertungen sind irreführende Werbung. |
 | **Presse-Siegel** | `lib/content.ts` → `trust.pressSealActive` | Steht auf `false`. Darf laut Business Case Kap. 9 erst erscheinen, wenn der Artikel wirklich veröffentlicht ist (sonst § 5 UWG). |
 | **FAQ-Antworten** | `lib/content.ts` → `faq` | Mit `@freigabe` markiert: aus belegten Fakten abgeleitet, im Business Case aber nicht wörtlich beantwortet. Fachlich prüfen. |
-| **Mail-Ziel** | `.env` → `CONTACT_TO` | Aktuell eine Testadresse. Vor Livegang auf `info@alpendry.de` umstellen. |
+| **Mail-Ziel** | `.env` → `CONTACT_TO` | Aktuell eine Testadresse. Vor Livegang auf `info@alpendry.de` umstellen (durch die Visitenkarte der Kundin bestätigt). |
+| **Einsatzfotos fehlen** | `lib/photos.ts` | Die drei gelieferten Fotos zeigen die **Region**, keinen Einsatz — kein Team, keine Technik, keine Baustelle. Sie stehen deshalb nur dort, wo es ums Gebiet und um Wasser geht. Business Case Kap. 6 verlangt „echte Bilder von Team und Einsätzen": dafür braucht es Fotos von der Baustelle. Drei Leistungsseiten haben bewusst kein Bild, statt ein beliebiges zu tragen. |
+| **Orte auf den Fotos** | `lib/photos.ts` | Die Bildunterschriften beschreiben, was zu sehen ist, statt Orte zu behaupten. Der See mit der Insel könnte der Staffelsee sein — unbestätigt. Sobald die Kundin die Orte nennt, dürfen die Unterschriften konkret werden. |
 | **Rechtstexte** | `lib/legal.ts`, `lib/agb.ts` | Kein Rechtsrat. Fachkundig prüfen lassen — besonders AGB § 15 (Haftung) und § 19 (Gerichtsstand) gegenüber Verbrauchern. |
 | **Google Analytics** | `lib/consent.ts` | Consent-Unterbau steht, GA ist noch nicht eingebunden. Mess-ID ergänzen; es lädt ausschließlich nach Einwilligung. |
 
@@ -64,6 +66,18 @@ Nicht offensichtliche Punkte, die beim Anfassen leicht kaputtgehen:
   Kontrast erreicht und damit unter dem WCAG-Minimum liegt.
 - **Alle Texte in `lib/content.ts`**, keine Strings in Komponenten. Jede Passage
   trägt ihre Kapitel-Referenz aus dem Business Case.
+- **Die Brotkrumen sind bewusst einzeilig** (`whitespace-nowrap`). Die
+  Mono-Schrift lädt nachrangig; brach die Brotkrume im Fallback um und sprang
+  beim Swap auf eine Zeile zurück, schob das die ganze Unterseite 21 px nach oben
+  — gemessen CLS 0,144, jetzt 0,0002. Auf der Startseite fiel das nie auf, weil
+  die Eyebrow dort absolut im Hero liegt. Mobil steht statt des vollen Pfads ein
+  Rücksprung („Alle Leistungen"): „Start · Leistungen · Wasserschadensanierung"
+  braucht 358 px und war auf jedem gängigen Handy abgeschnitten.
+- **Fotos werden nicht eingefärbt.** `components/ui/Photo.tsx` fasst sie in
+  Hairline-Rahmen und einen ink-Verlauf, der sie an die Seitenfläche bindet und
+  die Bildunterschrift trägt. Kein Duotone, kein Blaustich: Die Farbe ist der
+  Grund, warum die Fotos da sind (Kundenwunsch). Sie werden gefasst, nicht
+  retuschiert.
 
 ## Qualitätsstand
 

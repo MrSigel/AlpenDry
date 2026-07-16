@@ -40,6 +40,14 @@ export const body = Inter({
  * Telefonnummer). Preloaded würde sie 23 KB im kritischen Pfad belegen und mit
  * der Display-Schrift konkurrieren, die das h1 trägt — und genau das h1 ist das
  * LCP-Element. Sie lädt jetzt nachrangig; bis dahin greift der Mono-Fallback.
+ *
+ * `display: "swap"`: Die Schrift SOLL sichtbar werden — sie trägt die
+ * Telefonnummer und die Eyebrow-Labels, ein Stück Markenanmutung. „optional"
+ * hätte sie Erstbesuchern meist vorenthalten. Der Layout-Shift, den ihr später
+ * Swap auf den Unterseiten auslöste (die Brotkrume brach im Fallback zweizeilig
+ * um und sprang beim Laden auf eine Zeile), ist an der Quelle gelöst: Die
+ * Brotkrume läuft jetzt einzeilig (Header der Unterseiten-Route) und kann ihre
+ * Zeilenzahl gar nicht mehr ändern.
  */
 export const mono = Geist_Mono({
   subsets: ["latin"],
