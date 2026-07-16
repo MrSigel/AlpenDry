@@ -6,6 +6,7 @@ import { palette } from "@/lib/palette";
 import { buildMetadata } from "@/lib/seo";
 import { localBusinessJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { JsonLd } from "@/components/ui/JsonLd";
+import { AnchorScroll } from "@/components/layout/AnchorScroll";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { StickyCTA } from "@/components/layout/StickyCTA";
@@ -53,6 +54,10 @@ export default function RootLayout({
         >
           Zum Inhalt springen
         </a>
+
+        {/* Rendert nichts — sorgt dafür, dass Anker-Sprünge über Seitengrenzen
+            hinweg springen statt zu fahren. Begründung in der Komponente. */}
+        <AnchorScroll />
 
         <Header />
         <main id="inhalt">{children}</main>
