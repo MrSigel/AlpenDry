@@ -91,9 +91,27 @@ export function Header() {
 
   return (
     <header
+      /*
+       * Sobald gescrollt wird (oder das Menü offen ist), ist die Leiste DECKEND.
+       *
+       * Vorher `bg-ink/90 backdrop-blur-md` — eine Glasoptik. Die verbleibenden
+       * 10 % ließen aber den Seiteninhalt durchscheinen: Beim Scrollen wandern
+       * Hero-Eyebrow und H1 unter der fixierten Leiste durch und standen als
+       * Schatten hinter dem Logo (gemessen ab ~200 px Scroll). Auf dem Handy
+       * fiel das besonders auf, weil der Hero dort nicht sticky ist und sein
+       * kompletter Text an der Leiste vorbeiläuft. Logo und Navigation waren
+       * dadurch schlecht lesbar.
+       *
+       * Mit voller Deckung wäre `backdrop-blur` wirkungslos — es entfällt und
+       * spart nebenbei eine GPU-Ebene, die auf jedem Scroll-Frame neu
+       * zusammengesetzt werden musste.
+       *
+       * Ganz oben bleibt die Leiste transparent: Dort liegt der Hero, und der
+       * soll bis unter die Kante laufen.
+       */
       className={`fixed inset-x-0 top-0 z-40 transition-all duration-500 ease-glide ${
         scrolled || menuOpen
-          ? "border-b border-hairline bg-ink/90 backdrop-blur-md"
+          ? "border-b border-hairline bg-ink"
           : "border-b border-transparent"
       }`}
     >

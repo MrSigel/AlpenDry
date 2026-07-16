@@ -31,9 +31,17 @@ export function Contact() {
         {/* Direktkontakt: Telefon + WhatsApp */}
         <div className="flex flex-col gap-6">
           <Reveal className="flex flex-1 flex-col justify-center rounded-sm border border-hairline bg-abyss p-7">
-            <span className="font-mono text-2xs uppercase tracking-eyebrow text-frost-dim">
+            {/* Display-Schrift wie JEDE andere Kartenüberschrift im Projekt
+                (Formular nebenan, Seitenspalte der Leistungsseiten). Vorher
+                stand hier die kleine Mono-Eyebrow — direkt neben „Ausgefüllt in
+                unter einer Minute" in der Display-Schrift. Zwei Karten
+                nebeneinander, zwei Schriften.
+                Als <h3> statt <span>: Es IST die Überschrift dieser Karte, und
+                unter dem h2 „Drei Wege zu uns" schließt sie die Gliederung
+                sauber — wie das h3 im Formular. */}
+            <h3 className="font-display text-xl font-semibold text-snow">
               {contactSection.phoneCard.title}
-            </span>
+            </h3>
             {/* Die Nummer ist der wichtigste CTA der Seite und trägt hier die
                 Fläche — der Platz kommt daher, dass die Spalte die Höhe des
                 Formulars füllt. */}
@@ -57,9 +65,11 @@ export function Contact() {
             delay={0.05}
             className="flex flex-1 flex-col justify-center rounded-sm border border-hairline bg-abyss p-7"
           >
-            <span className="font-mono text-2xs uppercase tracking-eyebrow text-frost-dim">
+            {/* Gleiche Fassung wie die Telefon-Karte darüber — die beiden
+                stehen untereinander und müssen zusammengehören. */}
+            <h3 className="font-display text-xl font-semibold text-snow">
               {contactSection.whatsapp.title}
-            </span>
+            </h3>
             <a
               href={whatsappHref}
               target="_blank"
