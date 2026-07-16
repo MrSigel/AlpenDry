@@ -7,18 +7,21 @@ import { createIcebergGeometry, ICEBERG_DETAIL } from "@/lib/iceberg-geometry";
 import { palette } from "@/lib/palette";
 
 /**
- * Das Eis-Mesh (plan.md §3).
+ * Das Berg-Mesh (plan.md §3).
  *
- * Material: MeshPhysicalMaterial, transluzent, getönt steel→frost.
- *   ior 1.31 ist der echte Brechungsindex von Eis — kein Zierwert, er
- *   entscheidet sichtbar über die Kantenbrechung.
- *   flatShading erzeugt die Facetten, die Eis von einer glatten Blase
- *   unterscheiden.
+ * AUF KUNDENWUNSCH FELS STATT EIS: „realistisch, nicht verspielt". Die
+ * vorherige Fassung war transluzentes Eis mit Facetten (flatShading, ior 1.31,
+ * clearcoat) — technisch korrekt für einen Eisberg, gelesen aber als
+ * geschliffener Kristall. Jetzt ein Alpengipfel in der Anmutung der
+ * Visitenkarte: matter, blauschwarzer Fels, weiße Schneefelder.
  *
- * `transmission` rendert die Szene in einen zusätzlichen Buffer und ist der
- * teuerste Posten der Szene — auf Mobile daher aus, ersetzt durch schlichte
- * Transparenz. Der Unterschied ist bei Telefon-Bildgröße kaum zu sehen,
- * die fps-Differenz erheblich.
+ * Die drei Hebel, in dieser Reihenfolge wirksam:
+ *   1. Farbe — Fels/Schnee nach Höhe UND Neigung (lib/iceberg-geometry.ts).
+ *      Der mit Abstand größte Effekt.
+ *   2. Schattierung — weiche Normalen statt Facetten.
+ *   3. Material — matt (roughness 0.82) statt speckig.
+ *
+ * Die Masse unter Wasser bleibt: Sie trägt die Metapher (Business Case Kap. 2).
  */
 export function Iceberg({ quality = "high" }: { quality?: "high" | "low" }) {
   const geometry = useMemo(
@@ -32,32 +35,44 @@ export function Iceberg({ quality = "high" }: { quality?: "high" | "low" }) {
   return (
     <mesh geometry={geometry} castShadow={false} receiveShadow={false}>
       <meshPhysicalMaterial
-        // Weiß = neutraler Multiplikator. Die eigentliche Tönung
-        // „steel-blue → silver" (plan.md §3) liegt als Vertex-Farbverlauf in
-        // der Geometrie: unten stahlblau, oben silbrig.
+        // Weiß = neutraler Multiplikator. Fels- und Schneetöne liegen als
+        // Vertex-Farben in der Geometrie (lib/iceberg-geometry.ts).
         color={palette.snow}
         vertexColors
-        roughness={0.34}
+        /*
+         * Fels ist matt. 0.34 (die alte Eis-Fassung) ließ die ganze Masse
+         * speckig glänzen — genau der „verspielte" Kristall-Look, der weg
+         * sollte. 0.82 schluckt die Spiegelung; die Form trägt jetzt allein
+         * das Licht.
+         */
+        roughness={0.82}
         metalness={0}
-        ior={1.31}
-        reflectivity={0.45}
-        flatShading
+        /*
+         * KEIN flatShading mehr. Die Facetten waren der Grund, warum das Objekt
+         * wie ein geschliffener Kristall aussah und nicht wie Fels. Mit weichen
+         * Normalen trägt die Schattierung die Struktur — deshalb darf die
+         * Geometrie jetzt auch deutlich mehr Grat und Feinstruktur haben
+         * (radiusAt), was vorher zu „Tannenzapfen" geführt hätte.
+         */
         side={DoubleSide}
-        // Eigenes, sehr schwaches Leuchten in Stahlblau: hält die Facetten
-        // auch dort lesbar, wo weder Key- noch Rim-Light hinkommt — verhindert
-        // das „dunkler Fels"-Problem, ohne die Szene zu überstrahlen.
+        /*
+         * Sehr schwaches Eigenleuchten in Stahlblau: hält den Fels dort lesbar,
+         * wo weder Key- noch Rim-Light hinkommt. Halbiert gegenüber der
+         * Eis-Fassung (0.18) — Fels leuchtet nicht von innen, und bei matter
+         * Oberfläche fällt jedes Eigenleuchten stärker auf.
+         */
         emissive={palette.steel}
-        emissiveIntensity={0.18}
+        emissiveIntensity={0.09}
         // BEWUSST KEIN `transmission`: das rendert die komplette Szene pro
         // Frame ein zweites Mal in einen Puffer und war der größte Ruckler
-        // der Fahrt. Bei diesen Kameradistanzen ist echte Refraktion ohnehin
-        // unsichtbar — den Eis-Look tragen Facetten (flatShading), die
-        // Vertex-Tönung, Env-Licht und Rim.
+        // der Fahrt. Fels ist ohnehin undurchsichtig — anders als Eis verliert
+        // er dadurch nichts.
         // Ebenso bewusst OPAK: alpha-blending auf selbstüberlappender
         // Geometrie erzeugt Sortier-Flackern während der Bewegung.
-        envMapIntensity={1.15}
+        envMapIntensity={0.7}
         {...(quality === "high"
-          ? { clearcoat: 0.7, clearcoatRoughness: 0.28, specularIntensity: 0.9 }
+          ? // Kein clearcoat: Das ist eine Lackschicht — auf Fels falsch.
+            { specularIntensity: 0.35 }
           : {})}
       />
     </mesh>
