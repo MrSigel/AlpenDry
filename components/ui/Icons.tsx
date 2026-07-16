@@ -26,6 +26,22 @@ export function PhoneIcon({ className = "h-4 w-4" }: IconProps) {
 }
 
 /**
+ * Mail — Umschlag.
+ *
+ * Gleiche Bauweise wie PhoneIcon: 24er-Raster, `stroke`-Preset, currentColor.
+ * Die Klappe ist nur angedeutet (drei Linien statt eines geschlossenen
+ * Dreiecks) — bei 16 px liefe eine vollständige Klappe zu.
+ */
+export function MailIcon({ className = "h-4 w-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <rect {...stroke} x="3" y="5" width="18" height="14" rx="2" />
+      <path {...stroke} d="m3.5 7 8.5 6 8.5-6" />
+    </svg>
+  );
+}
+
+/**
  * WhatsApp — offizielles Glyph (Sprechblase mit Hörer).
  *
  * Bewusst der originale Pfad statt einer Eigenzeichnung: eine nachgebaute
