@@ -17,16 +17,15 @@ Diese Stellen sind bewusst markiert und brauchen eine Entscheidung:
 
 | Was | Wo | Warum offen |
 |---|---|---|
-| **Geo-Koordinaten** | `lib/content.ts` → `contact.geo` | Zeigen aufs Ortszentrum Murnau, nicht auf Neu-Egling 33. Falsche Koordinaten schaden dem lokalen Ranking. |
 | **Google-Bewertungen** | `lib/content.ts` → `trust.reviewsActive` | Steht auf `false`. Erst mit echten Zahlen aus dem Unternehmensprofil aktivieren — erfundene Bewertungen sind irreführende Werbung. |
 | **Presse-Siegel** | `lib/content.ts` → `trust.pressSealActive` | Steht auf `false`. Darf laut Business Case Kap. 9 erst erscheinen, wenn der Artikel wirklich veröffentlicht ist (sonst § 5 UWG). |
 | **FAQ-Antworten** | `lib/content.ts` → `faq` | Mit `@freigabe` markiert: aus belegten Fakten abgeleitet, im Business Case aber nicht wörtlich beantwortet. Fachlich prüfen. |
-| **Mail-Ziel** | `.env` → `CONTACT_TO` | Aktuell eine Testadresse. Vor Livegang auf `info@alpendry.de` umstellen (durch die Visitenkarte der Kundin bestätigt). |
+| **Mail-Ziel auf dem Server** | IONOS-Panel → `CONTACT_TO` | `.env.example` steht jetzt auf `info@alpendry.de`. Das ist aber nur die **Vorlage** — gelesen wird die Variable im IONOS-Panel. Steht dort noch die alte Testadresse, gehen alle Anfragen weiter dorthin, und **niemand merkt es**, weil das Formular trotzdem „Danke" meldet. Vor Livegang einmal mit einer echten Testanfrage prüfen. |
 | **Markennamen auf den KI-Bildern** | `lib/works.ts`, `public/arbeiten/` | ⚠️ **Entscheidung nötig.** Die KI hat echte Herstellernamen auf die Geräte gerendert, teils verzerrt: **„CORROVENTA CTR 1000XT" und „TROTEC"** (trocknung — in der Kachel klar lesbar), **„SEWERIN AQUAPHON"** (leckageortung), **„LGR 7000 XLI"**. Fremde Marken in der eigenen Werbung können den Eindruck einer Partnerschaft erwecken, die es nicht gibt — und die Geräte gehören dem Betrieb nicht. Drei Wege: (a) Bilder ohne Markennamen neu generieren (sauberste Lösung), (b) die Stellen wegretuschieren, (c) juristisch abklären lassen. |
 | **KI-Bilder ohne Kennzeichnung** | `lib/works.ts`, `app/arbeiten/page.tsx` | ⚠️ Alle sechs Bilder auf /arbeiten sind KI-generiert und tragen auf Kundenwunsch **keine** Kennzeichnung mehr. Der Hinweis steht nur noch im Bildnachweis des Impressums. Zu bedenken: **Art. 50 Abs. 4 KI-VO (EU 2024/1689) gilt ab 02.08.2026** und verlangt die Kennzeichnung fotorealistischer KI-Bilder beim ersten Ansehen — ein Impressumshinweis genügt dafür nicht. Dazu § 5 UWG: Auf einer Seite mit der Überschrift „Bisherige Arbeiten" lesen sich unbeschriftete Bilder als eigene Einsätze. Reaktivieren ist eine Zeile: `works.symbolLabel` wieder in die `figcaption` einsetzen. Die echte Vorher/Nachher-Aufnahme (Wasserschaden.jpg) wird nicht mehr verwendet — sie war das einzige Bild, das etwas belegte. |
 | **Einsatzfotos fehlen** | `lib/photos.ts` | Die drei gelieferten Fotos zeigen die **Region**, keinen Einsatz — kein Team, keine Technik, keine Baustelle. Sie stehen deshalb nur dort, wo es ums Gebiet und um Wasser geht. Business Case Kap. 6 verlangt „echte Bilder von Team und Einsätzen": dafür braucht es Fotos von der Baustelle. Drei Leistungsseiten haben bewusst kein Bild, statt ein beliebiges zu tragen. |
 | **Orte auf den Fotos** | `lib/photos.ts` | Die Bildunterschriften beschreiben, was zu sehen ist, statt Orte zu behaupten. Der See mit der Insel könnte der Staffelsee sein — unbestätigt. Sobald die Kundin die Orte nennt, dürfen die Unterschriften konkret werden. |
-| **Rechtstexte** | `lib/legal.ts`, `lib/agb.ts` | Kein Rechtsrat. Fachkundig prüfen lassen — besonders AGB § 15 (Haftung) und § 19 (Gerichtsstand) gegenüber Verbrauchern. Neu ergänzt: **Bildnachweis** im Impressum (stand nicht in der Zulieferung) — er nennt die KI-Herkunft der Bilder auf /arbeiten. Er ist derzeit der einzige Ort, an dem das steht; zur Kennzeichnung am Bild selbst siehe die Zeile „KI-Bilder ohne Kennzeichnung" oben. |
+| **Rechtstexte** | `lib/legal.ts`, `lib/agb.ts` | Von einer Anwältin/einem Anwalt geliefert. **Eine Abweichung** von der Zulieferung: Der Hoster-Absatz (Datenschutz § 7) nannte Wix.com Ltd., Tel Aviv — die Vorlage entstand für den alten Wix-Auftritt. Ersetzt durch IONOS SE, von der Kundin bestätigt. Neu ergänzt: **Bildnachweis** im Impressum (KI-Herkunft der Bilder, § 5 UWG + § 13 UrhG). Beides gehört bei der nächsten anwaltlichen Durchsicht gegengelesen. |
 | **Google Analytics** | `lib/consent.ts` | Consent-Unterbau steht, GA ist noch nicht eingebunden. Mess-ID ergänzen; es lädt ausschließlich nach Einwilligung. |
 
 ## Hosting
@@ -90,5 +89,13 @@ Lighthouse (Produktionsbuild, echte Drosselung):
 | Desktop | 100 | 100 | 100 | 100 |
 | Mobil | 90 | 100 | 100 | 100 |
 
-Geprüft: 7 Viewport-Breiten (320–1920px) × 5 Seiten, kein horizontaler
-Überlauf, keine JS-Fehler.
+Geprüft: 5 Viewport-Breiten (320–1920px) × 16 Seiten, kein horizontaler
+Überlauf, keine JS-Fehler, je genau ein `h1`.
+
+`robots.txt` und `sitemap.xml` werden aus Code erzeugt (`app/robots.ts`,
+`app/sitemap.ts`) — die Sitemap zieht die Leistungsseiten aus `servicePages`,
+eine neue Leistung steht dadurch automatisch drin. Sie listet die 12
+indexierbaren Seiten; die vier Rechtsseiten fehlen bewusst, sie stehen auf
+`noindex` (eine Sitemap, die `noindex`-Seiten anmeldet, meldet Google als
+Fehler). `robots.txt` sperrt nur `/api/` — die Rechtsseiten NICHT: `disallow`
+verbietet das Crawlen, nicht das Indexieren; Google sähe ihr `noindex` dann nie.

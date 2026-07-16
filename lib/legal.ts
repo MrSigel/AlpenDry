@@ -10,11 +10,13 @@ import { contact, site } from "./content";
  *
  * ⚠️ ABWEICHUNGEN VON DER ZULIEFERUNG — bitte gegenlesen:
  *
- * 1. HOSTING (Datenschutz §7): Die Vorlage nannte „Wix.com Ltd., Tel Aviv,
- *    Israel". Diese Website läuft auf Next.js und wird bei IONOS betrieben —
- *    der Wix-Absatz stammt erkennbar vom alten Auftritt. Ein falsch benannter
- *    Hoster samt erfundener Drittlandübermittlung nach Israel wäre eine
- *    unrichtige Pflichtangabe und abmahnbar. Ersetzt durch IONOS SE.
+ * 1. HOSTING (Datenschutz §7): Die anwaltliche Vorlage nannte „Wix.com Ltd.,
+ *    Tel Aviv, Israel" — sie entstand für den alten Wix-Auftritt. Diese Website
+ *    läuft auf Next.js bei IONOS; von der Kundin bestätigt. Ein falsch
+ *    benannter Hoster samt erfundener Drittlandübermittlung nach Israel wäre
+ *    eine unrichtige Pflichtangabe und abmahnbar. Ersetzt durch IONOS SE.
+ *    ERLEDIGT — hier nur noch als Historie, damit niemand den Wix-Absatz aus
+ *    der alten Vorlage „zurückrepariert".
  *
  * 2. GOOGLE ANALYTICS (§9) / MAPS (§10): Beide sind derzeit NICHT eingebunden.
  *    Die Abschnitte bleiben stehen, weil der Consent-Unterbau vorbereitet ist
@@ -105,28 +107,29 @@ export const impressum = {
       ],
     },
     /**
-     * BILDNACHWEIS — neu.
+     * BILDNACHWEIS — neu, stand nicht in der anwaltlichen Zulieferung.
      *
-     * Drei Pflichten fallen hier zusammen, deshalb steht das hier und nicht
-     * verstreut:
+     * Nötig geworden, weil die Seite „Bisherige Arbeiten" KI-Bilder zeigt. Er
+     * leistet zweierlei:
      *
-     * 1. Art. 50 Abs. 4 KI-VO (EU 2024/1689), anwendbar ab 02.08.2026:
-     *    Fotorealistische KI-Bilder sind als solche zu kennzeichnen. Das
-     *    geschieht bereits an jedem Bild („Symbolbild · KI-generiert",
-     *    lib/works.ts) — die Verordnung verlangt die Kennzeichnung beim ersten
-     *    Ansehen, ein Impressumshinweis allein reicht nicht. Dieser Abschnitt
-     *    ist die Ergänzung dazu, nicht der Ersatz.
+     * 1. § 5 UWG — er sagt offen, dass die Bilder keinen konkreten Auftrag
+     *    zeigen. Ohne das läsen sie sich auf einer Seite dieses Namens als
+     *    eigene Einsätze.
      *
-     * 2. § 5 UWG: Die Seite „Bisherige Arbeiten" darf keine fremden oder
-     *    erfundenen Referenzen als eigene ausgeben. Der Absatz sagt offen,
-     *    welches Bild echt ist und welche nicht.
+     * 2. § 13 UrhG — er benennt die Herkunft der übrigen Bilder (Fotos der
+     *    Kundin, eigens berechnetes Bergrendering), damit kein fremdes Werk
+     *    vermutet wird.
      *
-     * 3. § 13 UrhG (Urhebernennung): Das Eisberg-Rendering und die
-     *    Landschaftsfotos stammen aus dem Projekt bzw. von der Kundin — die
-     *    Herkunft gehört benannt, damit kein fremdes Werk vermutet wird.
+     * ⚠️ DIES IST DIE EINZIGE KI-OFFENLEGUNG DER SEITE.
+     * Die Kennzeichnung an den Bildern selbst wurde auf Kundenwunsch entfernt.
+     * Art. 50 Abs. 4 KI-VO (EU 2024/1689) gilt ab 02.08.2026 und verlangt sie
+     * beim ersten Ansehen — ein Impressumshinweis genügt dafür nicht. Der
+     * Absatz hier ist die Ergänzung, nicht der Ersatz. Reaktivieren:
+     * `works.symbolLabel` zurück in die figcaption (app/arbeiten/page.tsx).
      *
-     * ⚠️ Zu prüfen, sobald die Markennamen auf den KI-Bildern entschieden sind
-     * (siehe lib/works.ts): Bleiben sie, gehört ein Satz zu Fremdmarken dazu.
+     * ⚠️ Ebenfalls offen: die Markennamen auf den KI-Bildern (CORROVENTA,
+     * TROTEC, SEWERIN, LGR — siehe lib/works.ts). Bleiben sie, gehört ein Satz
+     * zu Fremdmarken hierher.
      */
     {
       h: "Bildnachweis",

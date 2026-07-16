@@ -65,12 +65,21 @@ export const contact = {
   region: "Bayern",
   country: "DE",
   /**
-   * TODO(freigabe): Koordinaten entsprechen dem Ortszentrum Murnau a. Staffelsee,
-   * nicht exakt Neu-Egling 33. Vor Livegang mit der echten Position der
-   * Betriebsstätte ersetzen (Google Maps → Rechtsklick → Koordinaten kopieren).
-   * Falsche Geo-Daten schaden dem lokalen Ranking.
+   * Koordinaten des Weilers Neuegling (Quelle: OpenStreetMap/Nominatim,
+   * Typ „hamlet", abgefragt 07/2026).
+   *
+   * Vorher stand hier das Ortszentrum von Murnau — gemessen 2,18 km entfernt.
+   * Für das lokale Ranking ist das erheblich: Google gleicht die Koordinaten
+   * mit dem Unternehmensprofil ab, und der Betrieb wirbt mit „kurzen
+   * Anfahrtswegen" (Kap. 3). Der neue Wert liegt im richtigen Weiler.
+   *
+   * NOCH GENAUER GEHT: Nominatim kennt die Hausnummer Neu-Egling 33 nicht, das
+   * hier ist der Ortsmittelpunkt — je nach Lage des Hofs ein paar hundert Meter
+   * daneben. Wer es exakt will: Google Maps → Rechtsklick auf das Grundstück →
+   * Koordinaten kopieren. Wichtig ist vor allem, dass sie mit dem
+   * Google-Unternehmensprofil übereinstimmen.
    */
-  geo: { lat: 47.6789, lng: 11.2014 },
+  geo: { lat: 47.6938, lng: 11.2202 },
   /** Kap. 4: „24/7-Notfall-Service […] rund um die Uhr" */
   availability: "24/7 erreichbar — auch nachts, am Wochenende und an Feiertagen",
 } as const;
