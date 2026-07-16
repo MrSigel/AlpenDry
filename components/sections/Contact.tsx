@@ -42,21 +42,36 @@ export function Contact() {
             <h3 className="font-display text-xl font-semibold text-snow">
               {contactSection.phoneCard.title}
             </h3>
-            {/* Die Nummer ist der wichtigste CTA der Seite und trägt hier die
-                Fläche — der Platz kommt daher, dass die Spalte die Höhe des
-                Formulars füllt. */}
+            {/*
+             * Der Notruf als gefüllter signal-Button — exakt das Muster, das
+             * Hero, Header und die Leistungsseiten schon verwenden.
+             *
+             * Vorher stand die Nummer hier als 44px-Text. Sie war damit das
+             * EINZIGE Vorkommen der Telefonnummer auf der ganzen Seite, das
+             * nicht der Button-Fassung folgte — und die Karte trug vier
+             * verschiedene Schriftgrößen (19/44/14/11 px), während die
+             * WhatsApp-Karte direkt darunter mit zwei auskam. Zwei Karten
+             * übereinander, zwei Bauweisen.
+             *
+             * Der Button verliert nichts an Dominanz: signal ist laut
+             * tailwind.config.ts die einzige Farbe, die leuchten darf, und sie
+             * führt das Auge zuverlässiger als reine Schriftgröße.
+             */}
             <a
               href={contact.phoneHref}
-              className="mt-5 inline-flex items-center gap-3 font-display text-2xl font-semibold text-snow transition-colors hover:text-signal md:text-3xl"
+              className="mt-5 inline-flex w-fit items-center gap-2.5 rounded-sm bg-signal px-5 py-3.5 font-display text-sm font-semibold text-ink transition-colors duration-300 ease-glide hover:bg-glacier"
               aria-label={`Notruf ${contact.phone} — rund um die Uhr erreichbar`}
             >
-              <PhoneIcon className="h-7 w-7 shrink-0 text-signal" />
-              <span className="font-mono tracking-tight">{contact.phone}</span>
+              <PhoneIcon className="h-4 w-4 shrink-0" />
+              <span className="font-mono">{contact.phone}</span>
             </a>
-            <p className="mt-5 font-body text-sm text-frost-dim">
+            <p className="mt-4 font-body text-sm text-frost-dim">
               {contactSection.phoneCard.body}
             </p>
-            <p className="mt-6 font-mono text-2xs uppercase tracking-eyebrow text-frost-dim">
+            {/* Gleiche Größe und Schrift wie der Fließtext darüber. Vorher
+                text-2xs in Versalien-Mono — dieselbe Rolle (unterstützende
+                Information), aber die halbe Größe und eine andere Schrift. */}
+            <p className="mt-3 font-body text-sm text-frost-dim">
               {contact.availability}
             </p>
           </Reveal>
@@ -65,8 +80,11 @@ export function Contact() {
             delay={0.05}
             className="flex flex-1 flex-col justify-center rounded-sm border border-hairline bg-abyss p-7"
           >
-            {/* Gleiche Fassung wie die Telefon-Karte darüber — die beiden
-                stehen untereinander und müssen zusammengehören. */}
+            {/* Baugleich zur Telefon-Karte darüber: gleiche Überschrift, gleicher
+                Button-Zuschnitt, gleiche Abstände, gleiche Textgröße. Die beiden
+                stehen untereinander — jeder Unterschied liest sich als Fehler.
+                Nur die Button-FARBE trennt sie, und zwar mit Absicht: gefülltes
+                signal für den Notruf, Outline für den zweiten Weg. */}
             <h3 className="font-display text-xl font-semibold text-snow">
               {contactSection.whatsapp.title}
             </h3>
@@ -74,7 +92,7 @@ export function Contact() {
               href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-flex w-fit items-center gap-2.5 rounded-sm border border-hairline px-5 py-3.5 font-display text-sm font-semibold text-snow transition-all duration-300 ease-glide hover:border-glacier hover:bg-glacier-glow"
+              className="mt-5 inline-flex w-fit items-center gap-2.5 rounded-sm border border-hairline px-5 py-3.5 font-display text-sm font-semibold text-snow transition-all duration-300 ease-glide hover:border-glacier hover:bg-glacier-glow"
             >
               <WhatsAppIcon className="h-4 w-4 text-glacier" />
               WhatsApp öffnen
