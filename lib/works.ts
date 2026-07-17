@@ -3,23 +3,19 @@
  *
  * ALLE SECHS BILDER SIND KI-GENERIERT (von der Kundin geliefert, 1408×768).
  *
- * ⚠️ OFFEN — ZWEI PUNKTE, BEIDE IM README:
+ * ERLEDIGT: Die frühere Fassung hatte echte Herstellernamen auf den Geräten
+ * („CORROVENTA", „TROTEC", „SEWERIN", „LGR"), von der KI nachgebaut. Der Satz
+ * neuer Bilder (07/2026) ist markenfrei — nachgesehen, jedes einzeln.
  *
- * 1. KEINE KENNZEICHNUNG AM BILD. Auf Kundenwunsch entfernt. Der Hinweis steht
- *    nur noch im Bildnachweis des Impressums. Zu bedenken: Art. 50 Abs. 4
- *    KI-VO (EU 2024/1689) gilt ab 02.08.2026 und verlangt die Kennzeichnung
- *    fotorealistischer KI-Bilder beim ersten Ansehen — ein Impressumshinweis
- *    genügt dafür nicht. Dazu § 5 UWG: Auf einer Seite mit der Überschrift
- *    „Bisherige Arbeiten" lesen sich unbeschriftete Bilder als eigene
- *    Einsätze. Entscheidung der Kundin; die Kennzeichnung ist eine Zeile
- *    (`works.symbolLabel` + das `symbol`-Feld) und jederzeit reaktivierbar.
- *
- * 2. MARKENNAMEN. Die KI hat echte Herstellernamen auf die Geräte gerendert:
- *    „CORROVENTA CTR 1000XT" und „TROTEC" (trocknung — in der Kachel klar
- *    lesbar), „SEWERIN AQUAPHON" (leckageortung), „LGR 7000 XLI"
- *    (wasserschaden). Fremde Marken in der eigenen Werbung können eine
- *    Partnerschaft suggerieren, die es nicht gibt — und die Geräte gehören dem
- *    Betrieb nicht.
+ * ⚠️ OFFEN — im README:
+ * KEINE KENNZEICHNUNG AM BILD. Auf Kundenwunsch entfernt. Der Hinweis steht
+ * nur noch im Bildnachweis des Impressums. Zu bedenken: Art. 50 Abs. 4 KI-VO
+ * (EU 2024/1689) gilt ab 02.08.2026 und verlangt die Kennzeichnung
+ * fotorealistischer KI-Bilder beim ersten Ansehen — ein Impressumshinweis
+ * genügt dafür nicht. Dazu § 5 UWG: Auf einer Seite mit der Überschrift
+ * „Bisherige Arbeiten" lesen sich unbeschriftete Bilder als eigene Einsätze.
+ * Entscheidung der Kundin; die Kennzeichnung ist eine Zeile
+ * (`works.symbolLabel` + das `symbol`-Feld) und jederzeit reaktivierbar.
  *
  * Die echte Vorher/Nachher-Aufnahme eines abgeschlossenen Auftrags liegt weiter
  * im Projektordner (Wasserschaden.jpg), wird aber nicht mehr verwendet: Die
@@ -75,48 +71,48 @@ export const works = {
       body: "Sofortmaßnahmen, Rückbau, Wiederherstellung — vom Notruf bis zur Übergabe.",
       image: "wasserschaden",
       symbol: true,
-      alt: "Kellerraum nach einem Wasserschaden: Bautrockner und Turbolüfter stehen auf dem aufgerissenen Boden, der Wandsockel ist geöffnet.",
-      caption: "Sofortmaßnahmen im Kellerraum",
+      alt: "Eine Hand hält ein Feuchtemessgerät an eine Wand; das Display zeigt einen Messwert.",
+      caption: "Gemessen wird zuerst",
     },
     {
       title: "Leckageortung",
       body: "Zerstörungsarme Ortung mit Messtechnik: die Stelle finden, bevor geöffnet wird.",
       image: "leckageortung",
       symbol: true,
-      alt: "Kellerraum mit Kupferleitungen und Heizungsverteiler; aus einer Leitung tropft Wasser. Davor steht ein akustisches Ortungsgerät mit Kopfhörer auf einem Transportkoffer.",
-      caption: "Akustische Ortung an der Leitung",
+      alt: "Aus einem Riss in einer Kupferleitung tropft Wasser an einer Wand herunter.",
+      caption: "Die undichte Stelle",
     },
     {
       title: "Technische Trocknung",
       body: "Aufbau der Trocknungstechnik, laufende Überwachung, dokumentierter Verlauf.",
       image: "trocknung",
       symbol: true,
-      alt: "Adsorptionstrockner mit gelbem Luftschlauch in einer ausgeräumten Halle, dazu mehrere Turbolüfter auf dem feuchten Betonboden.",
-      caption: "Trocknungstechnik im Aufbau",
+      alt: "Ausgeräumter Raum mit Parkettboden; an der Wand zeichnen sich großflächige Feuchtigkeitsränder ab.",
+      caption: "Feuchtigkeit in der Wand",
     },
     {
       title: "Schimmelsanierung",
       body: "Ursache messen, fachgerecht sanieren, Nachkontrolle.",
       image: "schimmel",
       symbol: true,
-      alt: "Von Schimmel befallene Wandecke, abgesperrt mit rotem Flatterband. Der Boden ist mit Folie ausgelegt, davor Spachtel, Bürste und ein Luftreiniger.",
-      caption: "Abgeschottet, bevor saniert wird",
+      alt: "Dunkle Schimmelflecken breiten sich in einer Zimmerecke entlang der Decke aus.",
+      caption: "Befall an der Deckenkante",
     },
     {
       title: "Hochwasser-Prävention",
       body: "Außenanlagen, die Starkregen ableiten, statt ihn ins Gebäude zu lassen.",
       image: "hochwasser",
       symbol: true,
-      alt: "Eine lange Sandsackbarriere mit Folienabdeckung schützt eine Ortschaft mit Fachwerkhäusern vor einem über die Ufer getretenen Fluss.",
-      caption: "Barriere gegen das Hochwasser",
+      alt: "Kellerraum mit fest installierten Schutzbarrieren an den Zugängen, dazu gestapelte Sandsäcke.",
+      caption: "Vorbereitet für den Ernstfall",
     },
     {
       title: "Dokumentation",
       body: "Messprotokolle, Fotodokumentation und digitale Berichte für die Schadenakte.",
       image: "dokumentation",
       symbol: true,
-      alt: "Arbeitstisch mit sortierten Unterlagen, Ordnern und Ablagekästen, dahinter ein Regal mit beschrifteten Archivkartons.",
-      caption: "Alles abgelegt und auffindbar",
+      alt: "Aufgeräumter Büroarbeitsplatz mit Monitor und Drucker in einem Technikraum.",
+      caption: "Jeder Auftrag wird erfasst",
     },
   ],
 

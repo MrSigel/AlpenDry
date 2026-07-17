@@ -283,14 +283,29 @@ export const datenschutz = {
     },
     {
       /**
-       * KORRIGIERT: Die Vorlage nannte hier Wix.com Ltd. (Tel Aviv, Israel).
-       * Diese Website läuft auf Next.js bei IONOS — der Wix-Absatz stammt vom
-       * alten Auftritt. Falscher Hoster = unrichtige Pflichtangabe.
+       * ZWEIMAL KORRIGIERT — bitte nicht wieder „zurückreparieren".
+       *
+       * 1. Die anwaltliche Vorlage nannte Wix.com Ltd. (Tel Aviv, Israel) —
+       *    sie entstand für den alten Wix-Auftritt.
+       * 2. Danach stand hier IONOS SE. Auch das war falsch: Der A-Record der
+       *    Domain zeigt auf 216.198.79.1, und der gehört laut ARIN-Abfrage
+       *    Vercel, Inc.; das www-CNAME zeigt auf vercel-dns. Die Seite läuft
+       *    also auf Vercel, nicht bei IONOS. (IONOS bleibt der Anbieter des
+       *    E-Mail-Postfachs — siehe § 6. Beides zu verwechseln ist naheliegend
+       *    und war der Fehler.)
+       *
+       * Ein falsch benannter Hoster ist eine unrichtige Pflichtangabe und
+       * abmahnbar — genau der Grund, aus dem der Wix-Absatz raus musste.
+       *
+       * ⚠️ Vercel Inc. sitzt in den USA. Die Anschrift unten bitte gegen die
+       * Angaben im Vercel-DPA prüfen, und dort auch den AV-Vertrag abschließen
+       * (vercel.com/legal/dpa). Wie der Datentransfer abgesichert wird, gehört
+       * anwaltlich geprüft.
        */
       h: "7. Hosting der Website",
       body: [
         { t: "p", text: "Unsere Website wird bereitgestellt über:" },
-        { t: "p", text: "IONOS SE, Elgendorfer Straße 57, 56410 Montabaur" },
+        { t: "p", text: "Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA" },
         {
           t: "p",
           text: "Beim Besuch unserer Website können technische Daten verarbeitet werden, insbesondere:",
@@ -309,6 +324,10 @@ export const datenschutz = {
           t: "p",
           text: "Die Verarbeitung erfolgt zur sicheren Bereitstellung und technischen Verbesserung unserer Website. Rechtsgrundlage ist unser berechtigtes Interesse an einem sicheren Betrieb (Art. 6 Abs. 1 lit. f DSGVO). Mit dem Hoster besteht ein Vertrag zur Auftragsverarbeitung.",
         },
+        {
+          t: "p",
+          text: "Der Anbieter hat seinen Sitz in den USA. Dabei können personenbezogene Daten — insbesondere Ihre IP-Adresse — in die USA übermittelt werden. Die Übermittlung ist durch geeignete Garantien abgesichert.",
+        },
       ],
     },
     /**
@@ -319,22 +338,26 @@ export const datenschutz = {
      * inklusive Schadensfoto. Wer verarbeitet, gehört benannt (Art. 13 Abs. 1
      * lit. e DSGVO) — genau wie beim Hoster.
      *
-     * ⚠️ ZWEI DINGE MUSS DIE KUNDIN VOR LIVEGANG ERLEDIGEN, sonst stimmt
-     * dieser Absatz nicht:
-     *   1. AV-VERTRAG mit Resend schließen (im Resend-Dashboard unter
-     *      Settings → Legal → DPA abrufbar). Ohne ihn ist die Verarbeitung
-     *      formal unzulässig.
-     *   2. REGION auf Europa stellen (Resend: Settings → Region → eu-west-1),
-     *      BEVOR die Domain verifiziert wird — die Region lässt sich später
-     *      nicht mehr ändern, und die DNS-Einträge unterscheiden sich je
-     *      Region.
+     * ⚠️ REGION IST US-EAST-1, NICHT EU.
+     * Der gelieferte MX-Eintrag lautet `feedback-smtp.us-east-1.amazonses.com`
+     * — die Domain wurde also in der US-Region verifiziert. Eine frühere
+     * Fassung dieses Absatzes behauptete „Rechenzentrum innerhalb der
+     * Europäischen Union"; das war damit unrichtig und ist korrigiert. Der Text
+     * nennt jetzt die USA.
      *
-     * ⚠️ Resend Inc. sitzt in den USA. Auch bei EU-Region bleibt ein Zugriff
-     * durch die US-Muttergesellschaft denkbar; ob der Transfer über
-     * Standardvertragsklauseln oder das EU-US Data Privacy Framework
-     * abgesichert wird, gehört anwaltlich geprüft und dann hier exakt benannt.
-     * Der Absatz nennt den Punkt bewusst, statt ihn zu verschweigen — aber die
-     * Formulierung ist kein Rechtsrat.
+     * Die Region lässt sich nachträglich NICHT umstellen. Wer EU-Verarbeitung
+     * will, muss die Domain in einem Konto mit Region `eu-west-1` neu
+     * verifizieren — dann ändern sich MX- und DKIM-Werte, und dieser Absatz
+     * muss zurück auf EU.
+     *
+     * ⚠️ AV-VERTRAG mit Resend schließen (Dashboard → Settings → Legal → DPA).
+     * Ohne ihn ist die Verarbeitung formal unzulässig — der Absatz behauptet
+     * ihn bereits.
+     *
+     * ⚠️ Ob der Transfer über Standardvertragsklauseln oder das EU-US Data
+     * Privacy Framework abgesichert wird, gehört anwaltlich geprüft und dann
+     * hier exakt benannt. Der Absatz nennt den Punkt bewusst, statt ihn zu
+     * verschweigen — die Formulierung ist aber kein Rechtsrat.
      */
     {
       h: "8. Versand von Formularanfragen",
@@ -350,7 +373,7 @@ export const datenschutz = {
         },
         {
           t: "p",
-          text: "Rechtsgrundlage ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die Sie mit dem Absenden des Formulars erteilen, sowie unser berechtigtes Interesse an einer zuverlässigen Zustellung Ihrer Anfrage (Art. 6 Abs. 1 lit. f DSGVO). Mit dem Dienstleister besteht ein Vertrag zur Auftragsverarbeitung. Die Daten werden in einem Rechenzentrum innerhalb der Europäischen Union verarbeitet; eine Übermittlung in die USA ist nicht ausgeschlossen und ist durch geeignete Garantien abgesichert.",
+          text: "Rechtsgrundlage ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die Sie mit dem Absenden des Formulars erteilen, sowie unser berechtigtes Interesse an einer zuverlässigen Zustellung Ihrer Anfrage (Art. 6 Abs. 1 lit. f DSGVO). Mit dem Dienstleister besteht ein Vertrag zur Auftragsverarbeitung. Die Verarbeitung erfolgt auf Servern in den USA; die Übermittlung ist durch geeignete Garantien abgesichert.",
         },
         {
           t: "p",

@@ -1,0 +1,20 @@
+Typ: A
+Host: @
+Wert: 216.198.79.1
+
+Typ: CNAME
+Host: www
+Wert: 30829f72a3837b00.vercel-dns-017.com.
+
+Typ: TXT
+Host: resend._domainkey
+Wert: p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCwN6TNzhGAN9A9wiuazPwtxHJRGheJWPiJPQvLksZb4UTnw6z+AtHDUhEKgKSB4J76zyNBW/zUn2O/NF8tJ6bWSzIxsaN2/9iIr8ygzmHztYMA1TECyQ2p9Wtxer1IlWRmrTqwTXTn0OXygX3QWIzTas8x+lShmthgN8H/BYL0awIDAQAB
+
+Typ: MX
+Host: send
+Wert: feedback-smtp.us-east-1.amazonses.com
+Priorität: 10
+
+Typ: TXT
+Host: send
+Wert: v=spf1 include:amazonses.com ~all
