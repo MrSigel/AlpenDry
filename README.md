@@ -20,18 +20,29 @@ Diese Stellen sind bewusst markiert und brauchen eine Entscheidung:
 | **Google-Bewertungen** | `lib/content.ts` → `trust.reviewsActive` | Steht auf `false`. Erst mit echten Zahlen aus dem Unternehmensprofil aktivieren — erfundene Bewertungen sind irreführende Werbung. |
 | **Presse-Siegel** | `lib/content.ts` → `trust.pressSealActive` | Steht auf `false`. Darf laut Business Case Kap. 9 erst erscheinen, wenn der Artikel wirklich veröffentlicht ist (sonst § 5 UWG). |
 | **FAQ-Antworten** | `lib/content.ts` → `faq` | Mit `@freigabe` markiert: aus belegten Fakten abgeleitet, im Business Case aber nicht wörtlich beantwortet. Fachlich prüfen. |
-| **Resend einrichten** | IONOS-Panel + resend.com | ⚠️ **Vor Livegang.** Region auf `eu-west-1` stellen (danach **nicht mehr änderbar**), Domain verifizieren, AV-Vertrag schließen, API-Key setzen. Anleitung unten unter „E-Mail-Versand (Resend)". Fehlen `RESEND_API_KEY`, `CONTACT_FROM` oder `CONTACT_TO`, antwortet der Endpunkt mit einem Fehler — das Formular meldet dann **nicht** „Danke", der Fehler fällt also auf. Eine falsch gesetzte **Zieladresse** fällt dagegen niemandem auf: einmal mit einer echten Testanfrage prüfen. |
+| **Vercel: Domain + ENV** | Vercel → Settings | ⚠️ **Vor Livegang.** DNS allein genügt nicht: Die Domain muss im Vercel-Projekt eingetragen sein (`www.alpendry.de` als primär — der Code nutzt sie in `site.url`), und `RESEND_API_KEY`, `CONTACT_FROM`, `CONTACT_TO` gehören in die Environment Variables **von Vercel**, nicht ins IONOS-Panel. Details unter „E-Mail-Versand (Resend)". |
+| **AV-Verträge** | resend.com, vercel.com | ⚠️ Bei **Resend** (Settings → Legal → DPA) und bei **Vercel** (vercel.com/legal/dpa) abschließen. Die Datenschutzerklärung (§§ 7, 8) behauptet beide bereits — ohne Vertrag ist die Verarbeitung formal unzulässig und der Text unrichtig. |
+| **Resend-Region ist USA** | — | Die Domain wurde in `us-east-1` verifiziert (erkennbar am MX-Wert). Nachträglich **nicht umstellbar**. Für EU-Verarbeitung müsste sie in einem Konto mit `eu-west-1` neu verifiziert werden — dann ändern sich MX und DKIM, und § 8 muss zurück auf EU. Entscheidung der Kundin bzw. der Anwältin. |
 | **Markennamen auf den KI-Bildern** | `lib/works.ts`, `public/arbeiten/` | ⚠️ **Entscheidung nötig.** Die KI hat echte Herstellernamen auf die Geräte gerendert, teils verzerrt: **„CORROVENTA CTR 1000XT" und „TROTEC"** (trocknung — in der Kachel klar lesbar), **„SEWERIN AQUAPHON"** (leckageortung), **„LGR 7000 XLI"**. Fremde Marken in der eigenen Werbung können den Eindruck einer Partnerschaft erwecken, die es nicht gibt — und die Geräte gehören dem Betrieb nicht. Drei Wege: (a) Bilder ohne Markennamen neu generieren (sauberste Lösung), (b) die Stellen wegretuschieren, (c) juristisch abklären lassen. |
 | **KI-Bilder ohne Kennzeichnung** | `lib/works.ts`, `app/arbeiten/page.tsx` | ⚠️ Alle sechs Bilder auf /arbeiten sind KI-generiert und tragen auf Kundenwunsch **keine** Kennzeichnung mehr. Der Hinweis steht nur noch im Bildnachweis des Impressums. Zu bedenken: **Art. 50 Abs. 4 KI-VO (EU 2024/1689) gilt ab 02.08.2026** und verlangt die Kennzeichnung fotorealistischer KI-Bilder beim ersten Ansehen — ein Impressumshinweis genügt dafür nicht. Dazu § 5 UWG: Auf einer Seite mit der Überschrift „Bisherige Arbeiten" lesen sich unbeschriftete Bilder als eigene Einsätze. Reaktivieren ist eine Zeile: `works.symbolLabel` wieder in die `figcaption` einsetzen. Die echte Vorher/Nachher-Aufnahme (Wasserschaden.jpg) wird nicht mehr verwendet — sie war das einzige Bild, das etwas belegte. |
 | **Einsatzfotos fehlen** | `lib/photos.ts` | Die drei gelieferten Fotos zeigen die **Region**, keinen Einsatz — kein Team, keine Technik, keine Baustelle. Sie stehen deshalb nur dort, wo es ums Gebiet und um Wasser geht. Business Case Kap. 6 verlangt „echte Bilder von Team und Einsätzen": dafür braucht es Fotos von der Baustelle. Drei Leistungsseiten haben bewusst kein Bild, statt ein beliebiges zu tragen. |
 | **Orte auf den Fotos** | `lib/photos.ts` | Die Bildunterschriften beschreiben, was zu sehen ist, statt Orte zu behaupten. Der See mit der Insel könnte der Staffelsee sein — unbestätigt. Sobald die Kundin die Orte nennt, dürfen die Unterschriften konkret werden. |
-| **Rechtstexte** | `lib/legal.ts`, `lib/agb.ts` | Von einer Anwältin/einem Anwalt geliefert. **Eine Abweichung** von der Zulieferung: Der Hoster-Absatz (Datenschutz § 7) nannte Wix.com Ltd., Tel Aviv — die Vorlage entstand für den alten Wix-Auftritt. Ersetzt durch IONOS SE, von der Kundin bestätigt. Neu ergänzt: **Bildnachweis** im Impressum (KI-Herkunft der Bilder, § 5 UWG + § 13 UrhG). Beides gehört bei der nächsten anwaltlichen Durchsicht gegengelesen. |
+| **Rechtstexte** | `lib/legal.ts`, `lib/agb.ts` | Von einer Anwältin/einem Anwalt geliefert. **Drei Abweichungen**, alle gegenzulesen: (1) **§ 7 Hoster** — die Vorlage nannte Wix.com Ltd. (alter Auftritt), zwischenzeitlich stand dort IONOS; beides falsch. Der A-Record zeigt auf Vercel, Inc., jetzt korrigiert samt USA-Hinweis. IONOS bleibt in § 6 fürs Postfach. (2) **§ 8 Resend** neu — Auftragsverarbeiter, Region USA. (3) **Bildnachweis** im Impressum neu (KI-Herkunft, § 5 UWG + § 13 UrhG). |
 | **Google Analytics** | `lib/consent.ts` | Consent-Unterbau steht, GA ist noch nicht eingebunden. Mess-ID ergänzen; es lädt ausschließlich nach Einwilligung. |
 
 ## Hosting
 
-Braucht **Node-Hosting** (IONOS Deploy Now oder VPS) — kein statischer Export:
-`/api/kontakt` versendet das Kontaktformular serverseitig.
+Läuft auf **Vercel** (A-Record `216.198.79.1`, www-CNAME auf `vercel-dns`).
+Kein statischer Export möglich: `/api/kontakt` versendet das Kontaktformular
+serverseitig.
+
+**IONOS ist nicht der Hoster**, sondern nur Domain-/DNS-Anbieter und Betreiber
+des Postfachs `info@alpendry.de`. Die beiden zu verwechseln war ein Fehler in
+einer früheren Fassung der Datenschutzerklärung — § 7 nennt jetzt Vercel, § 6
+weiterhin IONOS fürs Postfach.
+
+Alle Umgebungsvariablen gehören deshalb ins **Vercel-Projekt**
+(Settings → Environment Variables), nicht ins IONOS-Panel.
 
 ## E-Mail-Versand (Resend)
 
@@ -41,47 +52,48 @@ verschickt, landet ohne sauberes SPF/DKIM schnell im Spam — und niemand merkt
 es. Resend signiert per DKIM auf der eigenen Domain und protokolliert jede
 Zustellung. Das kostenlose Paket reicht (3.000 Mails/Monat, 100/Tag).
 
-### Einrichtung — Reihenfolge einhalten
+Die Domain ist bereits in Resend angelegt — **Region `us-east-1`** (erkennbar am
+MX-Wert). Die Region ist nachträglich **nicht umstellbar**; für EU-Verarbeitung
+müsste die Domain in einem Konto mit `eu-west-1` neu verifiziert werden, dann
+ändern sich MX und DKIM. Die Datenschutzerklärung (§ 8) nennt deshalb die USA.
 
-1. **Konto anlegen** auf resend.com.
-2. **Region auf Europa stellen** (Settings → Region → `eu-west-1`), **bevor**
-   die Domain verifiziert wird. ⚠️ Die Region lässt sich später **nicht mehr
-   ändern**, und die DNS-Werte unterscheiden sich je Region. Das ist der Schritt,
-   den man nicht nachholen kann.
-3. **Domain hinzufügen**: `alpendry.de` (Domains → Add Domain).
-4. **AV-Vertrag abschließen** (Settings → Legal → DPA). Ohne ihn ist die
-   Verarbeitung formal unzulässig — die Datenschutzerklärung behauptet ihn
-   bereits (§ 8).
-5. **API-Key erzeugen** (API Keys → Create), Recht „Sending access" genügt.
-   In `RESEND_API_KEY` im IONOS-Panel hinterlegen.
+### DNS-Einträge — an die Kundin zu übergeben
 
-### DNS-Einträge für die Kundin
-
-Resend zeigt die **exakten Werte** nach Schritt 3 im Dashboard an — DKIM-Schlüssel
-und Regions-Host sind pro Konto verschieden und können hier nicht vorab stehen.
-Es sind drei Einträge dieser Art:
-
-| Typ | Name | Wert | Zweck |
+| Typ | Host | Wert | Zweck |
 |---|---|---|---|
-| MX | `send.alpendry.de` | `feedback-smtp.eu-west-1.amazonses.com` (Priorität 10) | Bounces / Zustellfeedback |
-| TXT | `send.alpendry.de` | `v=spf1 include:amazonses.com ~all` | SPF |
-| TXT | `resend._domainkey.alpendry.de` | `p=…` (langer Schlüssel aus dem Dashboard) | DKIM-Signatur |
+| A | `@` | `216.198.79.1` | Domain → Vercel |
+| CNAME | `www` | `30829f72a3837b00.vercel-dns-017.com.` | www → Vercel |
+| TXT | `resend._domainkey` | `p=MIGfMA0…` (langer Schlüssel) | DKIM-Signatur |
+| MX | `send` | `feedback-smtp.us-east-1.amazonses.com`, Priorität `10` | Bounces |
+| TXT | `send` | `v=spf1 include:amazonses.com ~all` | SPF |
 
-**Das bestehende Postfach bleibt unberührt** — der wichtigste Punkt für die
-Kundin: Alle drei Einträge hängen an der Subdomain `send.` bzw. an einem eigenen
-DKIM-Selektor. Der **MX-Eintrag der Hauptdomain wird nicht angefasst**, Mails an
-`info@alpendry.de` kommen weiter bei IONOS an. Auch der bestehende SPF-Eintrag
-der Hauptdomain bleibt, wie er ist.
+**Das Postfach bleibt unberührt** — der wichtigste Punkt für die Kundin: Die
+Resend-Einträge hängen an der Subdomain `send.` bzw. an einem eigenen
+DKIM-Selektor. Der **MX der Hauptdomain wird nicht angefasst**, Mails an
+`info@alpendry.de` kommen weiter bei IONOS an, und es entsteht **kein zweiter
+SPF-Eintrag auf demselben Namen** (das machte beide ungültig).
 
-Trotzdem gilt: **Niemals zwei SPF-Einträge auf denselben Namen** — dann sind
-beide ungültig. Hier passiert das nicht, weil der neue auf `send.` liegt.
+### DNS allein genügt nicht — drei Schritte fehlen
 
-### Nach dem Einrichten prüfen
+1. **Domain im Vercel-Projekt eintragen** (Settings → Domains). Die DNS zeigt
+   sonst auf Vercel, aber Vercel weiß nicht, welches Projekt gemeint ist.
+   `www.alpendry.de` als primär setzen — der Code nutzt diese Adresse für
+   Canonicals, Sitemap und JSON-LD (`site.url`); `alpendry.de` leitet dorthin um.
+2. **Umgebungsvariablen in Vercel setzen** (Settings → Environment Variables):
+   `RESEND_API_KEY`, `CONTACT_FROM`, `CONTACT_TO`. Ohne sie antwortet das
+   Formular mit einem Fehler.
+3. **AV-Verträge abschließen** — bei Resend (Settings → Legal → DPA) und bei
+   Vercel (vercel.com/legal/dpa). Die Datenschutzerklärung behauptet beide
+   bereits.
 
-Eine echte Testanfrage über das Formular senden und kontrollieren, dass sie im
-Postfach der Kundin ankommt (nicht im Spam). Resend zeigt jede Mail unter
-„Logs" — steht sie dort als `delivered`, aber nichts im Postfach, liegt es am
-Spamfilter, nicht am Code.
+### Danach prüfen
+
+- **Resend**: Domain muss auf `Verified` stehen (kann nach dem DNS-Eintrag
+  einige Minuten dauern).
+- **Formular**: Eine echte Testanfrage senden und kontrollieren, dass sie im
+  Postfach der Kundin ankommt — nicht im Spam. Resend zeigt jede Mail unter
+  „Logs"; steht sie dort als `delivered`, aber nichts im Postfach, liegt es am
+  Spamfilter, nicht am Code.
 
 ## Architekturentscheidungen
 
