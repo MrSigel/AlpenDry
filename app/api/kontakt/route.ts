@@ -1,23 +1,36 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { contactSection } from "@/lib/content";
 
 /**
  * Kontaktformular-Handler (plan.md, Ordnerstruktur).
  *
- * Versendet die Anfrage per SMTP an das Postfach info@alpendry.de — die Kundin
- * erhält jede Anfrage direkt als E-Mail, ohne Website-Backend zu pflegen.
- * Foto (falls angehängt) geht als Attachment mit.
+ * Versendet jede Anfrage per Resend an das Postfach der Kundin. Foto (falls
+ * angehängt) geht als Attachment mit.
  *
- * Zugangsdaten kommen ausschließlich aus Umgebungsvariablen (.env, nie im Code):
- *   SMTP_HOST      z. B. smtp.ionos.de
- *   SMTP_PORT      587 (STARTTLS) oder 465 (SSL)
- *   SMTP_USER      das IONOS-Postfach (Login)
- *   SMTP_PASSWORD  das Postfach-Passwort
- *   SMTP_FROM      Absenderadresse (i. d. R. = SMTP_USER)
- *   CONTACT_TO     Zieladresse (Default: info@alpendry.de)
+ * WARUM RESEND STATT SMTP
+ * Vorher lief der Versand über nodemailer und das IONOS-Postfach. Das
+ * funktioniert, hat aber zwei Schwächen, die bei einem Notdienst-Formular
+ * teuer sind:
+ *   1. Zustellbarkeit — eine Mail, die ein Webserver im Namen der Domain
+ *      verschickt, landet ohne sauberes SPF/DKIM schnell im Spam. Genau die
+ *      Anfrage, auf die es ankommt, sieht dann niemand.
+ *   2. Kein Feedback — schlägt der SMTP-Versand fehl oder bounct die Mail,
+ *      erfährt es niemand. Resend protokolliert jede Zustellung im Dashboard.
+ * Resend signiert per DKIM auf der eigenen Domain und macht Zustellung
+ * nachvollziehbar. Das kostenlose Paket reicht: 3.000 Mails/Monat, 100/Tag —
+ * ein Notdienst-Formular liegt weit darunter.
  *
- * nodemailer braucht die Node-Runtime — kein Edge, kein statischer Export.
+ * Umgebungsvariablen (nie im Code):
+ *   RESEND_API_KEY   aus dem Resend-Dashboard (API Keys → Create)
+ *   CONTACT_FROM     Absender, MUSS auf der in Resend verifizierten Domain
+ *                    liegen — sonst weist die API die Mail ab.
+ *                    Vorgesehen: "AlpenDry Kontaktformular <formular@alpendry.de>"
+ *   CONTACT_TO       Zieladresse, z. B. info@alpendry.de
+ *
+ * DNS: Die Domain muss in Resend verifiziert sein. Welche Einträge die Kundin
+ * setzen muss und warum das IONOS-Postfach dabei NICHT kaputtgeht, steht im
+ * README unter „E-Mail-Versand (Resend)".
  */
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -64,7 +77,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "consent_required" }, { status: 400 });
   }
 
-  // Optionales Foto als Anhang.
+  /**
+   * Optionales Foto als Anhang.
+   *
+   * Resend erwartet den Inhalt als Base64-String oder Buffer. Base64 bläht die
+   * Nutzlast um rund ein Drittel auf — bei den erlaubten 10 MB sind das ~13 MB,
+   * weit unter Resends 40-MB-Grenze.
+   */
   const attachments: { filename: string; content: Buffer }[] = [];
   const photo = form.get("photo");
   if (photo instanceof File && photo.size > 0) {
@@ -75,38 +94,38 @@ export async function POST(req: Request) {
     attachments.push({ filename: photo.name || "schaden.jpg", content: buf });
   }
 
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_FROM } = process.env;
-  /**
-   * Zieladresse. Aktuell auf Wunsch glowreel.enrico@gmail.com (zum Testen);
-   * über CONTACT_TO in der .env ohne Code-Änderung umstellbar — vor Livegang
-   * auf info@alpendry.de setzen.
-   *
-   * Hinweis: Solange die Anfragen an ein Gmail-Postfach gehen, verarbeitet
-   * Google die Kundendaten inklusive Schadenfotos. Die Datenschutzerklärung
-   * nennt derzeit nur IONOS als E-Mail-Dienstleister.
-   */
-  const to = process.env.CONTACT_TO || "glowreel.enrico@gmail.com";
+  const { RESEND_API_KEY, CONTACT_FROM, CONTACT_TO } = process.env;
 
-  if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASSWORD) {
-    // Fehlkonfiguration soll im Log auffallen, dem Nutzer aber nichts verraten.
-    console.error("[kontakt] SMTP-Umgebungsvariablen fehlen — E-Mail nicht gesendet.");
+  /**
+   * Kein Default für Absender und Ziel — bewusst.
+   *
+   * Vorher stand hier `CONTACT_TO || "glowreel.enrico@gmail.com"`. Ein solcher
+   * Fallback ist gefährlich: Fehlt die Variable auf dem Server, läuft alles
+   * scheinbar normal weiter, und die Anfragen gehen still an die falsche
+   * Adresse — bei einem Notdienst-Formular sind das verlorene Aufträge, die
+   * niemandem auffallen. Ohne Konfiguration soll es hörbar krachen (Log +
+   * Fehler), statt leise das Falsche zu tun.
+   */
+  if (!RESEND_API_KEY || !CONTACT_FROM || !CONTACT_TO) {
+    console.error(
+      "[kontakt] Nicht konfiguriert — es fehlt:",
+      [
+        !RESEND_API_KEY && "RESEND_API_KEY",
+        !CONTACT_FROM && "CONTACT_FROM",
+        !CONTACT_TO && "CONTACT_TO",
+      ]
+        .filter(Boolean)
+        .join(", "),
+    );
     return NextResponse.json({ ok: false, error: "mail_unconfigured" }, { status: 500 });
   }
-
-  const port = Number(SMTP_PORT);
-  const transporter = nodemailer.createTransport({
-    host: SMTP_HOST,
-    port,
-    secure: port === 465, // 465 = SSL, 587 = STARTTLS
-    auth: { user: SMTP_USER, pass: SMTP_PASSWORD },
-  });
 
   const lines = [
     "Neue Anfrage über das Kontaktformular alpendry.de",
     "",
-    `Name:            ${name}`,
-    `Telefon:         ${phone}`,
-    `Ort / PLZ:       ${place}`,
+    `Name:             ${name}`,
+    `Telefon:          ${phone}`,
+    `Ort / PLZ:        ${place}`,
     `Art des Schadens: ${damage}`,
     "",
     "Kurzbeschreibung:",
@@ -116,9 +135,9 @@ export async function POST(req: Request) {
   ];
 
   try {
-    await transporter.sendMail({
-      from: SMTP_FROM || SMTP_USER,
-      to,
+    const { data, error } = await new Resend(RESEND_API_KEY).emails.send({
+      from: CONTACT_FROM,
+      to: [CONTACT_TO],
       subject: `Wasserschaden-Anfrage: ${damage} — ${place}`,
       text: lines.join("\n"),
       // Rückruf direkt aus der Mail heraus: Antwort geht nicht an den Kunden
@@ -126,6 +145,18 @@ export async function POST(req: Request) {
       // steht prominent im Text.
       attachments,
     });
+
+    /**
+     * Resend wirft NICHT bei einem API-Fehler, sondern liefert `{ error }`.
+     * Ohne diese Prüfung liefe der Handler in `ok: true` — der Kunde sähe
+     * „Danke", und die Anfrage wäre weg. Genau der Fehler, den ein
+     * Notdienst-Formular nicht machen darf.
+     */
+    if (error) {
+      console.error("[kontakt] Resend hat abgelehnt:", error);
+      return NextResponse.json({ ok: false, error: "send_failed" }, { status: 502 });
+    }
+    console.info("[kontakt] Gesendet, Resend-ID:", data?.id);
   } catch (err) {
     console.error("[kontakt] Versand fehlgeschlagen:", err);
     return NextResponse.json({ ok: false, error: "send_failed" }, { status: 502 });

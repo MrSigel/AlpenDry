@@ -7,7 +7,7 @@ Next.js (App Router) · TypeScript · Tailwind · React Three Fiber · Framer Mo
 
 ```bash
 npm install
-cp .env.example .env.local   # SMTP-Zugangsdaten eintragen
+cp .env.example .env.local   # Resend-Key und Adressen eintragen
 npm run dev
 ```
 
@@ -20,7 +20,7 @@ Diese Stellen sind bewusst markiert und brauchen eine Entscheidung:
 | **Google-Bewertungen** | `lib/content.ts` → `trust.reviewsActive` | Steht auf `false`. Erst mit echten Zahlen aus dem Unternehmensprofil aktivieren — erfundene Bewertungen sind irreführende Werbung. |
 | **Presse-Siegel** | `lib/content.ts` → `trust.pressSealActive` | Steht auf `false`. Darf laut Business Case Kap. 9 erst erscheinen, wenn der Artikel wirklich veröffentlicht ist (sonst § 5 UWG). |
 | **FAQ-Antworten** | `lib/content.ts` → `faq` | Mit `@freigabe` markiert: aus belegten Fakten abgeleitet, im Business Case aber nicht wörtlich beantwortet. Fachlich prüfen. |
-| **Mail-Ziel auf dem Server** | IONOS-Panel → `CONTACT_TO` | `.env.example` steht jetzt auf `info@alpendry.de`. Das ist aber nur die **Vorlage** — gelesen wird die Variable im IONOS-Panel. Steht dort noch die alte Testadresse, gehen alle Anfragen weiter dorthin, und **niemand merkt es**, weil das Formular trotzdem „Danke" meldet. Vor Livegang einmal mit einer echten Testanfrage prüfen. |
+| **Resend einrichten** | IONOS-Panel + resend.com | ⚠️ **Vor Livegang.** Region auf `eu-west-1` stellen (danach **nicht mehr änderbar**), Domain verifizieren, AV-Vertrag schließen, API-Key setzen. Anleitung unten unter „E-Mail-Versand (Resend)". Fehlen `RESEND_API_KEY`, `CONTACT_FROM` oder `CONTACT_TO`, antwortet der Endpunkt mit einem Fehler — das Formular meldet dann **nicht** „Danke", der Fehler fällt also auf. Eine falsch gesetzte **Zieladresse** fällt dagegen niemandem auf: einmal mit einer echten Testanfrage prüfen. |
 | **Markennamen auf den KI-Bildern** | `lib/works.ts`, `public/arbeiten/` | ⚠️ **Entscheidung nötig.** Die KI hat echte Herstellernamen auf die Geräte gerendert, teils verzerrt: **„CORROVENTA CTR 1000XT" und „TROTEC"** (trocknung — in der Kachel klar lesbar), **„SEWERIN AQUAPHON"** (leckageortung), **„LGR 7000 XLI"**. Fremde Marken in der eigenen Werbung können den Eindruck einer Partnerschaft erwecken, die es nicht gibt — und die Geräte gehören dem Betrieb nicht. Drei Wege: (a) Bilder ohne Markennamen neu generieren (sauberste Lösung), (b) die Stellen wegretuschieren, (c) juristisch abklären lassen. |
 | **KI-Bilder ohne Kennzeichnung** | `lib/works.ts`, `app/arbeiten/page.tsx` | ⚠️ Alle sechs Bilder auf /arbeiten sind KI-generiert und tragen auf Kundenwunsch **keine** Kennzeichnung mehr. Der Hinweis steht nur noch im Bildnachweis des Impressums. Zu bedenken: **Art. 50 Abs. 4 KI-VO (EU 2024/1689) gilt ab 02.08.2026** und verlangt die Kennzeichnung fotorealistischer KI-Bilder beim ersten Ansehen — ein Impressumshinweis genügt dafür nicht. Dazu § 5 UWG: Auf einer Seite mit der Überschrift „Bisherige Arbeiten" lesen sich unbeschriftete Bilder als eigene Einsätze. Reaktivieren ist eine Zeile: `works.symbolLabel` wieder in die `figcaption` einsetzen. Die echte Vorher/Nachher-Aufnahme (Wasserschaden.jpg) wird nicht mehr verwendet — sie war das einzige Bild, das etwas belegte. |
 | **Einsatzfotos fehlen** | `lib/photos.ts` | Die drei gelieferten Fotos zeigen die **Region**, keinen Einsatz — kein Team, keine Technik, keine Baustelle. Sie stehen deshalb nur dort, wo es ums Gebiet und um Wasser geht. Business Case Kap. 6 verlangt „echte Bilder von Team und Einsätzen": dafür braucht es Fotos von der Baustelle. Drei Leistungsseiten haben bewusst kein Bild, statt ein beliebiges zu tragen. |
@@ -31,7 +31,57 @@ Diese Stellen sind bewusst markiert und brauchen eine Entscheidung:
 ## Hosting
 
 Braucht **Node-Hosting** (IONOS Deploy Now oder VPS) — kein statischer Export:
-`/api/kontakt` versendet das Kontaktformular serverseitig per SMTP.
+`/api/kontakt` versendet das Kontaktformular serverseitig.
+
+## E-Mail-Versand (Resend)
+
+Das Kontaktformular verschickt über **Resend**, nicht mehr über das
+IONOS-Postfach. Grund: Eine Mail, die ein Webserver im Namen der Domain
+verschickt, landet ohne sauberes SPF/DKIM schnell im Spam — und niemand merkt
+es. Resend signiert per DKIM auf der eigenen Domain und protokolliert jede
+Zustellung. Das kostenlose Paket reicht (3.000 Mails/Monat, 100/Tag).
+
+### Einrichtung — Reihenfolge einhalten
+
+1. **Konto anlegen** auf resend.com.
+2. **Region auf Europa stellen** (Settings → Region → `eu-west-1`), **bevor**
+   die Domain verifiziert wird. ⚠️ Die Region lässt sich später **nicht mehr
+   ändern**, und die DNS-Werte unterscheiden sich je Region. Das ist der Schritt,
+   den man nicht nachholen kann.
+3. **Domain hinzufügen**: `alpendry.de` (Domains → Add Domain).
+4. **AV-Vertrag abschließen** (Settings → Legal → DPA). Ohne ihn ist die
+   Verarbeitung formal unzulässig — die Datenschutzerklärung behauptet ihn
+   bereits (§ 8).
+5. **API-Key erzeugen** (API Keys → Create), Recht „Sending access" genügt.
+   In `RESEND_API_KEY` im IONOS-Panel hinterlegen.
+
+### DNS-Einträge für die Kundin
+
+Resend zeigt die **exakten Werte** nach Schritt 3 im Dashboard an — DKIM-Schlüssel
+und Regions-Host sind pro Konto verschieden und können hier nicht vorab stehen.
+Es sind drei Einträge dieser Art:
+
+| Typ | Name | Wert | Zweck |
+|---|---|---|---|
+| MX | `send.alpendry.de` | `feedback-smtp.eu-west-1.amazonses.com` (Priorität 10) | Bounces / Zustellfeedback |
+| TXT | `send.alpendry.de` | `v=spf1 include:amazonses.com ~all` | SPF |
+| TXT | `resend._domainkey.alpendry.de` | `p=…` (langer Schlüssel aus dem Dashboard) | DKIM-Signatur |
+
+**Das bestehende Postfach bleibt unberührt** — der wichtigste Punkt für die
+Kundin: Alle drei Einträge hängen an der Subdomain `send.` bzw. an einem eigenen
+DKIM-Selektor. Der **MX-Eintrag der Hauptdomain wird nicht angefasst**, Mails an
+`info@alpendry.de` kommen weiter bei IONOS an. Auch der bestehende SPF-Eintrag
+der Hauptdomain bleibt, wie er ist.
+
+Trotzdem gilt: **Niemals zwei SPF-Einträge auf denselben Namen** — dann sind
+beide ungültig. Hier passiert das nicht, weil der neue auf `send.` liegt.
+
+### Nach dem Einrichten prüfen
+
+Eine echte Testanfrage über das Formular senden und kontrollieren, dass sie im
+Postfach der Kundin ankommt (nicht im Spam). Resend zeigt jede Mail unter
+„Logs" — steht sie dort als `delivered`, aber nichts im Postfach, liegt es am
+Spamfilter, nicht am Code.
 
 ## Architekturentscheidungen
 

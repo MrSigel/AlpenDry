@@ -18,20 +18,28 @@ import { contact, site } from "./content";
  *    ERLEDIGT — hier nur noch als Historie, damit niemand den Wix-Absatz aus
  *    der alten Vorlage „zurückrepariert".
  *
- * 2. GOOGLE ANALYTICS (§9) / MAPS (§10): Beide sind derzeit NICHT eingebunden.
+ * 2. GOOGLE ANALYTICS (§10) / MAPS (§11): Beide sind derzeit NICHT eingebunden.
  *    Die Abschnitte bleiben stehen, weil der Consent-Unterbau vorbereitet ist
  *    und beide nach Einwilligung nachgerüstet werden sollen. Solange keine
  *    Mess-ID hinterlegt ist, findet keine Verarbeitung statt.
  *
- * 3. BILDNACHWEIS (Impressum): neu ergänzt, stand nicht in der Zulieferung.
- *    Nötig geworden, weil auf „Bisherige Arbeiten" KI-Bilder stehen — ab
- *    02.08.2026 greift dafür Art. 50 Abs. 4 KI-VO (EU 2024/1689). Die
- *    Kennzeichnung sitzt zusätzlich an jedem Bild selbst; die Verordnung
- *    verlangt sie beim ersten Ansehen, nicht versteckt im Impressum.
+ * 3. VERSAND ÜBER RESEND (§8): neu ergänzt. Das Kontaktformular läuft nicht
+ *    mehr über das IONOS-Postfach, sondern über Resend — ein
+ *    Auftragsverarbeiter, der benannt werden MUSS (Art. 13 Abs. 1 lit. e, Art.
+ *    28 DSGVO). Die Nummerierung ab §9 ist dadurch um eins gewandert.
+ *    ⚠️ Der Absatz stimmt erst, wenn die Kundin den AV-Vertrag mit Resend
+ *    geschlossen und die Region auf Europa gestellt hat — Details im Absatz.
  *
- * 4. Rechtstexte sind kein Rechtsrat. Vor Livegang von fachkundiger Stelle
+ * 4. BILDNACHWEIS (Impressum): neu ergänzt, stand nicht in der Zulieferung.
+ *    Nötig geworden, weil auf „Bisherige Arbeiten" KI-Bilder stehen. Er ist
+ *    derzeit die EINZIGE KI-Offenlegung — die Kennzeichnung an den Bildern
+ *    wurde auf Kundenwunsch entfernt (Art. 50 Abs. 4 KI-VO ab 02.08.2026
+ *    verlangt sie beim ersten Ansehen; siehe README).
+ *
+ * 5. Rechtstexte sind kein Rechtsrat. Vor Livegang von fachkundiger Stelle
  *    prüfen lassen — insbesondere die AGB-Klauseln zu Haftung und
- *    Gerichtsstand gegenüber Verbrauchern.
+ *    Gerichtsstand gegenüber Verbrauchern sowie die neuen §§ 8 und der
+ *    Bildnachweis.
  */
 
 export type LegalBlock = {
@@ -303,8 +311,55 @@ export const datenschutz = {
         },
       ],
     },
+    /**
+     * VERSAND ÜBER RESEND — neu, stand nicht in der anwaltlichen Zulieferung.
+     *
+     * Pflicht, sobald das Formular über Resend läuft: Resend ist ein
+     * Auftragsverarbeiter (Art. 28 DSGVO) und verarbeitet die Formulardaten
+     * inklusive Schadensfoto. Wer verarbeitet, gehört benannt (Art. 13 Abs. 1
+     * lit. e DSGVO) — genau wie beim Hoster.
+     *
+     * ⚠️ ZWEI DINGE MUSS DIE KUNDIN VOR LIVEGANG ERLEDIGEN, sonst stimmt
+     * dieser Absatz nicht:
+     *   1. AV-VERTRAG mit Resend schließen (im Resend-Dashboard unter
+     *      Settings → Legal → DPA abrufbar). Ohne ihn ist die Verarbeitung
+     *      formal unzulässig.
+     *   2. REGION auf Europa stellen (Resend: Settings → Region → eu-west-1),
+     *      BEVOR die Domain verifiziert wird — die Region lässt sich später
+     *      nicht mehr ändern, und die DNS-Einträge unterscheiden sich je
+     *      Region.
+     *
+     * ⚠️ Resend Inc. sitzt in den USA. Auch bei EU-Region bleibt ein Zugriff
+     * durch die US-Muttergesellschaft denkbar; ob der Transfer über
+     * Standardvertragsklauseln oder das EU-US Data Privacy Framework
+     * abgesichert wird, gehört anwaltlich geprüft und dann hier exakt benannt.
+     * Der Absatz nennt den Punkt bewusst, statt ihn zu verschweigen — aber die
+     * Formulierung ist kein Rechtsrat.
+     */
     {
-      h: "8. Cookies",
+      h: "8. Versand von Formularanfragen",
+      body: [
+        {
+          t: "p",
+          text: "Für den Versand der über unser Kontaktformular eingehenden Anfragen setzen wir einen Dienstleister ein:",
+        },
+        { t: "p", text: "Resend, Inc., 2261 Market Street #5039, San Francisco, CA 94114, USA" },
+        {
+          t: "p",
+          text: "Wenn Sie das Formular absenden, werden die von Ihnen eingegebenen Daten (Name, Telefonnummer, Ort bzw. Postleitzahl, Art des Schadens, Kurzbeschreibung sowie ein optional hochgeladenes Foto) an unser Postfach übermittelt. Resend verarbeitet diese Daten ausschließlich zum Zweck des Versands und in unserem Auftrag.",
+        },
+        {
+          t: "p",
+          text: "Rechtsgrundlage ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die Sie mit dem Absenden des Formulars erteilen, sowie unser berechtigtes Interesse an einer zuverlässigen Zustellung Ihrer Anfrage (Art. 6 Abs. 1 lit. f DSGVO). Mit dem Dienstleister besteht ein Vertrag zur Auftragsverarbeitung. Die Daten werden in einem Rechenzentrum innerhalb der Europäischen Union verarbeitet; eine Übermittlung in die USA ist nicht ausgeschlossen und ist durch geeignete Garantien abgesichert.",
+        },
+        {
+          t: "p",
+          text: "Zur Nachvollziehbarkeit der Zustellung werden Versandprotokolle für einen begrenzten Zeitraum gespeichert. Ihre Anfrage selbst bewahren wir so lange auf, wie es zur Bearbeitung und zur Erfüllung gesetzlicher Aufbewahrungspflichten erforderlich ist.",
+        },
+      ],
+    },
+    {
+      h: "9. Cookies",
       body: [
         {
           t: "p",
@@ -321,7 +376,7 @@ export const datenschutz = {
       ],
     },
     {
-      h: "9. Google Analytics",
+      h: "10. Google Analytics",
       body: [
         { t: "p", text: "Wir verwenden Google Analytics, einen Webanalysedienst der:" },
         { t: "p", text: "Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland" },
@@ -347,7 +402,7 @@ export const datenschutz = {
       ],
     },
     {
-      h: "10. Google Maps",
+      h: "11. Google Maps",
       body: [
         {
           t: "p",
@@ -361,7 +416,7 @@ export const datenschutz = {
       ],
     },
     {
-      h: "11. Weitergabe von Daten",
+      h: "12. Weitergabe von Daten",
       body: [
         {
           t: "p",
@@ -382,7 +437,7 @@ export const datenschutz = {
       ],
     },
     {
-      h: "12. Speicherdauer",
+      h: "13. Speicherdauer",
       body: [
         {
           t: "p",
@@ -391,7 +446,7 @@ export const datenschutz = {
       ],
     },
     {
-      h: "13. Ihre Rechte",
+      h: "14. Ihre Rechte",
       body: [
         { t: "p", text: "Sie haben nach der DSGVO folgende Rechte:" },
         {
@@ -412,7 +467,7 @@ export const datenschutz = {
       ],
     },
     {
-      h: "14. Beschwerderecht",
+      h: "15. Beschwerderecht",
       body: [
         {
           t: "p",
@@ -421,7 +476,7 @@ export const datenschutz = {
       ],
     },
     {
-      h: "15. Datensicherheit",
+      h: "16. Datensicherheit",
       body: [
         {
           t: "p",
@@ -430,7 +485,7 @@ export const datenschutz = {
       ],
     },
     {
-      h: "16. Aktualisierung dieser Datenschutzerklärung",
+      h: "17. Aktualisierung dieser Datenschutzerklärung",
       body: [
         {
           t: "p",
