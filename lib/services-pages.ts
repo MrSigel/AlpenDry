@@ -104,10 +104,20 @@ export const servicePages: readonly ServicePage[] = [
         ],
       },
       {
-        /** Kap. 4 „Die Versicherung zahlt" + Kap. 3 Zielgruppe 1. */
+        /**
+         * Kap. 4 „Die Versicherung zahlt" + Kap. 3 Zielgruppe 1.
+         *
+         * Erster Satz auf den Wortlaut von `services.insurance` (content.ts)
+         * gezogen. Dort stand „in der Regel vollständig gedeckt" — nach der
+         * Abschwächung auf der Startseite („häufig übernommen — abhängig von
+         * Vertrag und Schadensfall") wäre das die stärkere Zusage an anderer
+         * Stelle gewesen und hätte die Abschwächung ausgehebelt. Dieselbe
+         * Aussage darf nicht zweimal verschieden stark ausfallen; im Streitfall
+         * zählt die weitreichendste.
+         */
         h: "Abwicklung mit der Versicherung",
         body: [
-          "Bei versicherten Schäden sind die Kosten in der Regel vollständig gedeckt. Wir übernehmen die komplette Kommunikation: Schadensmeldung, Dokumentation, Abstimmung mit dem Sachverständigen, Abrechnung.",
+          "Bei versicherten Schäden werden die Kosten häufig übernommen — abhängig von Vertrag und Schadensfall. Wir übernehmen die komplette Kommunikation: Schadensmeldung, Dokumentation, Abstimmung mit dem Sachverständigen, Abrechnung.",
           "Kommt der Auftrag direkt von einer Versicherung oder einem Schadensteuerer, liefern wir lückenlose Messprotokolle, Fotodokumentation und digitale Berichte für die Schadenakte.",
         ],
       },

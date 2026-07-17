@@ -268,16 +268,20 @@ export const services = {
    */
   insurance: {
     /**
-     * Business Case: „Die Versicherung zahlt — AlpenDry kümmert sich".
-     * Abgeschwächt auf Kundenwunsch: Der Originaltitel verspricht absolut, was
-     * der eigene Fließtext schon relativiert („in der Regel") — und was nicht
-     * immer stimmt (Verschleiß, grobe Fahrlässigkeit, ungedeckte Fälle). Ein
-     * absolutes Zahlungsversprechen wäre als Werbeaussage angreifbar.
-     * „AlpenDry kümmert sich" entfällt im Titel, weil der Absatz es ohnehin
-     * ausführt — und der Titel sonst über drei Zeilen liefe.
+     * Wortlaut von der Kundin, zweite Abschwächung.
+     *
+     * Der Business Case titelte „Die Versicherung zahlt — AlpenDry kümmert
+     * sich" (Kap. 4), danach stand hier „In der Regel zahlt die Versicherung".
+     * Jetzt „Oft übernimmt die Versicherung", und der Text nennt die
+     * Bedingung ausdrücklich: „abhängig von Vertrag und Schadensfall".
+     *
+     * Die Richtung ist konsequent und richtig: Ein Zahlungsversprechen, das der
+     * Betrieb nicht halten kann (Verschleiß, grobe Fahrlässigkeit, ungedeckte
+     * Fälle entscheidet der Versicherer, nicht AlpenDry), wäre als Werbeaussage
+     * angreifbar — und im Schadensfall der erste Vorwurf des Kunden.
      */
-    title: "In der Regel zahlt die Versicherung",
-    body: "Bei versicherten Schäden sind die Kosten in der Regel vollständig gedeckt. AlpenDry übernimmt die komplette Kommunikation — Schadensmeldung, Dokumentation, Abstimmung mit dem Sachverständigen, Abrechnung. Sie haben einen festen Ansprechpartner von A bis Z und müssen sich um nichts kümmern. Ist ein Schaden einmal nicht gedeckt, sagen wir das offen und legen vorab einen nachvollziehbaren Kostenvoranschlag vor.",
+    title: "Oft übernimmt die Versicherung",
+    body: "Bei versicherten Schäden werden die Kosten häufig übernommen — abhängig von Vertrag und Schadensfall. AlpenDry kümmert sich um die komplette Kommunikation mit der Versicherung: Schadensmeldung, Dokumentation, Abstimmung mit dem Sachverständigen und Abrechnung. Sie haben einen festen Ansprechpartner und müssen sich um nichts kümmern. Ist ein Schaden nicht gedeckt, sagen wir das offen und legen vorab einen nachvollziehbaren Kostenvoranschlag vor.",
     pullquote:
       "Weniger Stress für den Kunden. Weniger Aufwand für die Versicherung. Genau dazwischen liegt der Wert von AlpenDry.",
   },
