@@ -193,13 +193,15 @@ export const servicePages: readonly ServicePage[] = [
          * @freigabe — abgeleitet aus Kap. 4 („zerstörungsarm", wörtlich belegt)
          * und AGB § 8.
          *
-         * Beginnt mit demselben klaren Nein wie die Fassung in content.ts —
-         * dieselbe Frage darf nicht zweimal unterschiedlich anfangen. Diese
-         * hier bleibt ausführlicher: Auf der Leistungsseite ist Platz für die
-         * Einschränkung aus den AGB, in der FAQ der Startseite nicht.
+         * Beginnt auf Kundenwunsch OHNE Verneinung — wie die Fassung in
+         * content.ts. Dieselbe Frage steht an zwei Orten und darf nicht
+         * unterschiedlich anfangen; beide bitte zusammen anfassen.
+         *
+         * Diese hier bleibt ausführlicher: Auf der Leistungsseite ist Platz für
+         * die Einschränkung aus AGB § 8, in der FAQ der Startseite nicht.
          */
         q: "Muss für die Leckageortung die Wand aufgerissen werden?",
-        a: "Nein, in aller Regel nicht. Wir messen zuerst und grenzen die undichte Stelle ein, bevor überhaupt etwas geöffnet wird. Ist eine Öffnung nötig, machen wir sie gezielt an der einen Stelle — und nur so groß wie nötig.",
+        a: "Wir messen zuerst und grenzen die undichte Stelle ein, bevor überhaupt etwas geöffnet wird. Ist eine Öffnung nötig, machen wir sie gezielt an der einen Stelle — und nur so groß wie nötig.",
       },
       {
         /** @freigabe — abgeleitet aus AGB § 8 (2). */

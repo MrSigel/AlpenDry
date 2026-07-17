@@ -452,13 +452,15 @@ export const faq = {
        * Messtechnik", wörtlich belegt) und AGB § 8 (Öffnungen können nötig
        * werden, nur im erforderlichen Umfang).
        *
-       * Neu formuliert: Die alte Antwort begann mit „In der Regel nicht. Auch
-       * unsichtbare Leckschäden orten wir zerstörungsarm …" — die Verneinung
-       * kam als Einschub, „Auch" schloss an nichts an, und „zerstörungsarm" ist
-       * Fachsprache. Wer im Notfall liest, will zuerst ein klares Nein.
+       * Die Antwort beginnt auf Kundenwunsch OHNE Verneinung — kein „Nein, in
+       * aller Regel nicht" voran. Sie erklärt direkt das Vorgehen; das „nicht
+       * aufreißen" ergibt sich daraus.
+       *
+       * Wortlaut mit der Fassung in services-pages.ts abgestimmt halten: Es ist
+       * dieselbe Frage an zwei Orten (Startseiten-FAQ und Leistungsseite).
        */
       q: "Muss für die Leckageortung die Wand aufgerissen werden?",
-      a: "Nein, in aller Regel nicht. Wir messen zuerst und finden das Leck, ohne die Wand zu öffnen — auch dann, wenn nichts zu sehen ist. Erst wenn wir wissen, wo genau es sitzt, öffnen wir gezielt diese eine Stelle. Aufstemmen auf Verdacht gibt es bei uns nicht.",
+      a: "Wir messen zuerst und finden das Leck, ohne die Wand zu öffnen — auch dann, wenn nichts zu sehen ist. Erst wenn wir wissen, wo genau es sitzt, öffnen wir gezielt diese eine Stelle. Aufstemmen auf Verdacht gibt es bei uns nicht.",
     },
     {
       /** @freigabe — abgeleitet aus Kap. 3 (wörtlich belegt). */
