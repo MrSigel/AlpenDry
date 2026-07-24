@@ -36,26 +36,26 @@ export const metadata: Metadata = {
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <main className="min-h-svh bg-ink px-6 pb-24 pt-32 md:pt-40">
+    <main className="min-h-svh bg-ink px-6 pb-24 pt-16 md:pt-20">
       <div className="mx-auto w-full max-w-shell">{children}</div>
     </main>
   );
 }
 
+/** Neutrale Zwischenmeldung (nicht verfügbar / wird vorbereitet). Bewusst ohne
+ *  technische Details — was einzurichten ist, steht im README, nicht auf der
+ *  Seite, die die Kundin sieht. */
 function Setup({ title, steps }: { title: string; steps: string[] }) {
   return (
     <Shell>
       <h1 className="text-2xl md:text-3xl">{title}</h1>
-      <ol className="mt-8 max-w-prose space-y-4">
+      <div className="mt-6 max-w-prose space-y-3">
         {steps.map((s, i) => (
-          <li key={i} className="flex gap-4 font-body text-sm text-frost-dim">
-            <span className="font-mono text-2xs text-glacier">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <span>{s}</span>
-          </li>
+          <p key={i} className="font-body text-sm text-frost-dim">
+            {s}
+          </p>
         ))}
-      </ol>
+      </div>
     </Shell>
   );
 }
@@ -94,14 +94,12 @@ function BarRow({ label, count, max }: { label: string; count: number; max: numb
 
 export default async function AnalyticsPage() {
   if (!isAuthConfigured()) {
+    // Neutral gehalten: Die Kundin soll hier nicht lesen, WIE und WO die Seite
+    // betrieben wird. Die technischen Einrichtungsschritte stehen im README.
     return (
       <Setup
-        title="Auswertung noch nicht eingerichtet"
-        steps={[
-          "Im Vercel-Projekt unter Settings → Environment Variables die Variable ANALYTICS_PASSWORD setzen (das gewünschte Passwort).",
-          "Einmal neu deployen — Vercel liest Umgebungsvariablen beim Build.",
-          "Danach fragt diese Seite das Passwort ab.",
-        ]}
+        title="Auswertung noch nicht verfügbar"
+        steps={["Dieser Bereich ist noch nicht freigeschaltet. Bitte wenden Sie sich an Ihren Administrator."]}
       />
     );
   }
@@ -144,15 +142,11 @@ export default async function AnalyticsPage() {
   }
 
   if (!isStoreConfigured()) {
+    // Ebenfalls neutral — kein Hinweis auf Speicher-Anbieter o. Ä. Anleitung im README.
     return (
       <Setup
-        title="Speicher noch nicht verbunden"
-        steps={[
-          "Im Vercel-Projekt unter Storage einen Redis-/KV-Speicher hinzufügen (Upstash, kostenloses Kontingent).",
-          "Die Integration setzt KV_REST_API_URL und KV_REST_API_TOKEN automatisch — nichts von Hand kopieren.",
-          "Einmal neu deployen. Ab dann zählt die Seite jeden Aufruf und jeden Klick auf Anrufen, WhatsApp, E-Mail und das Formular.",
-          "Die Zahlen wachsen erst ab dem Zeitpunkt der Verbindung — Vergangenes wurde nicht gespeichert.",
-        ]}
+        title="Auswertung wird vorbereitet"
+        steps={["Die Auswertung ist noch nicht aktiv. Sobald sie bereitsteht, erscheinen hier die Zahlen."]}
       />
     );
   }
@@ -180,10 +174,6 @@ export default async function AnalyticsPage() {
           </button>
         </form>
       </div>
-      <p className="mt-3 font-body text-sm text-frost-dim">
-        Eigene Zählung, aggregiert und ohne personenbezogene Daten. Ergänzt das
-        Vercel-Dashboard, ersetzt es nicht.
-      </p>
 
       {/* Kennzahlen */}
       <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

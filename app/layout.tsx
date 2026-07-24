@@ -4,16 +4,22 @@ import "@/styles/globals.css";
 import { fontVariables } from "@/lib/fonts";
 import { palette } from "@/lib/palette";
 import { buildMetadata } from "@/lib/seo";
-import { localBusinessJsonLd, websiteJsonLd } from "@/lib/jsonld";
-import { Analytics } from "@vercel/analytics/next";
-import { JsonLd } from "@/components/ui/JsonLd";
-import { AnchorScroll } from "@/components/layout/AnchorScroll";
-import { UsageTracker } from "@/components/layout/UsageTracker";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { StickyCTA } from "@/components/layout/StickyCTA";
-import { CookieBanner } from "@/components/layout/CookieBanner";
-import { ExitBanner } from "@/components/layout/ExitBanner";
+
+/**
+ * Wurzel-Layout — bewusst MINIMAL.
+ *
+ * Es liefert nur `<html>`, `<body>`, Schriften und die globalen Metadaten. Der
+ * sichtbare Rahmen der Marketing-Seite (Header, Footer, Sticky-CTA, Cookie- und
+ * Exit-Banner, Analytics) steckt NICHT hier, sondern in app/(site)/layout.tsx.
+ *
+ * Der Grund ist /analytics: Diese Seite ist der interne Admin-Bereich der
+ * Kundin und darf KEINE Website-Navigation, keinen Footer und kein Tracking
+ * tragen. In Next teilen sich alle Routen das Wurzel-Layout — läge das Chrome
+ * hier, erschiene es auch im Admin-Bereich. Route-Gruppen lösen das: die
+ * öffentlichen Seiten liegen in der Gruppe (site) mit eigenem Layout, /analytics
+ * liegt daneben und bekommt nur diesen kargen Rahmen. (Gruppennamen in Klammern
+ * ändern die URL nicht.)
+ */
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.alpendry.de"),
@@ -48,34 +54,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="de" className={fontVariables}>
-      <body className="bg-ink text-frost antialiased">
-        {/* Sprungmarke — erster fokussierbarer Punkt für Tastatur und Screenreader */}
-        <a
-          href="#inhalt"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-6 focus:top-6 focus:z-[60] focus:rounded-sm focus:bg-signal focus:px-4 focus:py-3 focus:font-display focus:text-sm focus:font-semibold focus:text-ink"
-        >
-          Zum Inhalt springen
-        </a>
-
-        {/* Rendert nichts — sorgt dafür, dass Anker-Sprünge über Seitengrenzen
-            hinweg springen statt zu fahren. Begründung in der Komponente. */}
-        <AnchorScroll />
-
-        <Header />
-        <main id="inhalt">{children}</main>
-        <Footer />
-        <StickyCTA />
-        <CookieBanner />
-        <ExitBanner />
-
-        <JsonLd data={[localBusinessJsonLd(), websiteJsonLd()]} />
-
-        {/* Seitenaufrufe + Klickverhalten. Vercels <Analytics/> zählt Aufrufe
-            fürs Vercel-Dashboard; UsageTracker meldet Klicks an Vercel UND an
-            den eigenen Zähler, den die /analytics-Seite ausliest. */}
-        <Analytics />
-        <UsageTracker />
-      </body>
+      <body className="bg-ink text-frost antialiased">{children}</body>
     </html>
   );
 }
