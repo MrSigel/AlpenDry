@@ -5,8 +5,10 @@ import { fontVariables } from "@/lib/fonts";
 import { palette } from "@/lib/palette";
 import { buildMetadata } from "@/lib/seo";
 import { localBusinessJsonLd, websiteJsonLd } from "@/lib/jsonld";
+import { Analytics } from "@vercel/analytics/next";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { AnchorScroll } from "@/components/layout/AnchorScroll";
+import { CtaTracking } from "@/components/layout/CtaTracking";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { StickyCTA } from "@/components/layout/StickyCTA";
@@ -67,6 +69,11 @@ export default function RootLayout({
         <ExitBanner />
 
         <JsonLd data={[localBusinessJsonLd(), websiteJsonLd()]} />
+
+        {/* Seitenaufrufe (Vercel Analytics) + Klickverhalten auf Anruf/WhatsApp/
+            Mail. Beide sammeln ins Vercel-Dashboard; Details in CtaTracking. */}
+        <Analytics />
+        <CtaTracking />
       </body>
     </html>
   );

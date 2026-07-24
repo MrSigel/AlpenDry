@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { track } from "@vercel/analytics";
 import { contactSection } from "@/lib/content";
 import { ArrowRightIcon } from "@/components/ui/Icons";
 
@@ -46,6 +47,9 @@ export function ContactForm({ headingAs: H = "h3" }: { headingAs?: "h2" | "h3" }
       const res = await fetch("/api/kontakt", { method: "POST", body: data });
       if (!res.ok) throw new Error(`status ${res.status}`);
       setStatus("success");
+      // Erfolgreich abgeschickte Anfrage — die wertvollste Conversion der Seite.
+      // Nur das Ereignis, keine Formularinhalte.
+      track("form_submit");
       form.reset();
     } catch {
       setStatus("error");
