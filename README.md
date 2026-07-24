@@ -11,6 +11,31 @@ cp .env.example .env.local   # Resend-Key und Adressen eintragen
 npm run dev
 ```
 
+## Auswertung (/analytics)
+
+Passwortgeschützte, interne Nutzungsauswertung. Zwei getrennte Messungen laufen:
+**Vercel Web Analytics** (Aufrufe → Vercel-Dashboard) und ein **eigener Zähler**,
+der Aufrufe und CTA-Klicks in einen Redis-/KV-Speicher schreibt und auf
+`/analytics` anzeigt — Vercel liefert seine Zahlen nämlich nicht in eine eigene
+Seite aus. Der eigene Zähler ist **cookielos und rein aggregiert** (nur Summen,
+keine IP, keine Kennung), siehe `lib/analytics-store.ts`.
+
+Damit `/analytics` echte Zahlen zeigt, in Vercel dreierlei einrichten:
+
+1. **`ANALYTICS_PASSWORD`** (Settings → Environment Variables) — das Passwort für
+   die Seite. Gehört NUR ins Vercel-Panel, nicht in den Code (Repo ist öffentlich).
+2. **Redis-/KV-Speicher** (Storage → Upstash, kostenloses Kontingent hinzufügen).
+   Die Integration setzt `KV_REST_API_URL` und `KV_REST_API_TOKEN` automatisch —
+   nichts von Hand kopieren.
+3. **Neu deployen.** Vercel liest ENV beim Build.
+
+Ohne (1) zeigt die Seite die Passwort-Einrichtung, ohne (2) den Speicher-Hinweis
+— nichts stürzt ab. Die Zahlen wachsen erst ab dem Verbinden; Vergangenes wurde
+nicht gespeichert. Getestet ist der komplette Auth-Flow (Passwort falsch/richtig,
+Cookie als Hash, httpOnly/Secure) und die beiden Einrichtungs-Zustände; die
+Zählung selbst läuft erst gegen echten KV — nach dem Verbinden einmal prüfen
+(eine Seite öffnen, dann `/analytics`).
+
 ## Vor dem Livegang — offene Punkte
 
 Diese Stellen sind bewusst markiert und brauchen eine Entscheidung:
@@ -28,7 +53,8 @@ Diese Stellen sind bewusst markiert und brauchen eine Entscheidung:
 | **Einsatzfotos fehlen** | `lib/photos.ts` | Die drei gelieferten Fotos zeigen die **Region**, keinen Einsatz — kein Team, keine Technik, keine Baustelle. Sie stehen deshalb nur dort, wo es ums Gebiet und um Wasser geht. Business Case Kap. 6 verlangt „echte Bilder von Team und Einsätzen": dafür braucht es Fotos von der Baustelle. Drei Leistungsseiten haben bewusst kein Bild, statt ein beliebiges zu tragen. |
 | **Orte auf den Fotos** | `lib/photos.ts` | Die Bildunterschriften beschreiben, was zu sehen ist, statt Orte zu behaupten. Der See mit der Insel könnte der Staffelsee sein — unbestätigt. Sobald die Kundin die Orte nennt, dürfen die Unterschriften konkret werden. |
 | **Rechtstexte** | `lib/legal.ts`, `lib/agb.ts` | Von einer Anwältin/einem Anwalt geliefert. **Drei Abweichungen**, alle gegenzulesen: (1) **§ 7 Hoster** — die Vorlage nannte Wix.com Ltd. (alter Auftritt), zwischenzeitlich stand dort IONOS; beides falsch. Der A-Record zeigt auf Vercel, Inc., jetzt korrigiert samt USA-Hinweis. IONOS bleibt in § 6 fürs Postfach. (2) **§ 8 Resend** neu — Auftragsverarbeiter, Region USA. (3) **Bildnachweis** im Impressum neu (KI-Herkunft, § 5 UWG + § 13 UrhG). |
-| **Google Analytics** | `lib/consent.ts` | Consent-Unterbau steht, GA ist noch nicht eingebunden. Mess-ID ergänzen; es lädt ausschließlich nach Einwilligung. |
+| **/analytics einrichten** | Vercel → Settings/Storage | ANALYTICS_PASSWORD setzen + Redis-/KV-Speicher (Upstash) hinzufügen, dann neu deployen. Details oben unter „Auswertung (/analytics)". Ohne beides zeigt die Seite den jeweiligen Einrichtungs-Hinweis statt Zahlen. |
+| **Google Analytics** (separat) | `lib/consent.ts` | Consent-Unterbau steht, GA ist NICHT eingebunden (die eigene Reichweitenmessung ist etwas anderes und cookielos). Falls GA gewünscht: Mess-ID ergänzen; lädt nur nach Einwilligung. |
 
 ## Hosting
 

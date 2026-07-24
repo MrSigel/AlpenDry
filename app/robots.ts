@@ -22,7 +22,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: "/api/",
+      // /analytics ist die interne, passwortgeschützte Auswertung — sie trägt
+      // zwar noindex, aber sie gehört gar nicht erst in den Crawl-Versuch.
+      disallow: ["/api/", "/analytics"],
     },
     sitemap: `${site.url}/sitemap.xml`,
     host: site.url,

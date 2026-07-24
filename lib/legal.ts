@@ -18,27 +18,32 @@ import { contact, site } from "./content";
  *    ERLEDIGT — hier nur noch als Historie, damit niemand den Wix-Absatz aus
  *    der alten Vorlage „zurückrepariert".
  *
- * 2. GOOGLE ANALYTICS (§10) / MAPS (§11): Beide sind derzeit NICHT eingebunden.
+ * 2. GOOGLE ANALYTICS (§11) / MAPS (§12): Beide sind derzeit NICHT eingebunden.
  *    Die Abschnitte bleiben stehen, weil der Consent-Unterbau vorbereitet ist
  *    und beide nach Einwilligung nachgerüstet werden sollen. Solange keine
  *    Mess-ID hinterlegt ist, findet keine Verarbeitung statt.
  *
- * 3. VERSAND ÜBER RESEND (§8): neu ergänzt. Das Kontaktformular läuft nicht
- *    mehr über das IONOS-Postfach, sondern über Resend — ein
- *    Auftragsverarbeiter, der benannt werden MUSS (Art. 13 Abs. 1 lit. e, Art.
- *    28 DSGVO). Die Nummerierung ab §9 ist dadurch um eins gewandert.
- *    ⚠️ Der Absatz stimmt erst, wenn die Kundin den AV-Vertrag mit Resend
- *    geschlossen und die Region auf Europa gestellt hat — Details im Absatz.
+ * 3. VERSAND ÜBER RESEND (§8): neu ergänzt. Auftragsverarbeiter, muss benannt
+ *    werden (Art. 13 Abs. 1 lit. e, Art. 28 DSGVO). Region USA (Details im
+ *    Absatz). ⚠️ Erst korrekt, wenn der AV-Vertrag mit Resend geschlossen ist.
  *
- * 4. BILDNACHWEIS (Impressum): neu ergänzt, stand nicht in der Zulieferung.
+ * 4. REICHWEITENMESSUNG (§10): neu ergänzt. Vercel Web Analytics (Aufrufe) und
+ *    eine eigene, cookielose, rein aggregierte Zählung für die interne
+ *    /analytics-Seite. Keine personenbezogenen Daten. ⚠️ Vercel-DPA muss Web
+ *    Analytics abdecken.
+ *
+ * HINWEIS: Die Nummerierung ab §8 ist durch die beiden Einschübe gewandert —
+ * beim nächsten Anfassen die laufenden Nummern nicht als fix ansehen.
+ *
+ * 5. BILDNACHWEIS (Impressum): neu ergänzt, stand nicht in der Zulieferung.
  *    Nötig geworden, weil auf „Bisherige Arbeiten" KI-Bilder stehen. Er ist
  *    derzeit die EINZIGE KI-Offenlegung — die Kennzeichnung an den Bildern
  *    wurde auf Kundenwunsch entfernt (Art. 50 Abs. 4 KI-VO ab 02.08.2026
  *    verlangt sie beim ersten Ansehen; siehe README).
  *
- * 5. Rechtstexte sind kein Rechtsrat. Vor Livegang von fachkundiger Stelle
+ * 6. Rechtstexte sind kein Rechtsrat. Vor Livegang von fachkundiger Stelle
  *    prüfen lassen — insbesondere die AGB-Klauseln zu Haftung und
- *    Gerichtsstand gegenüber Verbrauchern sowie die neuen §§ 8 und der
+ *    Gerichtsstand gegenüber Verbrauchern sowie die neuen §§ 8, 10 und der
  *    Bildnachweis.
  */
 
@@ -398,8 +403,47 @@ export const datenschutz = {
         },
       ],
     },
+    /**
+     * REICHWEITENMESSUNG — neu, stand nicht in der anwaltlichen Zulieferung.
+     *
+     * Nötig geworden durch zwei Messungen auf der Seite:
+     *   - Vercel Web Analytics (Seitenaufrufe, cookielos, aggregiert).
+     *   - Eine eigene, ebenfalls cookielose und rein aggregierte Zählung für die
+     *     interne Auswertungsseite (lib/analytics-store.ts). Gespeichert werden
+     *     nur Zähler — keine IP, kein Identifikator.
+     *
+     * Beide setzen KEINE Cookies und bilden keine Einzelpersonen ab; die
+     * Verarbeitung stützt sich daher auf das berechtigte Interesse an einer
+     * datensparsamen Reichweitenmessung. Vercel Inc. sitzt in den USA — deshalb
+     * der Transfer-Hinweis (derselbe Anbieter wie beim Hosting, § 7).
+     *
+     * ⚠️ Von der Kundin bzw. anwaltlich zu bestätigen: dass die eigene Zählung
+     * tatsächlich aggregiert bleibt (so ist sie gebaut) und der Vercel-DPA auch
+     * Web Analytics abdeckt.
+     */
     {
-      h: "10. Google Analytics",
+      h: "10. Reichweitenmessung",
+      body: [
+        {
+          t: "p",
+          text: "Zur statistischen Auswertung der Nutzung unserer Website erfassen wir aggregierte Kennzahlen — insbesondere die Zahl der Seitenaufrufe je Seite und die Zahl der Klicks auf die Schaltflächen „Anrufen“, „WhatsApp“ und „E-Mail“ sowie auf das Absenden des Kontaktformulars.",
+        },
+        {
+          t: "p",
+          text: "Diese Messung erfolgt cookielos und ohne Bildung von Nutzerprofilen. Es werden ausschließlich Summen gespeichert; eine IP-Adresse, eine Kennung oder sonstige Daten, die einen Rückschluss auf Ihre Person erlauben würden, werden dabei nicht gespeichert.",
+        },
+        {
+          t: "p",
+          text: "Für die Seitenaufrufe setzen wir zusätzlich Vercel Web Analytics ein (Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA). Auch dabei können technische Daten in die USA übermittelt werden; die Übermittlung ist durch geeignete Garantien abgesichert.",
+        },
+        {
+          t: "p",
+          text: "Rechtsgrundlage ist unser berechtigtes Interesse an einer datensparsamen, aggregierten Reichweitenmessung (Art. 6 Abs. 1 lit. f DSGVO). Da keine personenbezogenen Daten gespeichert werden, ist hierfür keine Einwilligung erforderlich.",
+        },
+      ],
+    },
+    {
+      h: "11. Google Analytics",
       body: [
         { t: "p", text: "Wir verwenden Google Analytics, einen Webanalysedienst der:" },
         { t: "p", text: "Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland" },
@@ -425,7 +469,7 @@ export const datenschutz = {
       ],
     },
     {
-      h: "11. Google Maps",
+      h: "12. Google Maps",
       body: [
         {
           t: "p",
@@ -439,7 +483,7 @@ export const datenschutz = {
       ],
     },
     {
-      h: "12. Weitergabe von Daten",
+      h: "13. Weitergabe von Daten",
       body: [
         {
           t: "p",
@@ -460,7 +504,7 @@ export const datenschutz = {
       ],
     },
     {
-      h: "13. Speicherdauer",
+      h: "14. Speicherdauer",
       body: [
         {
           t: "p",
@@ -469,7 +513,7 @@ export const datenschutz = {
       ],
     },
     {
-      h: "14. Ihre Rechte",
+      h: "15. Ihre Rechte",
       body: [
         { t: "p", text: "Sie haben nach der DSGVO folgende Rechte:" },
         {
@@ -490,7 +534,7 @@ export const datenschutz = {
       ],
     },
     {
-      h: "15. Beschwerderecht",
+      h: "16. Beschwerderecht",
       body: [
         {
           t: "p",
@@ -499,7 +543,7 @@ export const datenschutz = {
       ],
     },
     {
-      h: "16. Datensicherheit",
+      h: "17. Datensicherheit",
       body: [
         {
           t: "p",
@@ -508,7 +552,7 @@ export const datenschutz = {
       ],
     },
     {
-      h: "17. Aktualisierung dieser Datenschutzerklärung",
+      h: "18. Aktualisierung dieser Datenschutzerklärung",
       body: [
         {
           t: "p",

@@ -8,7 +8,7 @@ import { localBusinessJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { Analytics } from "@vercel/analytics/next";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { AnchorScroll } from "@/components/layout/AnchorScroll";
-import { CtaTracking } from "@/components/layout/CtaTracking";
+import { UsageTracker } from "@/components/layout/UsageTracker";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { StickyCTA } from "@/components/layout/StickyCTA";
@@ -70,10 +70,11 @@ export default function RootLayout({
 
         <JsonLd data={[localBusinessJsonLd(), websiteJsonLd()]} />
 
-        {/* Seitenaufrufe (Vercel Analytics) + Klickverhalten auf Anruf/WhatsApp/
-            Mail. Beide sammeln ins Vercel-Dashboard; Details in CtaTracking. */}
+        {/* Seitenaufrufe + Klickverhalten. Vercels <Analytics/> zählt Aufrufe
+            fürs Vercel-Dashboard; UsageTracker meldet Klicks an Vercel UND an
+            den eigenen Zähler, den die /analytics-Seite ausliest. */}
         <Analytics />
-        <CtaTracking />
+        <UsageTracker />
       </body>
     </html>
   );
