@@ -123,10 +123,8 @@ async function ImageManager({ hinweis }: { hinweis?: string }) {
     <section id="bilder" className="mt-16 border-t border-hairline pt-14 scroll-mt-8">
       <h2 className="text-2xl md:text-3xl">Bilder ändern</h2>
       <p className="mt-3 max-w-prose font-body text-sm text-frost-dim">
-        Wählen Sie zu einem Bild eine neue Datei und speichern Sie — es ersetzt
-        das bisherige auf der Website. Über „Zurücksetzen“ kehren Sie jederzeit
-        zum ursprünglichen Bild zurück. Bitte Dateien bis 4 MB (JPG, PNG oder
-        WebP) — größere Fotos vorher am Handy oder Rechner verkleinern.
+        Bitte Dateien bis 4 MB (JPG, PNG oder WebP) — größere Fotos vorher am
+        Handy oder Rechner verkleinern.
       </p>
 
       {hinweis && (
