@@ -22,7 +22,11 @@ import {
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const MAX_BYTES = 12 * 1024 * 1024; // 12 MB Rohdatei — nach WebP deutlich kleiner
+// Vercel-Funktionen nehmen pro Anfrage max. 4,5 MB an (Request-Body-Limit).
+// Darüber lehnt die PLATTFORM ab, bevor dieser Code läuft — die Meldung unten
+// käme dann gar nicht mehr. Deshalb hier mit Puffer 4 MB: So bleibt Raum für den
+// Multipart-Overhead, und alles bis zur Grenze bekommt die saubere Meldung.
+const MAX_BYTES = 4 * 1024 * 1024;
 const ALLOWED = /^image\/(png|jpe?g|webp|avif)$/i;
 
 function redirect(req: Request, status: string) {

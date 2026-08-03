@@ -104,7 +104,7 @@ const BILD_HINWEIS: Record<string, string> = {
   ok: "Bild gespeichert. Es erscheint in Kürze auf der Website.",
   zurueckgesetzt: "Auf das ursprüngliche Bild zurückgesetzt.",
   fehler: "Das hat nicht geklappt. Bitte erneut versuchen.",
-  zugross: "Die Datei ist zu groß (max. 12 MB).",
+  zugross: "Die Datei ist zu groß (max. 4 MB).",
   falschertyp: "Nur Bilddateien (JPG, PNG, WebP).",
   nichtaktiv: "Die Bildverwaltung ist derzeit nicht verfügbar.",
 };
@@ -125,7 +125,8 @@ async function ImageManager({ hinweis }: { hinweis?: string }) {
       <p className="mt-3 max-w-prose font-body text-sm text-frost-dim">
         Wählen Sie zu einem Bild eine neue Datei und speichern Sie — es ersetzt
         das bisherige auf der Website. Über „Zurücksetzen“ kehren Sie jederzeit
-        zum ursprünglichen Bild zurück.
+        zum ursprünglichen Bild zurück. Bitte Dateien bis 4 MB (JPG, PNG oder
+        WebP) — größere Fotos vorher am Handy oder Rechner verkleinern.
       </p>
 
       {hinweis && (
