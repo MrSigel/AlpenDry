@@ -8,6 +8,7 @@ import {
   isValidSlot,
   setImageOverride,
   clearImageOverride,
+  isBlobConfigured,
 } from "@/lib/managed-images";
 
 /**
@@ -57,8 +58,8 @@ export async function POST(req: Request) {
     return redirect(req, "zurueckgesetzt");
   }
 
-  // 3) Neues Bild — Speicher vorhanden?
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+  // 3) Neues Bild — Speicher vorhanden? (klassisches Token ODER OIDC-Store)
+  if (!isBlobConfigured()) {
     return redirect(req, "nichtaktiv");
   }
 

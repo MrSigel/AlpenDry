@@ -12,6 +12,7 @@ import {
   MANAGED_IMAGES,
   getImageOverrides,
   resolveImage,
+  isBlobConfigured,
 } from "@/lib/managed-images";
 
 /**
@@ -110,7 +111,7 @@ const BILD_HINWEIS: Record<string, string> = {
 };
 
 async function ImageManager({ hinweis }: { hinweis?: string }) {
-  const blobReady = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+  const blobReady = isBlobConfigured();
   const overrides = await getImageOverrides();
 
   // Nach Gruppen bündeln, damit die 10 Bilder geordnet erscheinen.

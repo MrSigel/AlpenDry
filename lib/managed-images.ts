@@ -82,6 +82,24 @@ export function isValidSlot(id: string): boolean {
   return VALID_IDS.has(id);
 }
 
+/**
+ * Ist ein Blob-Speicher für den Upload verbunden?
+ *
+ * Zwei Wege, je nachdem wie Vercel den Store angelegt hat:
+ *  - Klassisch: `BLOB_READ_WRITE_TOKEN` (langlebiges Token).
+ *  - OIDC (bei neueren Stores Standard): `BLOB_STORE_ID` + zur Laufzeit
+ *    `VERCEL_OIDC_TOKEN`; das RW-Token fehlt dann oft. Der @vercel/blob-SDK
+ *    nutzt in diesem Fall automatisch OIDC.
+ *
+ * `BLOB_STORE_ID` ist der verlässliche Marker für „Store verbunden" —
+ * `VERCEL_OIDC_TOKEN` allein zählt nicht, das setzt Vercel auch ohne Blob.
+ */
+export function isBlobConfigured(): boolean {
+  return Boolean(
+    process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID,
+  );
+}
+
 const HASH = "img:overrides";
 const TAG = "managed-images";
 
