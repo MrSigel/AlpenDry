@@ -1,4 +1,5 @@
 import { localBusinessJsonLd, websiteJsonLd } from "@/lib/jsonld";
+import { getImageOverrides } from "@/lib/managed-images";
 import { Analytics } from "@vercel/analytics/next";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { AnchorScroll } from "@/components/layout/AnchorScroll";
@@ -18,9 +19,11 @@ import { ExitBanner } from "@/components/layout/ExitBanner";
  * nur die Zahlen, und seine eigenen Besuche verfälschen die Statistik nicht.
  * Herleitung im Wurzel-Layout (app/layout.tsx).
  */
-export default function SiteLayout({
+export default async function SiteLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  // Logo-Override serverseitig auflösen und an den (Client-)Header geben.
+  const overrides = await getImageOverrides();
   return (
     <>
       {/* Sprungmarke — erster fokussierbarer Punkt für Tastatur und Screenreader */}
@@ -35,7 +38,7 @@ export default function SiteLayout({
           hinweg springen statt zu fahren. Begründung in der Komponente. */}
       <AnchorScroll />
 
-      <Header />
+      <Header logoSrc={overrides["logo:mark"]} />
       <main id="inhalt">{children}</main>
       <Footer />
       <StickyCTA />

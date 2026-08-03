@@ -36,11 +36,18 @@ export function Photo({
   className = "",
   priority = false,
   sizes,
+  override,
 }: {
   /** Kleinere Fassung. Die Breite in Pixeln muss dem Dateinamen entsprechen. */
   src: string;
   /** Größere Fassung — für breite Spalten und Retina. */
   srcWide: string;
+  /**
+   * Über /analytics hinterlegtes Ersatzbild (eine URL). Ist es gesetzt, ersetzt
+   * es src/srcWide vollständig; die Responsive-Deskriptoren entfallen dann, weil
+   * ein Upload eine einzelne Datei ist. Ohne Wert bleibt alles beim Original.
+   */
+  override?: string;
   /** Intrinsische Maße der GRÖSSEREN Fassung (Seitenverhältnis, gegen CLS). */
   width: number;
   height: number;
@@ -66,7 +73,11 @@ export function Photo({
    * Feld, das man vergessen kann zu pflegen.
    */
   const widthOf = (url: string) => Number(url.match(/-(\d+)\.webp$/)?.[1] ?? 0);
-  const srcSet = `${src} ${widthOf(src)}w, ${srcWide} ${widthOf(srcWide)}w`;
+  // Ersatzbild (einzelne URL) gewinnt über die eingebauten Responsive-Fassungen.
+  const imgSrc = override ?? srcWide;
+  const srcSet = override
+    ? undefined
+    : `${src} ${widthOf(src)}w, ${srcWide} ${widthOf(srcWide)}w`;
   return (
     <figure className={`relative overflow-hidden rounded-sm border border-hairline ${className}`}>
       {/* eslint-disable-next-line @next/next/no-img-element -- Die Dateien
@@ -75,7 +86,7 @@ export function Photo({
           konvertieren. srcset/sizes/width/height liefern hier dasselbe
           Ergebnis. Gleiche Entscheidung wie in HeroPoster und Logo. */}
       <img
-        src={srcWide}
+        src={imgSrc}
         srcSet={srcSet}
         sizes={sizes}
         width={width}

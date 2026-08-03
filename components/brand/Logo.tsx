@@ -31,11 +31,18 @@ import { site } from "@/lib/content";
  * Der Image-Optimizer brächte hier nichts mehr, liefe aber bei jedem Aufruf
  * auf jeder Seite — und wird auf Vercel abgerechnet.
  */
-export function AlpenDryMark({ className = "" }: { className?: string }) {
+export function AlpenDryMark({
+  className = "",
+  src = "/brand/mark.png",
+}: {
+  className?: string;
+  /** Über /analytics hinterlegtes Ersatz-Logo. Standard: die eingebaute Marke. */
+  src?: string;
+}) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src="/brand/mark.png"
+      src={src}
       alt=""
       // Dekorativ — der Markenname steht direkt daneben als Text.
       aria-hidden="true"
@@ -50,9 +57,12 @@ export function AlpenDryMark({ className = "" }: { className?: string }) {
 export function Logo({
   className = "",
   showSubtitle = true,
+  markSrc,
 }: {
   className?: string;
   showSubtitle?: boolean;
+  /** Ersatz-Logo aus der Bildverwaltung; ohne Wert die eingebaute Marke. */
+  markSrc?: string;
 }) {
   return (
     /**
@@ -62,12 +72,12 @@ export function Logo({
      */
     <span className={`inline-flex flex-col items-center ${className}`}>
       <span className="flex items-end gap-2.5">
-        <AlpenDryMark className="h-7 w-auto shrink-0" />
+        <AlpenDryMark src={markSrc} className="h-7 w-auto shrink-0" />
         <span className="font-display text-xl font-semibold leading-none tracking-tight">
           <span className="text-snow">{site.wordmark.first}</span>
           <span className="text-glacier">{site.wordmark.second}</span>
         </span>
-        <AlpenDryMark className="h-7 w-auto shrink-0 -scale-x-100" />
+        <AlpenDryMark src={markSrc} className="h-7 w-auto shrink-0 -scale-x-100" />
       </span>
       {showSubtitle && (
         <span className="mt-1.5 font-mono text-[0.5rem] uppercase leading-none tracking-eyebrow text-frost-dim">

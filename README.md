@@ -36,6 +36,32 @@ Cookie als Hash, httpOnly/Secure) und die beiden Einrichtungs-Zustände; die
 Zählung selbst läuft erst gegen echten KV — nach dem Verbinden einmal prüfen
 (eine Seite öffnen, dann `/analytics`).
 
+### Bildverwaltung auf /analytics
+
+Unten auf `/analytics` (nur angemeldet) sitzt der Abschnitt **„Bilder ändern"**:
+Die Kundin kann jedes der zehn Website-Bilder — die sechs Kacheln unter
+„Bisherige Arbeiten", die drei Regionsfotos und das Logo — durch eine eigene
+Datei ersetzen und jederzeit auf das eingebaute Bild zurücksetzen. Der 3D-Hero
+ist bewusst NICHT dabei (er wird gerendert, nicht geladen).
+
+So läuft es technisch (Registry: `lib/managed-images.ts`, Upload:
+`app/api/analytics/images/route.ts`): Das hochgeladene Bild wird serverseitig mit
+`sharp` auf WebP normalisiert (max. 1600 px breit, EXIF-Drehung angewandt), in
+**Vercel Blob** abgelegt, und die Datei-URL landet unter der Slot-ID im selben
+KV-Speicher wie die Zählung. Beim Rendern gewinnt die hinterlegte URL über das
+eingebaute Bild; ein getaggter Cache (`unstable_cache` + `revalidateTag`) sorgt
+dafür, dass die statischen Seiten schnell bleiben und sich erst bei einem
+Bildwechsel neu bauen. Der Upload ist nur mit gültigem Auth-Cookie erreichbar
+(sonst `401`).
+
+**Einzurichten (einmalig, in Vercel):** Storage → **Blob** anlegen — die
+Integration setzt `BLOB_READ_WRITE_TOKEN` automatisch, nichts von Hand kopieren.
+Ohne diesen Speicher zeigt der Abschnitt neutral „nicht verfügbar" und die
+Website behält ihre eingebauten Bilder — nichts stürzt ab. Das kostenlose
+Kontingent (1 GB) genügt für diese Bildzahl deutlich. Lokal ist der echte Upload
+nicht prüfbar (kein Token); getestet sind Auth-Gate (`401`), Build und dass die
+Website ohne Overrides auf die eingebauten Bilder zurückfällt.
+
 ## Vor dem Livegang — offene Punkte
 
 Diese Stellen sind bewusst markiert und brauchen eine Entscheidung:
@@ -54,6 +80,7 @@ Diese Stellen sind bewusst markiert und brauchen eine Entscheidung:
 | **Orte auf den Fotos** | `lib/photos.ts` | Die Bildunterschriften beschreiben, was zu sehen ist, statt Orte zu behaupten. Der See mit der Insel könnte der Staffelsee sein — unbestätigt. Sobald die Kundin die Orte nennt, dürfen die Unterschriften konkret werden. |
 | **Rechtstexte** | `lib/legal.ts`, `lib/agb.ts` | Von einer Anwältin/einem Anwalt geliefert. **Drei Abweichungen**, alle gegenzulesen: (1) **§ 7 Hoster** — die Vorlage nannte Wix.com Ltd. (alter Auftritt), zwischenzeitlich stand dort IONOS; beides falsch. Der A-Record zeigt auf Vercel, Inc., jetzt korrigiert samt USA-Hinweis. IONOS bleibt in § 6 fürs Postfach. (2) **§ 8 Resend** neu — Auftragsverarbeiter, Region USA. (3) **Bildnachweis** im Impressum neu (KI-Herkunft, § 5 UWG + § 13 UrhG). |
 | **/analytics einrichten** | Vercel → Settings/Storage | ANALYTICS_PASSWORD setzen + Redis-/KV-Speicher (Upstash) hinzufügen, dann neu deployen. Details oben unter „Auswertung (/analytics)". Ohne beides zeigt die Seite den jeweiligen Einrichtungs-Hinweis statt Zahlen. |
+| **Bildverwaltung aktivieren** | Vercel → Storage → Blob | Für „Bilder ändern" auf /analytics einen **Blob**-Speicher anlegen (`BLOB_READ_WRITE_TOKEN` wird automatisch gesetzt), dann neu deployen. Details oben unter „Bildverwaltung auf /analytics". Ohne Blob zeigt der Abschnitt neutral „nicht verfügbar"; die Website behält ihre eingebauten Bilder. |
 | **Google Analytics** (separat) | `lib/consent.ts` | Consent-Unterbau steht, GA ist NICHT eingebunden (die eigene Reichweitenmessung ist etwas anderes und cookielos). Falls GA gewünscht: Mess-ID ergänzen; lädt nur nach Einwilligung. |
 
 ## Hosting

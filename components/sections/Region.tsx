@@ -1,5 +1,6 @@
 import { region } from "@/lib/content";
 import { photos } from "@/lib/photos";
+import { getImageOverrides } from "@/lib/managed-images";
 import { Section, SectionHead, type SectionVariant } from "@/components/ui/Section";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
@@ -18,7 +19,9 @@ import { Photo } from "@/components/ui/Photo";
  * unter einem Foto echter Berge wäre dieselbe Aussage zweimal — die schwächere
  * geht.
  */
-export function Region({ standalone = false }: SectionVariant) {
+export async function Region({ standalone = false }: SectionVariant) {
+  // Über /analytics hinterlegtes Ersatzbild fürs Panorama (sonst das Original).
+  const overrides = await getImageOverrides();
   return (
     <Section id="einsatzgebiet" tone="ink">
       {/* Ohne Kopf gibt es keine zweite Spalte — die Orte bekommen dann die
@@ -91,6 +94,7 @@ export function Region({ standalone = false }: SectionVariant) {
       <Reveal delay={0.15} className="mt-14 md:mt-20">
         <Photo
           {...photos.alpenpanorama}
+          override={overrides["foto:alpenpanorama"]}
           sizes="(min-width: 1216px) 1136px, (min-width: 768px) calc(100vw - 5rem), calc(100vw - 3rem)"
           className="aspect-[16/9] w-full md:aspect-[21/9]"
         />

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import { contact, whatsappHref } from "@/lib/content";
 import { photos } from "@/lib/photos";
+import { getImageOverrides } from "@/lib/managed-images";
 import {
   getServicePage,
   servicePages,
@@ -69,6 +70,9 @@ export default async function ServicePageRoute({
   const related = page.related
     .map((s) => getServicePage(s))
     .filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+  // Über /analytics hinterlegtes Ersatzbild für das Leistungsfoto (sonst Original).
+  const overrides = await getImageOverrides();
 
   return (
     <>
@@ -218,6 +222,7 @@ export default async function ServicePageRoute({
                         Bild die 1.4fr-Spalte ≈ 640px. */}
                     <Photo
                       {...photos[page.photo]}
+                      override={overrides[`foto:${page.photo}`]}
                       sizes="(min-width: 1024px) 640px, (min-width: 768px) calc(100vw - 5rem), calc(100vw - 3rem)"
                       className="aspect-[4/3] w-full"
                     />

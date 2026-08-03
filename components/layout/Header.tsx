@@ -26,7 +26,7 @@ import { ChevronIcon, PhoneIcon, WhatsAppIcon } from "@/components/ui/Icons";
  *
  * Über dem 3D-Hero transparent, ab dem ersten Scroll mit ink-Fläche.
  */
-export function Header() {
+export function Header({ logoSrc }: { logoSrc?: string }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -117,7 +117,7 @@ export function Header() {
     >
       <div className="mx-auto flex h-20 w-full max-w-shell items-center justify-between gap-8 px-6 md:px-10">
         <Link href="/" className="shrink-0">
-          <Logo />
+          <Logo markSrc={logoSrc} />
         </Link>
 
         {/* ── Desktop-Navigation ──────────────────────────────────── */}

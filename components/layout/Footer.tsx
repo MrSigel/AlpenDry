@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { contact, footer, site, social } from "@/lib/content";
 import { servicePages } from "@/lib/services-pages";
+import { getImageOverrides } from "@/lib/managed-images";
 import { Logo } from "@/components/brand/Logo";
 import { InstagramIcon, MailIcon, PhoneIcon } from "@/components/ui/Icons";
 
@@ -88,7 +89,8 @@ function ContactLine({
   );
 }
 
-export function Footer() {
+export async function Footer() {
+  const overrides = await getImageOverrides();
   return (
     <footer className="border-t border-hairline bg-ink">
       <div className="mx-auto w-full max-w-shell px-6 py-16 md:px-10 md:py-20">
@@ -97,7 +99,7 @@ export function Footer() {
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:gap-10">
           {/* Marke */}
           <div>
-            <Logo />
+            <Logo markSrc={overrides["logo:mark"]} />
             <p className="mt-6 max-w-xs font-body text-sm text-frost-dim">
               {footer.tagline}
             </p>

@@ -8,6 +8,11 @@ import {
   isAuthConfigured,
 } from "@/lib/analytics-auth";
 import { isStoreConfigured, readStats } from "@/lib/analytics-store";
+import {
+  MANAGED_IMAGES,
+  getImageOverrides,
+  resolveImage,
+} from "@/lib/managed-images";
 
 /**
  * /analytics — interne Auswertung, passwortgeschützt.
@@ -92,7 +97,135 @@ function BarRow({ label, count, max }: { label: string; count: number; max: numb
 
 // ── Seite ─────────────────────────────────────────────────────────────
 
-export default async function AnalyticsPage() {
+// ── Bildverwaltung ────────────────────────────────────────────────────
+
+/** Kurze Rückmeldung nach Upload/Zurücksetzen (aus ?bild=…). Neutral gehalten. */
+const BILD_HINWEIS: Record<string, string> = {
+  ok: "Bild gespeichert. Es erscheint in Kürze auf der Website.",
+  zurueckgesetzt: "Auf das ursprüngliche Bild zurückgesetzt.",
+  fehler: "Das hat nicht geklappt. Bitte erneut versuchen.",
+  zugross: "Die Datei ist zu groß (max. 12 MB).",
+  falschertyp: "Nur Bilddateien (JPG, PNG, WebP).",
+  nichtaktiv: "Die Bildverwaltung ist derzeit nicht verfügbar.",
+};
+
+async function ImageManager({ hinweis }: { hinweis?: string }) {
+  const blobReady = Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+  const overrides = await getImageOverrides();
+
+  // Nach Gruppen bündeln, damit die 10 Bilder geordnet erscheinen.
+  const groups = MANAGED_IMAGES.reduce<Record<string, typeof MANAGED_IMAGES[number][]>>(
+    (acc, img) => ((acc[img.group] ??= []).push(img), acc),
+    {},
+  );
+
+  return (
+    <section id="bilder" className="mt-16 border-t border-hairline pt-14 scroll-mt-8">
+      <h2 className="text-2xl md:text-3xl">Bilder ändern</h2>
+      <p className="mt-3 max-w-prose font-body text-sm text-frost-dim">
+        Wählen Sie zu einem Bild eine neue Datei und speichern Sie — es ersetzt
+        das bisherige auf der Website. Über „Zurücksetzen“ kehren Sie jederzeit
+        zum ursprünglichen Bild zurück.
+      </p>
+
+      {hinweis && (
+        <p className="mt-4 rounded-sm border border-hairline bg-abyss px-4 py-3 font-body text-sm text-frost">
+          {hinweis}
+        </p>
+      )}
+
+      {!blobReady && (
+        <p className="mt-4 rounded-sm border border-hairline bg-abyss px-4 py-3 font-body text-sm text-frost-dim">
+          Die Bildverwaltung ist derzeit nicht verfügbar. Bitte wenden Sie sich
+          an Ihren Administrator.
+        </p>
+      )}
+
+      {Object.entries(groups).map(([group, imgs]) => (
+        <div key={group} className="mt-10">
+          <h3 className="font-mono text-2xs uppercase tracking-eyebrow text-frost">
+            {group}
+          </h3>
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            {imgs.map((img) => {
+              const current = resolveImage(img, overrides);
+              const isCustom = Boolean(overrides[img.id]);
+              return (
+                <div
+                  key={img.id}
+                  className="flex gap-4 rounded-sm border border-hairline bg-abyss p-4"
+                >
+                  {/* Aktuelles Bild als Vorschau */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={current.src}
+                    alt=""
+                    className="h-20 w-28 shrink-0 rounded-sm border border-hairline bg-ink object-cover"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 font-display text-sm font-semibold text-snow">
+                      <span className="truncate">{img.label}</span>
+                      {isCustom && (
+                        <span className="shrink-0 font-mono text-[0.5rem] uppercase tracking-eyebrow text-glacier">
+                          geändert
+                        </span>
+                      )}
+                    </div>
+
+                    {blobReady && (
+                      <form
+                        action="/api/analytics/images"
+                        method="POST"
+                        encType="multipart/form-data"
+                        className="mt-3 flex flex-wrap items-center gap-2"
+                      >
+                        <input type="hidden" name="slotId" value={img.id} />
+                        <input
+                          type="file"
+                          name="file"
+                          accept="image/png,image/jpeg,image/webp"
+                          required
+                          className="max-w-[9rem] shrink font-body text-2xs text-frost-dim file:mr-2 file:rounded-sm file:border-0 file:bg-deep file:px-2 file:py-1 file:font-mono file:text-2xs file:uppercase file:tracking-eyebrow file:text-frost"
+                        />
+                        <button
+                          type="submit"
+                          className="rounded-sm bg-signal px-3 py-1.5 font-display text-2xs font-semibold uppercase tracking-eyebrow text-ink transition-colors hover:bg-glacier"
+                        >
+                          Speichern
+                        </button>
+                      </form>
+                    )}
+
+                    {isCustom && (
+                      <form action="/api/analytics/images" method="POST" className="mt-2">
+                        <input type="hidden" name="slotId" value={img.id} />
+                        <input type="hidden" name="action" value="reset" />
+                        <button
+                          type="submit"
+                          className="font-mono text-2xs uppercase tracking-eyebrow text-frost-dim transition-colors hover:text-snow"
+                        >
+                          Zurücksetzen
+                        </button>
+                      </form>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+// ── Seite ─────────────────────────────────────────────────────────────
+
+export default async function AnalyticsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ bild?: string }>;
+}) {
   if (!isAuthConfigured()) {
     // Neutral gehalten: Die Kundin soll hier nicht lesen, WIE und WO die Seite
     // betrieben wird. Die technischen Einrichtungsschritte stehen im README.
@@ -160,6 +293,8 @@ export default async function AnalyticsPage() {
     email: "E-Mail",
     form_submit: "Formular",
   };
+
+  const bildHinweis = BILD_HINWEIS[(await searchParams).bild ?? ""];
 
   return (
     <Shell>
@@ -235,6 +370,8 @@ export default async function AnalyticsPage() {
           ))}
         </div>
       </section>
+
+      <ImageManager hinweis={bildHinweis} />
     </Shell>
   );
 }

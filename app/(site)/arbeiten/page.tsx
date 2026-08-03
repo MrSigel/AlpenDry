@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { contact, whatsappHref } from "@/lib/content";
 import { works } from "@/lib/works";
+import { getImageOverrides } from "@/lib/managed-images";
 import { buildMetadata } from "@/lib/seo";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
 
@@ -32,7 +33,9 @@ export const metadata: Metadata = buildMetadata({
   path: "/arbeiten",
 });
 
-export default function ArbeitenPage() {
+export default async function ArbeitenPage() {
+  // Über /analytics hinterlegte Ersatzbilder (sonst die eingebauten WebP).
+  const overrides = await getImageOverrides();
   return (
     <>
       {/* ── Kopf ─────────────────────────────────────────────────── */}
@@ -95,7 +98,13 @@ export default function ArbeitenPage() {
           as="ul"
           className="mt-12 grid gap-px overflow-hidden rounded-sm border border-hairline bg-frost-faint md:grid-cols-2 lg:grid-cols-3"
         >
-          {works.categories.map((category) => (
+          {works.categories.map((category) => {
+            // Über /analytics hinterlegtes Ersatzbild — eine URL ohne
+            // Responsive-Varianten; sonst die eingebauten 400/800-WebP.
+            const override = category.image
+              ? overrides[`arbeiten:${category.image}`]
+              : undefined;
+            return (
             <RevealItem as="li" key={category.title} className="bg-ink">
               <article className="flex h-full flex-col">
                 <figure className="relative aspect-[4/3] overflow-hidden border-b border-hairline">
@@ -107,8 +116,12 @@ export default function ArbeitenPage() {
                           Laufzeit ein zweites Mal konvertieren. Gleiche
                           Entscheidung wie in components/ui/Photo.tsx. */}
                       <img
-                        src={`/arbeiten/${category.image}-400.webp`}
-                        srcSet={`/arbeiten/${category.image}-400.webp 400w, /arbeiten/${category.image}-800.webp 800w`}
+                        src={override ?? `/arbeiten/${category.image}-800.webp`}
+                        srcSet={
+                          override
+                            ? undefined
+                            : `/arbeiten/${category.image}-400.webp 400w, /arbeiten/${category.image}-800.webp 800w`
+                        }
                         sizes="(min-width: 1024px) 380px, (min-width: 768px) 50vw, calc(100vw - 3rem)"
                         width={800}
                         height={600}
@@ -152,7 +165,8 @@ export default function ArbeitenPage() {
                 </div>
               </article>
             </RevealItem>
-          ))}
+            );
+          })}
         </RevealGroup>
       </Section>
 

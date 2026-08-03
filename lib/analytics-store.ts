@@ -1,5 +1,5 @@
 import "server-only";
-import { Redis } from "@upstash/redis";
+import { kv, kvConfigured } from "./kv";
 
 /**
  * Eigener, unabhängiger Zähler für die /analytics-Seite.
@@ -22,21 +22,12 @@ import { Redis } from "@upstash/redis";
  * Upstash-Integration).
  */
 
-const url =
-  process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL ?? "";
-const token =
-  process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN ?? "";
-
-let redis: Redis | null = null;
-function client(): Redis | null {
-  if (!url || !token) return null;
-  if (!redis) redis = new Redis({ url, token });
-  return redis;
-}
+// Speicher-Client jetzt aus lib/kv.ts (gemeinsam mit der Bildverwaltung).
+const client = kv;
 
 /** Ist ein Speicher verbunden? Steuert, ob /analytics Zahlen oder Anleitung zeigt. */
 export function isStoreConfigured(): boolean {
-  return Boolean(url && token);
+  return kvConfigured();
 }
 
 const K = {
